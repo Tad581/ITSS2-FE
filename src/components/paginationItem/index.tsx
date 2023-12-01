@@ -26,6 +26,7 @@ export default function ItemPagination() {
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
+    console.log(event)
     const from = (page - 1) * pageSize;
     const to = (page - 1) * pageSize + pageSize;
     setPagination({ ...pagination, from: from, to: to, page: page });
