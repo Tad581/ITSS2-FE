@@ -7,10 +7,6 @@ export default function CardItem() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        // border: 2,
-        // borderRadius: 2,
-        // borderStyle: 'solid',
-        // borderColor: 'darkGray',
       }}
     >
       <Box
@@ -71,7 +67,7 @@ export default function CardItem() {
             marginTop: 1,
           }}
         >
-          <LocationOnOutlinedIcon sx={{ marginRight: 1, fontSize: '16px' }} />{' '}
+          <LocationOnOutlinedIcon sx={{ marginRight: 1, fontSize: '16px' }} />
           Đống Đa, Hà Nội
         </Typography>
       </Box>

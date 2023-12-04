@@ -1,7 +1,11 @@
 import { Box, Typography } from '@mui/material';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
-export default function Filterbar() {
+interface IProps {
+  handleDialogToggle: () => void;
+}
+
+export default function Filterbar(props: Readonly<IProps>) {
   return (
     <Box component='div' sx={{ marginTop: 2 }}>
       <Box
@@ -22,6 +26,7 @@ export default function Filterbar() {
             justifyContent: 'center',
             alignItems: 'center',
             marginX: 3,
+            cursor: 'pointer',
           }}
         >
           <Box
@@ -49,6 +54,7 @@ export default function Filterbar() {
             justifyContent: 'center',
             alignItems: 'center',
             marginX: 3,
+            cursor: 'pointer',
           }}
         >
           <Box
@@ -76,6 +82,7 @@ export default function Filterbar() {
             justifyContent: 'center',
             alignItems: 'center',
             marginX: 3,
+            cursor: 'pointer',
           }}
         >
           <Box
@@ -110,7 +117,9 @@ export default function Filterbar() {
             position: 'absolute',
             top: '10%',
             right: '10%',
+            cursor: 'pointer',
           }}
+          onClick={props.handleDialogToggle}
         >
           <FilterAltOutlinedIcon sx={{ color: 'gray', marginRight: 1 }} />
           <Typography
