@@ -78,7 +78,7 @@ function valuetextPrice(value: number) {
 export default function FilterDialog(props: IProps) {
   const [prices, setPrices] = useState<number[]>([0, 10000]);
   const [distances, setDistances] = useState<number[]>([20, 37]);
-  const [areas, setAreas] = useState<number[]>([]);
+  // const [areas, setAreas] = useState<number[]>([]);
 
   const handleChangePrice = (
     event: Event,
