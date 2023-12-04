@@ -18,6 +18,10 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import CustomCheckbox from './customCheckbox';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -73,13 +77,15 @@ function valuetextPrice(value: number) {
 
 export default function FilterDialog(props: IProps) {
   const [prices, setPrices] = useState<number[]>([0, 10000]);
-  const [distances, setDistance] = useState<number[]>([20, 37]);
+  const [distances, setDistances] = useState<number[]>([20, 37]);
+  const [areas, setAreas] = useState<number[]>([]);
 
   const handleChangePrice = (
     event: Event,
     newValue: number | number[],
     activeThumb: number
   ) => {
+    console.log('🚀 ~ file: index.tsx:83 ~ FilterDialog ~ event:', event);
     if (!Array.isArray(newValue)) {
       return;
     }
@@ -96,14 +102,15 @@ export default function FilterDialog(props: IProps) {
     newValue: number | number[],
     activeThumb: number
   ) => {
+    console.log('🚀 ~ file: index.tsx:99 ~ FilterDialog ~ event:', event);
     if (!Array.isArray(newValue)) {
       return;
     }
 
     if (activeThumb === 0) {
-      setDistance([Math.min(newValue[0], distances[1] - 500), distances[1]]);
+      setDistances([Math.min(newValue[0], distances[1] - 500), distances[1]]);
     } else {
-      setDistance([distances[0], Math.max(newValue[1], distances[0] + 500)]);
+      setDistances([distances[0], Math.max(newValue[1], distances[0] + 500)]);
     }
   };
 
@@ -246,13 +253,14 @@ export default function FilterDialog(props: IProps) {
             />
           </Box>
         </Box>
-        {/* <Box
+        <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             paddingX: 1,
+            marginTop: 1,
           }}
         >
           <Typography
@@ -267,7 +275,38 @@ export default function FilterDialog(props: IProps) {
           >
             Diện tích phòng
           </Typography>
-          <Box></Box>
+          <Grid
+            container
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            spacing={3}
+          >
+            <Grid item xs={4} sx={{ marginRight: -1 }}>
+              <CustomCheckbox
+                icon={<HomeOutlinedIcon sx={{ fontSize: 25 }} />}
+                title='0m² - 10m²'
+                backgroundColor='transparent'
+              ></CustomCheckbox>
+            </Grid>
+            <Grid item xs={4}>
+              <CustomCheckbox
+                icon={<HomeOutlinedIcon sx={{ fontSize: 30 }} />}
+                title='10m² - 20m²'
+                backgroundColor='transparent'
+              ></CustomCheckbox>
+            </Grid>
+            <Grid item xs={4} sx={{ marginLeft: -1 }}>
+              <CustomCheckbox
+                icon={<HomeOutlinedIcon sx={{ fontSize: 35 }} />}
+                title='20m² - 30m²'
+                backgroundColor='transparent'
+              ></CustomCheckbox>
+            </Grid>
+          </Grid>
         </Box>
         <Box
           sx={{
@@ -276,6 +315,7 @@ export default function FilterDialog(props: IProps) {
             justifyContent: 'center',
             alignItems: 'center',
             paddingX: 1,
+            marginTop: 1,
           }}
         >
           <Typography
@@ -290,8 +330,39 @@ export default function FilterDialog(props: IProps) {
           >
             Loại phòng
           </Typography>
-          <Box></Box>
-        </Box> */}
+          <Grid
+            container
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            spacing={3}
+          >
+            <Grid item xs={4} sx={{ marginRight: -1 }}>
+              <CustomCheckbox
+                icon={<HomeOutlinedIcon sx={{ fontSize: 30 }} />}
+                title='Nhà trọ'
+                backgroundColor='transparent'
+              ></CustomCheckbox>
+            </Grid>
+            <Grid item xs={4}>
+              <CustomCheckbox
+                icon={<ApartmentOutlinedIcon sx={{ fontSize: 30 }} />}
+                title='Chung cư mini'
+                backgroundColor='transparent'
+              ></CustomCheckbox>
+            </Grid>
+            <Grid item xs={4} sx={{ marginLeft: -1 }}>
+              <CustomCheckbox
+                icon={<HomeWorkOutlinedIcon sx={{ fontSize: 30 }} />}
+                title='Homestay'
+                backgroundColor='transparent'
+              ></CustomCheckbox>
+            </Grid>
+          </Grid>
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -299,6 +370,7 @@ export default function FilterDialog(props: IProps) {
             justifyContent: 'center',
             alignItems: 'center',
             paddingX: 1,
+            marginTop: 1,
           }}
         >
           <Typography
@@ -441,11 +513,25 @@ export default function FilterDialog(props: IProps) {
       >
         <Button
           variant='contained'
-          sx={{ backgroundColor: 'gray', borderRadius: 5, color: '#000', width: '22%' }}
+          sx={{
+            backgroundColor: 'gray',
+            borderRadius: 5,
+            color: '#fff',
+            width: '22%',
+            '&.MuiButtonBase-root:hover': {
+              backgroundColor: 'gray',
+            },
+          }}
         >
           Xóa bộ lọc
         </Button>
-        <Button variant='contained' sx={{ borderRadius: 5, width: '22%'  }}>
+        <Button
+          variant='contained'
+          sx={{
+            borderRadius: 5,
+            width: '22%',
+          }}
+        >
           Tìm kiếm
         </Button>
       </Box>
