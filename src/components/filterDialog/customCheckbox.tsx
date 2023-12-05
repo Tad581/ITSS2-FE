@@ -4,6 +4,9 @@ interface IProps {
   icon: React.ReactNode;
   title: string;
   backgroundColor: string;
+  color: string;
+  // handleAction: (params: string | number) => void;
+  // params: string | number;
 }
 
 export default function CustomCheckbox(props: Readonly<IProps>) {
@@ -21,8 +24,8 @@ export default function CustomCheckbox(props: Readonly<IProps>) {
         borderRadius: 5,
         borderWidth: 1,
         borderStyle: 'solid',
-        borderColor: '#000',
-        height: 50
+        borderColor: props.color,
+        height: 50,
       }}
     >
       {props.icon}
@@ -32,7 +35,7 @@ export default function CustomCheckbox(props: Readonly<IProps>) {
           fontWeight: 700,
           fontSize: '16px',
           lineHeight: '30.26px',
-          color: '#000',
+          color: props.color,
         }}
       >
         {props.title}

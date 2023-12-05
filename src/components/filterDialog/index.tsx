@@ -78,7 +78,37 @@ function valuetextPrice(value: number) {
 export default function FilterDialog(props: IProps) {
   const [prices, setPrices] = useState<number[]>([0, 10000]);
   const [distances, setDistances] = useState<number[]>([20, 37]);
-  // const [areas, setAreas] = useState<number[]>([]);
+  const [areas, setAreas] = useState<{
+    small: boolean;
+    medium: boolean;
+    large: boolean;
+  }>({ small: false, medium: false, large: false });
+
+  const [types, setTypes] = useState<{
+    house: boolean;
+    apartment: boolean;
+    homestay: boolean;
+  }>({ house: false, apartment: false, homestay: false });
+
+  const handlePickAreas = (value: number) => {
+    if (value === 0) {
+      setAreas({ ...areas, small: !areas.small });
+    } else if (value === 1) {
+      setAreas({ ...areas, medium: !areas.medium });
+    } else if (value === 2) {
+      setAreas({ ...areas, large: !areas.large });
+    }
+  };
+
+  const handlePickTypes = (value: string) => {
+    if (value === 'house') {
+      setTypes({ ...types, house: !types.house });
+    } else if (value === 'apartment') {
+      setTypes({ ...types, apartment: !types.apartment });
+    } else if (value === 'homestay') {
+      setTypes({ ...types, homestay: !types.homestay });
+    }
+  };
 
   const handleChangePrice = (
     event: Event,
@@ -285,26 +315,78 @@ export default function FilterDialog(props: IProps) {
             }}
             spacing={3}
           >
-            <Grid item xs={4} sx={{ marginRight: -1 }}>
-              <CustomCheckbox
-                icon={<HomeOutlinedIcon sx={{ fontSize: 25 }} />}
-                title='0m² - 10m²'
-                backgroundColor='transparent'
-              ></CustomCheckbox>
+            <Grid
+              item
+              xs={4}
+              sx={{ marginRight: -1 }}
+              onClick={() => handlePickAreas(0)}
+            >
+              {areas.small ? (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 25, color: '#fff' }} />
+                  }
+                  title='0m² - 10m²'
+                  backgroundColor='#1976d2'
+                  color='#fff'
+                ></CustomCheckbox>
+              ) : (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 25, color: '#000' }} />
+                  }
+                  title='0m² - 10m²'
+                  backgroundColor='transparent'
+                  color='#000'
+                ></CustomCheckbox>
+              )}
             </Grid>
-            <Grid item xs={4}>
-              <CustomCheckbox
-                icon={<HomeOutlinedIcon sx={{ fontSize: 30 }} />}
-                title='10m² - 20m²'
-                backgroundColor='transparent'
-              ></CustomCheckbox>
+            <Grid item xs={4} onClick={() => handlePickAreas(1)}>
+              {areas.medium ? (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
+                  }
+                  title='10m² - 20m²'
+                  backgroundColor='#1976d2'
+                  color='#fff'
+                ></CustomCheckbox>
+              ) : (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 30, color: '#000' }} />
+                  }
+                  title='10m² - 20m²'
+                  backgroundColor='transparent'
+                  color='#000'
+                ></CustomCheckbox>
+              )}
             </Grid>
-            <Grid item xs={4} sx={{ marginLeft: -1 }}>
-              <CustomCheckbox
-                icon={<HomeOutlinedIcon sx={{ fontSize: 35 }} />}
-                title='20m² - 30m²'
-                backgroundColor='transparent'
-              ></CustomCheckbox>
+            <Grid
+              item
+              xs={4}
+              sx={{ marginLeft: -1 }}
+              onClick={() => handlePickAreas(2)}
+            >
+              {areas.large ? (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 35, color: '#fff' }} />
+                  }
+                  title='20m² - 30m²'
+                  backgroundColor='#1976d2'
+                  color='#fff'
+                ></CustomCheckbox>
+              ) : (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 35, color: '#000' }} />
+                  }
+                  title='20m² - 30m²'
+                  backgroundColor='transparent'
+                  color='#000'
+                ></CustomCheckbox>
+              )}
             </Grid>
           </Grid>
         </Box>
@@ -340,26 +422,86 @@ export default function FilterDialog(props: IProps) {
             }}
             spacing={3}
           >
-            <Grid item xs={4} sx={{ marginRight: -1 }}>
-              <CustomCheckbox
-                icon={<HomeOutlinedIcon sx={{ fontSize: 30 }} />}
-                title='Nhà trọ'
-                backgroundColor='transparent'
-              ></CustomCheckbox>
+            <Grid
+              item
+              xs={4}
+              sx={{ marginRight: -1 }}
+              onClick={() => handlePickTypes('house')}
+            >
+              {types.house ? (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
+                  }
+                  title='Nhà trọ'
+                  backgroundColor='#1976d2'
+                  color='#fff'
+                ></CustomCheckbox>
+              ) : (
+                <CustomCheckbox
+                  icon={
+                    <HomeOutlinedIcon sx={{ fontSize: 30, color: '#000' }} />
+                  }
+                  title='Nhà trọ'
+                  backgroundColor='transparent'
+                  color='#000'
+                ></CustomCheckbox>
+              )}
             </Grid>
-            <Grid item xs={4}>
-              <CustomCheckbox
-                icon={<ApartmentOutlinedIcon sx={{ fontSize: 30 }} />}
-                title='Chung cư mini'
-                backgroundColor='transparent'
-              ></CustomCheckbox>
+            <Grid item xs={4} onClick={() => handlePickTypes('apartment')}>
+              {types.apartment ? (
+                <CustomCheckbox
+                  icon={
+                    <ApartmentOutlinedIcon
+                      sx={{ fontSize: 30, color: '#fff' }}
+                    />
+                  }
+                  title='Chung cư mini'
+                  backgroundColor='#1976d2'
+                  color='#fff'
+                ></CustomCheckbox>
+              ) : (
+                <CustomCheckbox
+                  icon={
+                    <ApartmentOutlinedIcon
+                      sx={{ fontSize: 30, color: '#000' }}
+                    />
+                  }
+                  title='Chung cư mini'
+                  backgroundColor='transparent'
+                  color='#000'
+                ></CustomCheckbox>
+              )}
             </Grid>
-            <Grid item xs={4} sx={{ marginLeft: -1 }}>
-              <CustomCheckbox
-                icon={<HomeWorkOutlinedIcon sx={{ fontSize: 30 }} />}
-                title='Homestay'
-                backgroundColor='transparent'
-              ></CustomCheckbox>
+            <Grid
+              item
+              xs={4}
+              sx={{ marginLeft: -1 }}
+              onClick={() => handlePickTypes('homestay')}
+            >
+              {types.homestay ? (
+                <CustomCheckbox
+                  icon={
+                    <HomeWorkOutlinedIcon
+                      sx={{ fontSize: 30, color: '#fff' }}
+                    />
+                  }
+                  title='Homestay'
+                  backgroundColor='#1976d2'
+                  color='#fff'
+                ></CustomCheckbox>
+              ) : (
+                <CustomCheckbox
+                  icon={
+                    <HomeWorkOutlinedIcon
+                      sx={{ fontSize: 30, color: '#000' }}
+                    />
+                  }
+                  title='Homestay'
+                  backgroundColor='transparent'
+                  color='#000'
+                ></CustomCheckbox>
+              )}
             </Grid>
           </Grid>
         </Box>
