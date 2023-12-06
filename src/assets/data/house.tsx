@@ -5,6 +5,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 1,
@@ -12,6 +13,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 2,
@@ -19,6 +21,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 3,
@@ -26,6 +29,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 4,
@@ -33,6 +37,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 5,
@@ -40,6 +45,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 6,
@@ -47,6 +53,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 7,
@@ -54,6 +61,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 8,
@@ -61,6 +69,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 9,
@@ -68,6 +77,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 10,
@@ -75,6 +85,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
   {
     id: 11,
@@ -82,6 +93,7 @@ const houseData = [
     distance_to_school: 3.5,
     address: 'Đống Đa, Hà Nội',
     area: 30,
+    price: '5.000.000',
   },
 ];
 

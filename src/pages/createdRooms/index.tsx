@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import Header from '../../layout/header';
-import ItemPagination from '../../components/paginationItem/searchPagination';
-
-export default function Home() {
+import CreatedRoomsPagination from '../../components/paginationItem/createdRoomsPagination';
+export default function CreatedRooms() {
   return (
     <Box
       sx={{
@@ -13,7 +12,7 @@ export default function Home() {
       }}
     >
       <Header />
-      <ItemPagination />
+      <CreatedRoomsPagination />
     </Box>
   );
 }

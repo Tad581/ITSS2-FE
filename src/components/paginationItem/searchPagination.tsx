@@ -1,7 +1,7 @@
 import { Box, Pagination, Typography, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { houseData } from '../../assets/data/house';
-import CardItem from '../cardItem';
+import CardItem from '../cardItem/search';
 import FilterDialog from '../filterDialog';
 import Filterbar from '../../layout/filterbar';
 
@@ -50,30 +50,28 @@ export default function ItemPagination() {
           alignItems: 'center',
         }}
       >
-        <Box>
-          <Box
-            sx={{
-              width: '100%',
-              height: 'auto',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 5,
-            }}
-          >
-            <Grid container spacing={5} sx={{ width: '80%' }}>
-              {showData.length > 0 ? (
-                showData.map((item) => (
-                  <Grid item sm={12} md={6} lg={3} xl={2} key={item.id}>
-                    <CardItem />
-                  </Grid>
-                ))
-              ) : (
-                <Typography mt={10}>Không có dữ liệu</Typography>
-              )}
-            </Grid>
-          </Box>
-        </Box>
+        <Grid
+          container
+          spacing={5}
+          sx={{
+            width: '80%',
+            height: 'auto',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 1,
+          }}
+        >
+          {showData.length > 0 ? (
+            showData.map((item) => (
+              <Grid item sm={12} md={6} lg={3} xl={2} key={item.id}>
+                <CardItem />
+              </Grid>
+            ))
+          ) : (
+            <Typography mt={10}>Không có dữ liệu</Typography>
+          )}
+        </Grid>
         {houseData.length < pageSize ? (
           <></>
         ) : (
@@ -85,7 +83,10 @@ export default function ItemPagination() {
           />
         )}
       </Box>
-      <FilterDialog open={isDialogShow} handleClose={() => setIsDialogShow(false)}></FilterDialog>
+      <FilterDialog
+        open={isDialogShow}
+        handleClose={() => setIsDialogShow(false)}
+      ></FilterDialog>
     </Box>
   );
 }
