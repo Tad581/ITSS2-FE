@@ -4,6 +4,7 @@ import { houseData } from '../../assets/data/house';
 import CardItem from '../cardItem/search';
 import FilterDialog from '../filterDialog';
 import Filterbar from '../../layout/filterbar';
+import { RoomAPI } from '../../api/roomAPI';
 
 const pageSize = 8;
 
@@ -17,6 +18,14 @@ export default function ItemPagination() {
     to: pageSize,
     page: 1,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await RoomAPI.get();
+      console.log(response);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const data = houseData.slice(pagination.from, pagination.to);
