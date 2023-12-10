@@ -1,47 +1,47 @@
 import { Box, Pagination, Typography, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { houseData } from '../../assets/data/house';
 import CardItem from '../cardItem/search';
 import FilterDialog from '../filterDialog';
 import Filterbar from '../../layout/filterbar';
 import { RoomAPI } from '../../api/roomAPI';
+import { IRoom } from '../../interfaces/room';
 
 const pageSize = 8;
 
 export default function ItemPagination() {
-  const [showData, setShowData] = useState(houseData);
-  const [isDialogShow, setIsDialogShow] = useState(false);
+  const [showData, setShowData] = useState<IRoom[]>([]);
+  const [isDialogShow, setIsDialogShow] = useState<boolean>(false);
   // For pagination
   const [pagination, setPagination] = useState({
-    count: 0,
-    from: 0,
-    to: pageSize,
     page: 1,
+    page_size: pageSize,
+    total: 0,
   });
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await RoomAPI.get();
-      console.log(response);
+      const response = await RoomAPI.getAll();
+      if (response) {
+        setShowData(response.data);
+        setPagination(response.pagination);
+      }
     };
-    fetchData();
+    fetchData().catch((error) => console.log(error));
   }, []);
 
-  useEffect(() => {
-    const data = houseData.slice(pagination.from, pagination.to);
-    setPagination({ ...pagination, count: houseData.length });
-    setShowData(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [houseData, pagination.from, pagination.to]);
+  // useEffect(() => {
+  //   const data = houseData.slice(pagination.from, pagination.to);
+  //   setPagination({ ...pagination, count: houseData.length });
+  //   setShowData(data);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [houseData, pagination.from, pagination.to]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
     console.log(event);
-    const from = (page - 1) * pageSize;
-    const to = (page - 1) * pageSize + pageSize;
-    setPagination({ ...pagination, from: from, to: to, page: page });
+    setPagination({ ...pagination, page: page });
   };
 
   const handleDialogToggle = () => {
@@ -72,21 +72,28 @@ export default function ItemPagination() {
           }}
         >
           {showData.length > 0 ? (
-            showData.map((item) => (
+            showData.map((item: IRoom) => (
               <Grid item sm={12} md={6} lg={3} xl={2} key={item.id}>
-                <CardItem />
+                <CardItem
+                  id={item.id}
+                  name={item.name}
+                  room_image={item.room_image[0]?.image_url}
+                  address={item.address}
+                  distance_to_school={item.distance_to_school}
+                  area={item.area}
+                />
               </Grid>
             ))
           ) : (
             <Typography mt={10}>Không có dữ liệu</Typography>
           )}
         </Grid>
-        {houseData.length < pageSize ? (
+        {pagination.total === 0 ? (
           <></>
         ) : (
           <Pagination
             sx={{ marginY: 6 }}
-            count={Math.ceil(houseData.length / pageSize)}
+            count={pagination.total}
             onChange={handlePageChange}
             page={pagination.page}
           />

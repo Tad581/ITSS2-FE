@@ -1,7 +1,16 @@
 import { Box, Typography } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
-export default function CardItem() {
+interface IProps {
+  id: number;
+  name: string;
+  room_image: string;
+  distance_to_school: number;
+  area: number;
+  address: string;
+}
+
+export default function CardItem(props: IProps) {
   return (
     <Box
       sx={{
@@ -11,7 +20,11 @@ export default function CardItem() {
     >
       <Box
         component='img'
-        src='https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
+        src={
+          props.room_image
+            ? props.room_image
+            : 'https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
+        }
         sx={{
           objectFit: 'cover',
           borderRadius: 2,
@@ -24,51 +37,43 @@ export default function CardItem() {
           sx={{
             fontSize: '22px',
             fontWeight: 700,
-            lineHeight: '19.36px',
-            marginTop: 1,
+            marginY: 1,
             width: '100%',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}
         >
-          Chung cư cao cấp
+          {props.name}
         </Typography>
         <Typography
           sx={{
             fontSize: '16px',
             fontWeight: 400,
-            lineHeight: '19.36px',
             color: '#35E908',
-            marginTop: 1,
           }}
         >
-          Cách ĐH Back khoa 3.5km
+          Cách ĐH Back khoa {props.distance_to_school}km
         </Typography>
         <Typography
           sx={{
             fontSize: '16px',
             fontWeight: 400,
-            lineHeight: '19.36px',
-            marginTop: 1,
           }}
         >
-          30 m²
+          {props.area} m²
         </Typography>
         <Typography
           sx={{
             fontSize: '16px',
             fontWeight: 400,
-            lineHeight: '19.36px',
-            display: 'flex',
-            flexDiretion: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            marginTop: 1,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
           <LocationOnOutlinedIcon sx={{ marginRight: 1, fontSize: '16px' }} />
-          Đống Đa, Hà Nội
+          {props.address}
         </Typography>
       </Box>
     </Box>
