@@ -4,18 +4,22 @@ import CardItem from '../cardItem/search';
 import FilterDialog from '../filterDialog';
 import Filterbar from '../../layout/filterbar';
 import { RoomAPI } from '../../api/roomAPI';
-import { IRoom } from '../../interfaces/room';
+import { IRoom, IRoomsParams, EOrderDirection } from '../../interfaces/room';
 
 const pageSize = 8;
 
 export default function ItemPagination() {
   const [showData, setShowData] = useState<IRoom[]>([]);
   const [isDialogShow, setIsDialogShow] = useState<boolean>(false);
-  // For pagination
   const [pagination, setPagination] = useState({
     page: 1,
     page_size: pageSize,
     total: 0,
+  });
+  const [roomsParams, setRoomsParams] = useState<IRoomsParams>({
+    page: pagination.page,
+    page_size: pageSize,
+    order_direction: EOrderDirection.DESC,
   });
 
   useEffect(() => {
@@ -28,13 +32,6 @@ export default function ItemPagination() {
     };
     fetchData().catch((error) => console.log(error));
   }, []);
-
-  // useEffect(() => {
-  //   const data = houseData.slice(pagination.from, pagination.to);
-  //   setPagination({ ...pagination, count: houseData.length });
-  //   setShowData(data);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [houseData, pagination.from, pagination.to]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -66,7 +63,7 @@ export default function ItemPagination() {
             width: '80%',
             height: 'auto',
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             marginTop: 1,
           }}
@@ -88,12 +85,12 @@ export default function ItemPagination() {
             <Typography mt={10}>Không có dữ liệu</Typography>
           )}
         </Grid>
-        {pagination.total === 0 ? (
-          <></>
+        {Math.ceil(pagination.total / pageSize) <= 1 ? (
+          <Box sx={{ marginBottom: 10 }}></Box>
         ) : (
           <Pagination
             sx={{ marginY: 6 }}
-            count={pagination.total}
+            count={Math.ceil(pagination.total / pageSize)}
             onChange={handlePageChange}
             page={pagination.page}
           />
@@ -102,6 +99,7 @@ export default function ItemPagination() {
       <FilterDialog
         open={isDialogShow}
         handleClose={() => setIsDialogShow(false)}
+        handleParams={(param) => setRoomsParams({ ...roomsParams, ...param })}
       ></FilterDialog>
     </Box>
   );
