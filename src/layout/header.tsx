@@ -4,7 +4,7 @@ import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import { useState } from 'react';
 
 interface IProps {
-  handleKeyword: (keyword: string) => void;
+  handleKeyword?: (keyword: string) => void;
 }
 
 export default function Header(props: IProps) {
@@ -47,7 +47,9 @@ export default function Header(props: IProps) {
                   <SearchIcon
                     sx={{ cursor: 'pointer' }}
                     onClick={() => {
-                      props.handleKeyword(keyword);
+                      props.handleKeyword
+                        ? props.handleKeyword(keyword)
+                        : console.log(keyword)
                     }}
                   />
                 </InputAdornment>
