@@ -46,6 +46,8 @@ export interface IRoomsParams {
   page?: number;
   page_size?: number;
   order_direction?: EOrderDirection;
+  name?: string;
+  address?: string;
   type?: ERoomType;
   area_from?: number;
   area_to?: number;

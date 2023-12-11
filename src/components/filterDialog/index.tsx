@@ -85,7 +85,7 @@ const minDistanceRange = 1;
 const minPrice = 0;
 const maxPrice = 10000000;
 const minDistance = 0;
-const maxDistance = 50;
+const maxDistance = 8;
 
 export default function FilterDialog(props: Readonly<IProps>) {
   const [prices, setPrices] = useState<number[]>([minPrice, maxPrice]);
@@ -177,6 +177,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
   };
 
   const handleSubmit = () => {
+    props.handleClose();
     props.handleParams({
       distance_to_school_from: distances[0],
       distance_to_school_to: distances[1],
@@ -249,6 +250,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 }
                 type='number'
                 value={prices[0]}
+                disabled
               />
             </Box>
             <Box sx={{ marginX: 1 }}>
@@ -259,6 +261,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 }
                 type='number'
                 value={prices[1]}
+                disabled
               />
             </Box>
           </Box>
@@ -313,6 +316,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 }
                 type='number'
                 value={distances[0]}
+                disabled
               />
             </Box>
             <Box sx={{ marginX: 1 }}>
@@ -323,6 +327,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 }
                 type='number'
                 value={distances[1]}
+                disabled
               />
             </Box>
           </Box>
@@ -590,6 +595,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={advances.wifi_internet}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
@@ -606,6 +612,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={advances.air_conditioner}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
@@ -622,6 +629,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={advances.water_heater}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
@@ -638,6 +646,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={advances.refrigator}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
@@ -654,6 +663,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={advances.washing_machine}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,

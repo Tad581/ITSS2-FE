@@ -1,8 +1,11 @@
 import { Box } from '@mui/material';
 import Header from '../../layout/header';
 import ItemPagination from '../../components/paginationItem/searchPagination';
+import { useState } from 'react';
 
 export default function Home() {
+  const [keyword, setKeyword] = useState('');
+
   return (
     <Box
       sx={{
@@ -12,8 +15,8 @@ export default function Home() {
         backgroundColor: '#F5F5F5',
       }}
     >
-      <Header />
-      <ItemPagination />
+      <Header handleKeyword={(keyword: string) => setKeyword(keyword)} />
+      <ItemPagination keyword={keyword}/>
     </Box>
   );
 }

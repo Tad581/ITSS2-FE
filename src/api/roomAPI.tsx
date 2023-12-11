@@ -12,6 +12,8 @@ export const RoomAPI = {
         order_direction: params?.order_direction
           ? params?.order_direction
           : EOrderDirection.DESC,
+        name: params?.name,
+        address: params?.address,
         type: params?.type,
         area_from: params?.area_from,
         area_to: params?.area_to,

@@ -1,8 +1,15 @@
 import { Box, TextField, InputAdornment, Button, Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import { useState } from 'react';
 
-export default function Header() {
+interface IProps {
+  handleKeyword: (keyword: string) => void;
+}
+
+export default function Header(props: IProps) {
+  const [keyword, setKeyword] = useState<string>('');
+
   return (
     <Box sx={{ backgroundColor: '#fff', width: '100%' }}>
       <Box
@@ -31,10 +38,18 @@ export default function Header() {
             sx={{ width: '100%', height: 40 }}
             variant='outlined'
             size='small'
+            onChange={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setKeyword(event.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
-                  <SearchIcon sx={{cursor: 'pointer'}}/>
+                  <SearchIcon
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      props.handleKeyword(keyword);
+                    }}
+                  />
                 </InputAdornment>
               ),
             }}

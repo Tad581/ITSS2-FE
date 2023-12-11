@@ -6,9 +6,13 @@ import Filterbar from '../../layout/filterbar';
 import { RoomAPI } from '../../api/roomAPI';
 import { IRoom, IRoomsParams, EOrderDirection } from '../../interfaces/room';
 
+interface IProps {
+  keyword: string;
+}
+
 const pageSize = 8;
 
-export default function ItemPagination() {
+export default function ItemPagination(props: IProps) {
   const [showData, setShowData] = useState<IRoom[]>([]);
   const [isDialogShow, setIsDialogShow] = useState<boolean>(false);
   const [pagination, setPagination] = useState({
@@ -22,17 +26,6 @@ export default function ItemPagination() {
     order_direction: EOrderDirection.DESC,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await RoomAPI.getAll();
-      if (response) {
-        setShowData(response.data);
-        setPagination(response.pagination);
-      }
-    };
-    fetchData().catch((error) => console.log(error));
-  }, []);
-
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     page: number
@@ -44,6 +37,28 @@ export default function ItemPagination() {
   const handleDialogToggle = () => {
     setIsDialogShow((isDialogShow) => !isDialogShow);
   };
+
+  useEffect(() => {
+    if (props.keyword && props.keyword !== '') {
+      setRoomsParams({ ...roomsParams, address: props.keyword });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.keyword]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await RoomAPI.getAll(roomsParams);
+      console.log(
+        '🚀 ~ file: searchPagination.tsx:41 ~ fetchData ~ roomsParams:',
+        roomsParams
+      );
+      if (response) {
+        setShowData(response.data);
+        setPagination(response.pagination);
+      }
+    };
+    fetchData().catch((error) => console.log(error));
+  }, [roomsParams]);
 
   return (
     <Box>
@@ -82,7 +97,9 @@ export default function ItemPagination() {
               </Grid>
             ))
           ) : (
-            <Typography mt={10}>Không có dữ liệu</Typography>
+            <Typography mt={10} mx='auto' textAlign='center'>
+              Không có dữ liệu
+            </Typography>
           )}
         </Grid>
         {Math.ceil(pagination.total / pageSize) <= 1 ? (
