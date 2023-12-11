@@ -1,9 +1,10 @@
-import { Avatar, Box, Button, Container, Divider, Grid, ImageList, ImageListItem, Rating, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, Container, Divider, Grid, ImageList, ImageListItem, Rating, Typography } from "@mui/material";
 import Header from "../../layout/header";
 import Star from '@mui/icons-material/Star';
 import Home from '@mui/icons-material/HomeOutlined';
 import { Collapse } from '@mui/material';
-
+import { AspectRatio } from "@mui/icons-material";
+import ImageIcon from '@mui/icons-material/Image';
 
 function Item(props: any) {
   const Icon = props.icon
@@ -38,6 +39,36 @@ function Comment() {
         <Typography variant="subtitle1">Chủ nhà đẹp trai, dễ thương, cảm ơn ""</Typography>
       </Box>
     </Box>
+  )
+}
+
+function HomeCard() {
+  return (
+    <Card
+      variant="outlined"
+      sx={{ minWidth: 300, width: 300, height: 300, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 2, border: 'none' }}>
+      {/* <AspectRatio> */}
+      {/* <div>
+          <ImageIcon sx={{ fontSize: '3rem', opacity: 0.2}} />
+        </div> */}
+      <Box
+        component="img"
+        sx={{
+          height: 300,
+          width: 300,
+          // maxHeight: { xs: 300, md: 167 },
+          // maxWidth: { xs: 300, md: 250 },
+          marginBottom: 1
+        }}
+        alt="The house from the offer."
+        src="https://img.freepik.com/free-photo/blue-house-with-blue-roof-sky-background_1340-25953.jpg"
+      />
+      {/* </AspectRatio> */}
+      <div>
+        <Typography variant="body2">Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây</Typography>
+        <Typography variant="subtitle1">Cách ĐHBKHN 300m</Typography>
+      </div>
+    </Card>
   )
 }
 
@@ -198,13 +229,11 @@ export default function Detail() {
                 allowFullScreen
                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB-3JYr1Tq8LJ2eY9JYR7Xr2eG5J2q9J5c&q=Space+Needle,Seattle+WA"
               />
-              </Box>
+            </Box>
 
-              <Divider />
+            <Divider />
 
-              <Typography variant="h4" component="h4" marginTop={4}>
-                Phòng khác của chủ nhà:
-              </Typography>
+            {/*  */}
           </Box>
 
           {/* Avatar */}
@@ -235,6 +264,33 @@ export default function Detail() {
 
         <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", marginTop: 4, marginX: "auto", maxWidth: 1000 }}>
 
+
+
+            {/* Other room */}
+            <Typography variant="h4" component="h4" marginTop={4}>
+              Phòng khác của chủ nhà:
+            </Typography>
+
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                py: 1,
+                overflow: 'auto',
+                width: 1000,
+                scrollSnapType: 'x mandatory',
+                '& > *': {
+                  scrollSnapAlign: 'center',
+                },
+                '::-webkit-scrollbar': { display: 'none' },
+              }}
+            >
+              <HomeCard></HomeCard>
+              <HomeCard></HomeCard>
+              <HomeCard></HomeCard>
+              <HomeCard></HomeCard>
+              <HomeCard></HomeCard>
+            </Box>
 
         </Box>
         {/*  */}
