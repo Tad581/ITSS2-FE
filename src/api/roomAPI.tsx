@@ -34,16 +34,40 @@ export const RoomAPI = {
         enclosed_toilet: params?.enclosed_toilet,
         safed_device: params?.safed_device,
       },
-        paramsSerializer: (params) => {
-          return qs.stringify(params, { arrayFormat: 'repeat' });
+      paramsSerializer: (params) => {
+        return qs.stringify(params, { arrayFormat: 'repeat' });
       },
-    })
+    });
     return response.data;
   },
-  getOne: async function name(id: string) {
+  getOne: async function (id: number) {
     const response = await api.request({
       url: '/room/' + id,
       method: 'GET',
+    });
+    return response.data;
+  },
+  getOwnerRooms: async function (params: {
+    owner_id: number;
+    page?: number;
+    page_size?: number;
+    order_direction?: string;
+  }) {
+    const response = await api.request({
+      url: '/room/owner/' + params.owner_id,
+      method: 'GET',
+      params: {
+        page: params?.page,
+        page_size: params?.page_size,
+        order_direction: params?.order_direction,
+      },
+    });
+    return response.data;
+  },
+  deleteRoom: async function (params: { id: number }) {
+    const response = await api.request({
+      url: '/room/' + params.id,
+      method: 'DELETE',
     });
     return response.data;
   },

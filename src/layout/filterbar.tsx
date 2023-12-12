@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import CustomCheckbox from '../components/filterDialog/customCheckbox';
+import CustomCheckbox from '../components/dialog/filter/customCheckbox';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';

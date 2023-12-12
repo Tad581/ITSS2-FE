@@ -34,21 +34,22 @@ export default function CardItem(props: IProps) {
         }}
       />
       <Box sx={{ width: '100%' }}>
-        <Typography
-          sx={{
-            fontSize: '22px',
-            fontWeight: 700,
-            marginY: 1,
-            width: '100%',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          <Link href={"/detail/"+props.id}>
+        <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
+          <Typography
+            sx={{
+              fontSize: '22px',
+              fontWeight: 700,
+              marginY: 1,
+              width: '100%',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              color: '#000',
+            }}
+          >
             {props.name}
-          </Link>
-        </Typography>
+          </Typography>
+        </Link>
         <Typography
           sx={{
             fontSize: '16px',

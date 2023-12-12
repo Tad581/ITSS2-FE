@@ -1,7 +1,7 @@
 import { Box, Pagination, Typography, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import CardItem from '../cardItem/search';
-import FilterDialog from '../filterDialog';
+import FilterDialog from '../dialog/filter';
 import Filterbar from '../../layout/filterbar';
 import { RoomAPI } from '../../api/roomAPI';
 import { IRoom, IRoomsParams, EOrderDirection } from '../../interfaces/room';
@@ -49,10 +49,6 @@ export default function ItemPagination(props: IProps) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await RoomAPI.getAll(roomsParams);
-      console.log(
-        '🚀 ~ file: searchPagination.tsx:52 ~ fetchData ~ roomsParams:',
-        roomsParams
-      );
       if (response) {
         setShowData(response.data);
         setPagination(response.pagination);

@@ -1,8 +1,19 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import ConfirmDialog from '../dialog/confirm';
+interface IProps {
+  id: number;
+  name: string;
+  area: number;
+  price: number;
+  image_url: string;
+}
 
-export default function createdRooms() {
+export default function CreatedRooms(props: IProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   return (
     <Box
       sx={{
@@ -16,7 +27,11 @@ export default function createdRooms() {
     >
       <Box
         component='img'
-        src='https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
+        src={
+          props.image_url
+            ? props.image_url
+            : 'https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
+        }
         sx={{
           maxWidth: '10%',
           objectFit: 'cover',
@@ -35,18 +50,43 @@ export default function createdRooms() {
           marginLeft: 5,
         }}
       >
-        <Typography sx={{ fontSize: 16, fontWeight: 700 }}>
-          Chung cư cao cấp khu Hai Bà Trưng
-        </Typography>
-        <Typography sx={{ fontSize: 16, fontWeight: 400 }}>40 m²</Typography>
+        <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
+          <Typography
+            sx={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: '#000',
+            }}
+          >
+            {props.name}
+          </Typography>
+        </Link>
         <Typography sx={{ fontSize: 16, fontWeight: 400 }}>
-          5.000.000 VNĐ/tháng
+          {props.area} m²
+        </Typography>
+        <Typography sx={{ fontSize: 16, fontWeight: 400 }}>
+          {props.price} VNĐ/tháng
         </Typography>
       </Box>
       <Box sx={{ marginRight: 8 }}>
-        <EditOutlinedIcon sx={{ color: '#000', fontSize: 30, marginRight: 3 }} />
-        <DeleteIcon sx={{ color: '#ff0000', fontSize: 30 }} />
+        <EditOutlinedIcon
+          sx={{
+            color: '#000',
+            fontSize: 30,
+            marginRight: 3,
+            cursor: 'pointer',
+          }}
+        />
+        <DeleteIcon
+          sx={{ color: '#ff0000', fontSize: 30, cursor: 'pointer' }}
+          onClick={() => setIsOpen(true)}
+        />
       </Box>
+      <ConfirmDialog
+        handleClose={() => setIsOpen(false)}
+        open={isOpen}
+        room_id={props.id}
+      />
     </Box>
   );
 }

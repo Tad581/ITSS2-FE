@@ -1,4 +1,11 @@
-import { Box, TextField, InputAdornment, Button, Avatar } from '@mui/material';
+import {
+  Box,
+  TextField,
+  InputAdornment,
+  Button,
+  Avatar,
+  Link,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import { useState } from 'react';
@@ -22,17 +29,20 @@ export default function Header(props: IProps) {
           alignItems: 'center',
         }}
       >
-        <Box
-          component='img'
-          sx={{
-            maxHeight: 45,
-            maxWidth: 100,
-            marginRight: 5,
-            objectFit: 'cover',
-          }}
-          alt='logo'
-          src='/logo.png'
-        />
+        <Link href='/'>
+          <Box
+            component='img'
+            sx={{
+              maxHeight: 45,
+              maxWidth: 100,
+              marginRight: 5,
+              objectFit: 'cover',
+              cursor: 'pointer',
+            }}
+            alt='logo'
+            src='/logo.png'
+          />
+        </Link>
         <Box sx={{ flexGrow: 1 }}>
           <TextField
             sx={{ width: '100%', height: 40 }}
@@ -49,7 +59,7 @@ export default function Header(props: IProps) {
                     onClick={() => {
                       props.handleKeyword
                         ? props.handleKeyword(keyword)
-                        : console.log(keyword)
+                        : console.log(keyword);
                     }}
                   />
                 </InputAdornment>
@@ -79,7 +89,9 @@ export default function Header(props: IProps) {
           >
             Đăng tin
           </Button>
-          <Avatar alt='avatar' src='/avatar.png' />
+          <Link href='/created-rooms'>
+            <Avatar alt='avatar' src='/avatar.png' sx={{ cursor: 'pointer' }} />
+          </Link>
         </Box>
       </Box>
     </Box>
