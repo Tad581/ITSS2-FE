@@ -40,6 +40,7 @@ RoomInfoGrid.defaultProps = {
   roomArea: 35
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Item(props: any) {
   const Icon = props.icon
   return (

@@ -1,6 +1,5 @@
-import { Avatar, Box, Button, Card, Container, Divider, Grid, ImageList, ImageListItem, Rating, Typography } from "@mui/material";
+import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import Header from "../../layout/header";
-import Star from '@mui/icons-material/Star';
 import { Collapse } from '@mui/material';
 import QuiltedImageList from "../../components/gallery/QuiltedImageList";
 import RoomHeader from "../../components/detail/roomHeader";
@@ -87,7 +86,7 @@ export default function Detail() {
             <Typography variant="h4" component="h4" marginTop={4}>
               Chi tiết chỗ ở:
             </Typography>
-            <Collapse in={open} timeout="auto"
+            <Collapse in={true} timeout="auto"
               unmountOnExit>
 
               <Typography>Thông tin cá nhân</Typography>
