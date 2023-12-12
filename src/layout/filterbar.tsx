@@ -128,6 +128,7 @@ export default function Filterbar(props: Readonly<IProps>) {
             />
           )}
         </Box>
+
         <Box onClick={() => handlePickTypes('homestay')}>
           {types.homestay ? (
             <CustomCheckbox
