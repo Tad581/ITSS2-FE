@@ -1,17 +1,11 @@
-
-import { experimentalStyled as styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Home from '@mui/icons-material/HomeOutlined';
+import React, { useMemo } from 'react';
+import {Box, Paper, Grid, Typography} from '@mui/material';
 import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined';
 import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
 import HeatPumpOutlinedIcon from '@mui/icons-material/HeatPumpOutlined';
 import KitchenOutlinedIcon from '@mui/icons-material/KitchenOutlined';
 import LocalLaundryServiceOutlinedIcon from '@mui/icons-material/LocalLaundryServiceOutlined';
 import WhatshotOutlinedIcon from '@mui/icons-material/WhatshotOutlined';
-import { Typography } from '@mui/material';
-import { useMemo } from 'react';
-import Box from '@mui/material/Box';
 
 
 type RoomInfoGridProps = {
@@ -28,12 +22,12 @@ export default function RoomAttribute(props: RoomInfoGridProps) {
 
   const items = useMemo(() => {
     const _items = []
-    if (haveWifi) _items.push(<Item icon={WifiOutlinedIcon}>Wifi</Item>)
-    if (haveHeater) _items.push(<Item icon={WaterDropOutlinedIcon}>Nóng lạnh</Item>)
-    if (haveAirConditioner) _items.push(<Item icon={HeatPumpOutlinedIcon}>Điều hòa</Item>)
-    if (haveFridge) _items.push(<Item icon={KitchenOutlinedIcon}>Tủ lạnh</Item>)
-    if (haveWashingMachine) _items.push(<Item icon={LocalLaundryServiceOutlinedIcon}>Máy giặt</Item>)
-    if (havePCCC) _items.push(<Item icon={WhatshotOutlinedIcon}>PCCC</Item>)
+    if (haveWifi) _items.push(<Item key={_items.length} icon={WifiOutlinedIcon}>Wifi</Item>)
+    if (haveHeater) _items.push(<Item key={_items.length} icon={WaterDropOutlinedIcon}>Nóng lạnh</Item>)
+    if (haveAirConditioner) _items.push(<Item key={_items.length} icon={HeatPumpOutlinedIcon}>Điều hòa</Item>)
+    if (haveFridge) _items.push(<Item key={_items.length} icon={KitchenOutlinedIcon}>Tủ lạnh</Item>)
+    if (haveWashingMachine) _items.push(<Item key={_items.length} icon={LocalLaundryServiceOutlinedIcon}>Máy giặt</Item>)
+    if (havePCCC) _items.push(<Item key={_items.length} icon={WhatshotOutlinedIcon}>PCCC</Item>)
     return _items;
   }, [haveWifi, haveHeater, haveAirConditioner, haveFridge, haveWashingMachine, havePCCC]);
 
