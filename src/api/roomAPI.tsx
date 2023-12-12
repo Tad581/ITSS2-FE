@@ -42,7 +42,7 @@ export const RoomAPI = {
   },
   getOne: async function name(id: string) {
     const response = await api.request({
-      url: '/rooms/' + id,
+      url: '/room/' + id,
       method: 'GET',
     });
     return response.data;

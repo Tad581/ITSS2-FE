@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import Link from '@mui/material/Link';
 
 interface IProps {
   id: number;
@@ -44,7 +45,9 @@ export default function CardItem(props: IProps) {
             textOverflow: 'ellipsis',
           }}
         >
-          {props.name}
+          <Link href={"/detail/"+props.id}>
+            {props.name}
+          </Link>
         </Typography>
         <Typography
           sx={{
