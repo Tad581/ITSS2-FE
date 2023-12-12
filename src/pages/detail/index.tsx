@@ -21,7 +21,7 @@ export default function Detail() {
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
-      const response = await RoomAPI.getOne(id)
+      const response = await RoomAPI.getOne(parseInt(id))
       if (response && response.success) {
         setRoomData(response.data)
         console.log(response.data)
