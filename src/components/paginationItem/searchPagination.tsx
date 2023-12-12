@@ -32,6 +32,7 @@ export default function ItemPagination(props: IProps) {
   ) => {
     console.log(event);
     setPagination({ ...pagination, page: page });
+    setRoomsParams({ ...roomsParams, page: page });
   };
 
   const handleDialogToggle = () => {
@@ -49,7 +50,7 @@ export default function ItemPagination(props: IProps) {
     const fetchData = async () => {
       const response = await RoomAPI.getAll(roomsParams);
       console.log(
-        '🚀 ~ file: searchPagination.tsx:41 ~ fetchData ~ roomsParams:',
+        '🚀 ~ file: searchPagination.tsx:52 ~ fetchData ~ roomsParams:',
         roomsParams
       );
       if (response) {
@@ -62,7 +63,10 @@ export default function ItemPagination(props: IProps) {
 
   return (
     <Box>
-      <Filterbar handleDialogToggle={handleDialogToggle} />
+      <Filterbar
+        handleDialogToggle={handleDialogToggle}
+        handleParams={(param) => setRoomsParams({ ...roomsParams, ...param })}
+      />
       <Box
         sx={{
           display: 'flex',

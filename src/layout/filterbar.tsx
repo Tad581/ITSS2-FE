@@ -1,13 +1,59 @@
 import { Box, Typography } from '@mui/material';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-
+import CustomCheckbox from '../components/filterDialog/customCheckbox';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import { useState, useEffect } from 'react';
 interface IProps {
   handleDialogToggle: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleParams: (param: any) => void;
 }
 
 export default function Filterbar(props: Readonly<IProps>) {
+  const [types, setTypes] = useState<{
+    house: boolean;
+    apartment: boolean;
+    homestay: boolean;
+  }>({ house: false, apartment: false, homestay: false });
+
+  const handlePickTypes = (value: string) => {
+    if (value === 'house') {
+      setTypes({ ...types, house: !types.house });
+    } else if (value === 'apartment') {
+      setTypes({ ...types, apartment: !types.apartment });
+    } else if (value === 'homestay') {
+      setTypes({ ...types, homestay: !types.homestay });
+    }
+  };
+
+  useEffect(() => {
+    const typesArray: string[] = [];
+    if (types.house) {
+      typesArray.push('PHONG_TRO');
+    }
+    if (types.apartment) {
+      typesArray.push('CHUNG_CU_MINI');
+    }
+    if (types.homestay) {
+      typesArray.push('HOME_STAY');
+    }
+
+    if (typesArray.length === 3) {
+      typesArray.pop();
+      typesArray.pop();
+      typesArray.pop();
+    }
+
+    props.handleParams({
+      type: typesArray,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [types]);
+
   return (
-    <Box component='div' sx={{ marginTop: 2 }}>
+    <Box component='div' sx={{ marginTop: 3 }}>
       <Box
         component='div'
         sx={{
@@ -18,90 +64,105 @@ export default function Filterbar(props: Readonly<IProps>) {
           position: 'relative',
         }}
       >
-        <Box
-          component='div'
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginX: 3,
-            cursor: 'pointer',
-          }}
-        >
-          <Box
-            component='img'
-            src='/icons/house.png'
-            sx={{ height: 40, width: 'auto' }}
-          />
-          <Typography
-            component='p'
-            sx={{
-              fontWeight: 700,
-              fontSize: '22px',
-              lineHeight: '30.26px',
-              color: 'gray',
-            }}
-          >
-            Nhà trọ
-          </Typography>
+        <Box onClick={() => handlePickTypes('house')}>
+          {types.house ? (
+            <CustomCheckbox
+              icon={<HomeOutlinedIcon sx={{ fontSize: 40, color: '#fff' }} />}
+              title='Nhà trọ'
+              borderRadius={5}
+              borderStyle='solid'
+              borderWidth={1}
+              height={50}
+              backgroundColor='#1976d2'
+              color='#fff'
+              fontSize='22px'
+              fontWeight='700'
+              paddingX={4}
+              paddingY={2}
+            />
+          ) : (
+            <CustomCheckbox
+              icon={<HomeOutlinedIcon sx={{ fontSize: 40, color: 'gray' }} />}
+              title='Nhà trọ'
+              backgroundColor='transparent'
+              color='gray'
+              fontSize='22px'
+              fontWeight='700'
+              height={50}
+              paddingX={4}
+              paddingY={2}
+            />
+          )}
         </Box>
-        <Box
-          component='div'
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginX: 3,
-            cursor: 'pointer',
-          }}
-        >
-          <Box
-            component='img'
-            src='/icons/apart.png'
-            sx={{ height: 40, width: 'auto' }}
-          />
-          <Typography
-            component='p'
-            sx={{
-              fontWeight: 700,
-              fontSize: '22px',
-              lineHeight: '30.26px',
-              color: 'gray',
-            }}
-          >
-            Chung cư
-          </Typography>
+        <Box onClick={() => handlePickTypes('apartment')}>
+          {types.apartment ? (
+            <CustomCheckbox
+              icon={
+                <ApartmentOutlinedIcon sx={{ fontSize: 40, color: '#fff' }} />
+              }
+              title='Chung cư mini'
+              borderRadius={5}
+              borderStyle='solid'
+              borderWidth={1}
+              height={50}
+              backgroundColor='#1976d2'
+              color='#fff'
+              fontSize='22px'
+              fontWeight='700'
+              paddingX={4}
+              paddingY={2}
+            />
+          ) : (
+            <CustomCheckbox
+              icon={
+                <ApartmentOutlinedIcon sx={{ fontSize: 40, color: 'gray' }} />
+              }
+              title='Chung cư mini'
+              backgroundColor='transparent'
+              color='gray'
+              fontSize='22px'
+              fontWeight='700'
+              height={50}
+              paddingX={4}
+              paddingY={2}
+            />
+          )}
         </Box>
-        <Box
-          component='div'
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginX: 3,
-            cursor: 'pointer',
-          }}
-        >
-          <Box
-            component='img'
-            src='/icons/homestay.png'
-            sx={{ height: 40, width: 'auto' }}
-          />
-          <Typography
-            component='p'
-            sx={{
-              fontWeight: 700,
-              fontSize: '22px',
-              lineHeight: '30.26px',
-              color: 'gray',
-            }}
-          >
-            HomeStay
-          </Typography>
+        <Box onClick={() => handlePickTypes('homestay')}>
+          {types.homestay ? (
+            <CustomCheckbox
+              icon={
+                <HomeWorkOutlinedIcon sx={{ fontSize: 40, color: '#fff' }} />
+              }
+              title='Homestay'
+              borderRadius={5}
+              borderStyle='solid'
+              borderWidth={1}
+              height={50}
+              backgroundColor='#1976d2'
+              color='#fff'
+              fontSize='22px'
+              fontWeight='700'
+              paddingX={4}
+              paddingY={2}
+            />
+          ) : (
+            <CustomCheckbox
+              icon={
+                <HomeWorkOutlinedIcon sx={{ fontSize: 40, color: 'gray' }} />
+              }
+              title='Homestay'
+              backgroundColor='transparent'
+              color='gray'
+              fontSize='22px'
+              fontWeight='700'
+              height={50}
+              paddingX={4}
+              paddingY={2}
+            />
+          )}
         </Box>
+
         <Box
           sx={{
             backgroundColor: '#DCDCDC',
@@ -115,7 +176,6 @@ export default function Filterbar(props: Readonly<IProps>) {
             flexDirection: 'row',
             borderRadius: 10,
             position: 'absolute',
-            top: '10%',
             right: '10%',
             cursor: 'pointer',
           }}

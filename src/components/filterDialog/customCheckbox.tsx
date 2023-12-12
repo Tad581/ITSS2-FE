@@ -5,8 +5,14 @@ interface IProps {
   title: string;
   backgroundColor: string;
   color: string;
-  // handleAction: (params: string | number) => void;
-  // params: string | number;
+  fontSize: string;
+  fontWeight: string;
+  height: number;
+  borderRadius?: number;
+  borderStyle?: string;
+  borderWidth?: number;
+  paddingX? : number;
+  paddingY? : number;
 }
 
 export default function CustomCheckbox(props: Readonly<IProps>) {
@@ -18,23 +24,23 @@ export default function CustomCheckbox(props: Readonly<IProps>) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingY: 1,
         cursor: 'pointer',
         backgroundColor: props.backgroundColor,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderStyle: 'solid',
+        borderRadius: props.borderRadius,
+        borderWidth: props.borderWidth,
+        borderStyle: props.borderStyle,
         borderColor: props.color,
-        height: 50,
+        height: props.height,
+        paddingX: props.paddingX,
+        paddingY: props.paddingY,
       }}
     >
       {props.icon}
       <Typography
         component='p'
         sx={{
-          fontWeight: 700,
-          fontSize: '16px',
-          lineHeight: '30.26px',
+          fontWeight: props.fontWeight,
+          fontSize: props.fontSize,
           color: props.color,
         }}
       >

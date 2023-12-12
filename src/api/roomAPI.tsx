@@ -1,5 +1,6 @@
 import { api } from './configs/axiosConfigs';
 import { IRoomsParams, EOrderDirection } from '../interfaces/room';
+import * as qs from 'qs';
 
 export const RoomAPI = {
   getAll: async function (params?: IRoomsParams) {
@@ -28,12 +29,15 @@ export const RoomAPI = {
         wifi_internet: params?.wifi_internet,
         air_conditioner: params?.air_conditioner,
         water_heater: params?.water_heater,
-        refrigator: params?.refrigator,
+        refrigerator: params?.refrigerator,
         washing_machine: params?.washing_machine,
         enclosed_toilet: params?.enclosed_toilet,
         safed_device: params?.safed_device,
       },
-    });
+        paramsSerializer: (params) => {
+          return qs.stringify(params, { arrayFormat: 'repeat' });
+      },
+    })
     return response.data;
   },
   getOne: async function name(id: string) {

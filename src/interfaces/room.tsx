@@ -62,7 +62,7 @@ export interface IRoomsParams {
   wifi_internet?: boolean;
   air_conditioner?: boolean;
   water_heater?: boolean;
-  refrigator?: boolean;
+  refrigerator?: boolean;
   washing_machine?: boolean;
   enclosed_toilet?: boolean;
   safed_device?: boolean;

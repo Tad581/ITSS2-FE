@@ -80,12 +80,19 @@ function valuetextDistance(value: number) {
   return `${value} km`;
 }
 
+function valuetextArea(value: number) {
+  return `${value} m²`;
+}
+
 const minPriceRange = 500000;
 const minDistanceRange = 1;
+const minAreaRange = 1;
 const minPrice = 0;
 const maxPrice = 10000000;
 const minDistance = 0;
 const maxDistance = 8;
+const minArea = 0;
+const maxArea = 100;
 
 export default function FilterDialog(props: Readonly<IProps>) {
   const [prices, setPrices] = useState<number[]>([minPrice, maxPrice]);
@@ -93,11 +100,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
     minDistance,
     maxDistance,
   ]);
-  const [areas, setAreas] = useState<{
-    small: boolean;
-    medium: boolean;
-    large: boolean;
-  }>({ small: false, medium: false, large: false });
+  const [areas, setAreas] = useState<number[]>([minArea, maxArea]);
 
   const [types, setTypes] = useState<{
     house: boolean;
@@ -109,22 +112,12 @@ export default function FilterDialog(props: Readonly<IProps>) {
     wifi_internet: false,
     air_conditioner: false,
     water_heater: false,
-    refrigator: false,
+    refrigerator: false,
     washing_machine: false,
   });
 
   const [electronicPrice, setElectronicPrice] = useState<number[]>([0, 0]);
   const [waterPrice, setWaterPrice] = useState<number[]>([0, 0]);
-
-  const handlePickAreas = (value: number) => {
-    if (value === 0) {
-      setAreas({ ...areas, small: !areas.small });
-    } else if (value === 1) {
-      setAreas({ ...areas, medium: !areas.medium });
-    } else if (value === 2) {
-      setAreas({ ...areas, large: !areas.large });
-    }
-  };
 
   const handlePickTypes = (value: string) => {
     if (value === 'house') {
@@ -176,9 +169,45 @@ export default function FilterDialog(props: Readonly<IProps>) {
     }
   };
 
+  const handleChangeArea = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number
+  ) => {
+    console.log('🚀 ~ file: index.tsx:83 ~ FilterDialog ~ event:', event);
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setAreas([Math.min(newValue[0], areas[1] - minAreaRange), areas[1]]);
+    } else {
+      setAreas([areas[0], Math.max(newValue[1], areas[0] + minAreaRange)]);
+    }
+  };
+
   const handleSubmit = () => {
-    props.handleClose();
+    const typesArray: string[] = [];
+    if (types.house) {
+      typesArray.push('PHONG_TRO');
+    }
+    if (types.apartment) {
+      typesArray.push('CHUNG_CU_MINI');
+    }
+    if (types.homestay) {
+      typesArray.push('HOME_STAY');
+    }
+
+    if (typesArray.length === 3) {
+      typesArray.pop();
+      typesArray.pop();
+      typesArray.pop();
+    }
+
     props.handleParams({
+      type: typesArray,
+      area_from: areas[0],
+      area_to: areas[1],
       distance_to_school_from: distances[0],
       distance_to_school_to: distances[1],
       price_from: prices[0],
@@ -190,9 +219,10 @@ export default function FilterDialog(props: Readonly<IProps>) {
       wifi_internet: advances.wifi_internet,
       air_conditioner: advances.air_conditioner,
       water_heater: advances.water_heater,
-      refrigator: advances.refrigator,
+      refrigerator: advances.refrigerator,
       washing_machine: advances.washing_machine,
     });
+    props.handleClose();
   };
 
   return (
@@ -367,90 +397,50 @@ export default function FilterDialog(props: Readonly<IProps>) {
           >
             Diện tích phòng
           </Typography>
-          <Grid
-            container
+          <Box
             sx={{
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
             }}
-            spacing={3}
           >
-            <Grid
-              item
-              xs={4}
-              sx={{ marginRight: -1 }}
-              onClick={() => handlePickAreas(0)}
-            >
-              {areas.small ? (
-                <CustomCheckbox
-                  icon={
-                    <HomeOutlinedIcon sx={{ fontSize: 25, color: '#fff' }} />
-                  }
-                  title='< 10m²'
-                  backgroundColor='#1976d2'
-                  color='#fff'
-                ></CustomCheckbox>
-              ) : (
-                <CustomCheckbox
-                  icon={
-                    <HomeOutlinedIcon sx={{ fontSize: 25, color: '#000' }} />
-                  }
-                  title='< 10m²'
-                  backgroundColor='transparent'
-                  color='#000'
-                ></CustomCheckbox>
-              )}
-            </Grid>
-            <Grid item xs={4} onClick={() => handlePickAreas(1)}>
-              {areas.medium ? (
-                <CustomCheckbox
-                  icon={
-                    <HomeOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
-                  }
-                  title='10m² - 20m²'
-                  backgroundColor='#1976d2'
-                  color='#fff'
-                ></CustomCheckbox>
-              ) : (
-                <CustomCheckbox
-                  icon={
-                    <HomeOutlinedIcon sx={{ fontSize: 30, color: '#000' }} />
-                  }
-                  title='10m² - 20m²'
-                  backgroundColor='transparent'
-                  color='#000'
-                ></CustomCheckbox>
-              )}
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              sx={{ marginLeft: -1 }}
-              onClick={() => handlePickAreas(2)}
-            >
-              {areas.large ? (
-                <CustomCheckbox
-                  icon={
-                    <HomeOutlinedIcon sx={{ fontSize: 35, color: '#fff' }} />
-                  }
-                  title='> 30m²'
-                  backgroundColor='#1976d2'
-                  color='#fff'
-                ></CustomCheckbox>
-              ) : (
-                <CustomCheckbox
-                  icon={
-                    <HomeOutlinedIcon sx={{ fontSize: 35, color: '#000' }} />
-                  }
-                  title='> 30m²'
-                  backgroundColor='transparent'
-                  color='#000'
-                ></CustomCheckbox>
-              )}
-            </Grid>
-          </Grid>
+            <Box sx={{ marginX: 1 }}>
+              <OutlinedInput
+                id='area-start'
+                endAdornment={
+                  <InputAdornment position='end'>m²</InputAdornment>
+                }
+                type='number'
+                value={areas[0]}
+                disabled
+              />
+            </Box>
+            <Box sx={{ marginX: 1 }}>
+              <OutlinedInput
+                id='area-end'
+                endAdornment={
+                  <InputAdornment position='end'>m²</InputAdornment>
+                }
+                type='number'
+                value={areas[1]}
+                disabled
+              />
+            </Box>
+          </Box>
+          <Box sx={{ width: '95%', marginX: 1, marginTop: 1 }}>
+            <Slider
+              getAriaLabel={() => 'Area range'}
+              value={areas}
+              onChange={handleChangeArea}
+              valueLabelDisplay='auto'
+              getAriaValueText={valuetextArea}
+              disableSwap
+              min={minArea}
+              step={minAreaRange}
+              max={maxArea}
+            />
+          </Box>
         </Box>
         <Box
           sx={{
@@ -498,6 +488,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
                   title='Nhà trọ'
                   backgroundColor='#1976d2'
                   color='#fff'
+                  fontSize='16px'
+                  fontWeight='500'
+                  borderRadius={5}
+                  borderStyle='solid'
+                  borderWidth={1}
+                  height={50}
+                  paddingY={1}
                 ></CustomCheckbox>
               ) : (
                 <CustomCheckbox
@@ -507,6 +504,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
                   title='Nhà trọ'
                   backgroundColor='transparent'
                   color='#000'
+                  fontSize='16px'
+                  fontWeight='500'
+                  borderRadius={5}
+                  borderStyle='solid'
+                  borderWidth={1}
+                  height={50}
+                  paddingY={1}
                 ></CustomCheckbox>
               )}
             </Grid>
@@ -521,6 +525,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
                   title='Chung cư mini'
                   backgroundColor='#1976d2'
                   color='#fff'
+                  fontSize='16px'
+                  fontWeight='500'
+                  borderRadius={5}
+                  borderStyle='solid'
+                  borderWidth={1}
+                  height={50}
+                  paddingY={1}
                 ></CustomCheckbox>
               ) : (
                 <CustomCheckbox
@@ -532,6 +543,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
                   title='Chung cư mini'
                   backgroundColor='transparent'
                   color='#000'
+                  fontSize='16px'
+                  fontWeight='500'
+                  borderRadius={5}
+                  borderStyle='solid'
+                  borderWidth={1}
+                  height={50}
+                  paddingY={1}
                 ></CustomCheckbox>
               )}
             </Grid>
@@ -551,6 +569,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
                   title='Homestay'
                   backgroundColor='#1976d2'
                   color='#fff'
+                  fontSize='16px'
+                  fontWeight='500'
+                  borderRadius={5}
+                  borderStyle='solid'
+                  borderWidth={1}
+                  height={50}
+                  paddingY={1}
                 ></CustomCheckbox>
               ) : (
                 <CustomCheckbox
@@ -562,6 +587,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
                   title='Homestay'
                   backgroundColor='transparent'
                   color='#000'
+                  fontSize='16px'
+                  fontWeight='500'
+                  borderRadius={5}
+                  borderStyle='solid'
+                  borderWidth={1}
+                  height={50}
+                  paddingY={1}
                 ></CustomCheckbox>
               )}
             </Grid>
@@ -646,11 +678,11 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={advances.refrigator}
+                      checked={advances.refrigerator}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
-                          refrigator: event.target.checked,
+                          refrigerator: event.target.checked,
                         })
                       }
                     />
