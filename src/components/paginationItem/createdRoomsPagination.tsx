@@ -5,10 +5,14 @@ import { RoomAPI } from '../../api/roomAPI';
 import { IRoom, EOrderDirection } from '../../interfaces/room';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ConfirmDialog from '../dialog/confirm';
 
 const pageSize = 5;
 
 export default function CreatedRoomsPagination() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedRoomId, setSelectedRoomId] = useState<number>();
+
   const [showData, setShowData] = useState<IRoom[]>([]);
   // For pagination
   const [pagination, setPagination] = useState({
@@ -18,7 +22,7 @@ export default function CreatedRoomsPagination() {
   });
 
   const [roomsParams, setRoomsParams] = useState({
-    owner_id: 4,
+    owner_id: 1,
     page: pagination.page,
     page_size: pageSize,
     order_direction: EOrderDirection.DESC,
@@ -33,7 +37,7 @@ export default function CreatedRoomsPagination() {
       }
     };
     fetchData().catch((error) => console.log(error));
-  }, [roomsParams]);
+  }, [roomsParams, isOpen]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -88,6 +92,10 @@ export default function CreatedRoomsPagination() {
               price={item?.price}
               area={item?.area}
               image_url={item?.room_image[0]?.image_url}
+              handleOpenDialog={() => setIsOpen(true)}
+              handleSelectedRoomId={(room_id: number) =>
+                setSelectedRoomId(room_id)
+              }
             />
           ))
         ) : (
@@ -115,6 +123,11 @@ export default function CreatedRoomsPagination() {
         draggable
         pauseOnHover
         theme='light'
+      />
+      <ConfirmDialog
+        handleClose={() => setIsOpen(false)}
+        open={isOpen}
+        room_id={selectedRoomId}
       />
     </Box>
   );

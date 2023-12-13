@@ -1,19 +1,18 @@
 import { Box, Typography, Link } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
-import ConfirmDialog from '../dialog/confirm';
+
 interface IProps {
   id: number;
   name: string;
   area: number;
   price: number;
   image_url: string;
+  handleOpenDialog: () => void;
+  handleSelectedRoomId: (room_id: number) => void;
 }
 
 export default function CreatedRooms(props: IProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <Box
       sx={{
@@ -79,14 +78,12 @@ export default function CreatedRooms(props: IProps) {
         />
         <DeleteIcon
           sx={{ color: '#ff0000', fontSize: 30, cursor: 'pointer' }}
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            props.handleOpenDialog();
+            props.handleSelectedRoomId(props.id);
+          }}
         />
       </Box>
-      <ConfirmDialog
-        handleClose={() => setIsOpen(false)}
-        open={isOpen}
-        room_id={props.id}
-      />
     </Box>
   );
 }

@@ -2,18 +2,18 @@ import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { RoomAPI } from '../../../api/roomAPI';
 import { toast } from 'react-toastify';
 
-
 interface IProps {
-  room_id: number;
+  room_id: number | undefined;
   open: boolean;
   handleClose: () => void;
 }
 
 export default function ConfirmDialog(props: IProps) {
-  const handleDelete = async (room_id: number) => {
+  const handleDelete = async (room_id: number | undefined) => {
+    if (room_id) {
       const response = await RoomAPI.deleteRoom({ id: room_id });
       if (response.success) {
-        toast.success('Bạn đã xóa phòng thành công!', {
+        toast.success(response.message, {
           position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -25,7 +25,7 @@ export default function ConfirmDialog(props: IProps) {
         });
         props.handleClose();
       } else {
-        toast.error('Bạn đã xóa phòng không thành công!', {
+        toast.error(response.message, {
           position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -36,7 +36,8 @@ export default function ConfirmDialog(props: IProps) {
           theme: 'light',
         });
       }
-    };
+    }
+  };
 
   return (
     <Dialog open={props.open} onClose={props.handleClose}>
@@ -46,11 +47,8 @@ export default function ConfirmDialog(props: IProps) {
 
       <DialogActions>
         <Button onClick={props.handleClose}>Thoát</Button>
-        <Button onClick={() => handleDelete(props.room_id)}>
-          Đồng ý
-        </Button>
+        <Button onClick={() => handleDelete(props.room_id)}>Đồng ý</Button>
       </DialogActions>
-
     </Dialog>
   );
 }
