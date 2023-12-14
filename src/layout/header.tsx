@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 interface IProps {
   handleKeyword?: (keyword: string) => void;
+  displayButton?: boolean;
 }
 
 export default function Header(props: IProps) {
@@ -73,22 +74,26 @@ export default function Header(props: IProps) {
             flexGrow: 1,
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-around',
             alignItems: 'center',
           }}
         >
           <ChatOutlinedIcon sx={{ height: 40, width: 40, marginRight: 2 }} />
-          <Button
-            variant='contained'
-            sx={{
-              marginRight: 2,
-              backgroundColor: '#21b6ae',
-              textTransform: 'none',
-              borderRadius: 2,
-            }}
-          >
-            Đăng tin
-          </Button>
+          {props.displayButton ? (
+            <Button
+              variant='contained'
+              sx={{
+                marginRight: 2,
+                backgroundColor: '#21b6ae',
+                textTransform: 'none',
+                borderRadius: 2,
+              }}
+            >
+              Đăng tin
+            </Button>
+          ) : (
+            <></>
+          )}
           <Link href='/created-rooms'>
             <Avatar alt='avatar' src='/avatar.png' sx={{ cursor: 'pointer' }} />
           </Link>

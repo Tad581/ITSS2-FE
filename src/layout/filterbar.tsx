@@ -53,7 +53,7 @@ export default function Filterbar(props: Readonly<IProps>) {
   }, [types]);
 
   return (
-    <Box component='div' sx={{ marginTop: 3 }}>
+    <Box component='div' sx={{ marginTop: 1 }}>
       <Box
         component='div'
         sx={{

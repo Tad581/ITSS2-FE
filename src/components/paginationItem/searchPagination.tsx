@@ -69,6 +69,7 @@ export default function ItemPagination(props: IProps) {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          marginTop: -4
         }}
       >
         <Grid
