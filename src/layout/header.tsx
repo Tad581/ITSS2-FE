@@ -19,7 +19,7 @@ export default function Header(props: IProps) {
   const [keyword, setKeyword] = useState<string>('');
 
   return (
-    <Box sx={{ backgroundColor: '#fff', width: '100%' }}>
+    <Box sx={{ backgroundColor: '#fff', width: '100%', borderBottom: 1, borderColor: 'gray' }}>
       <Box
         sx={{
           display: 'flex',

@@ -46,22 +46,11 @@ const quiltedSizes = [
 ];
 
 export default function QuiltedImageList({ itemData }: QuiltedImageListProps) {
-//   if (!itemData.length) {
-//     return (
-//       <ImageList
-//         sx={{
-//           width: 1000,
-//           height: 500,
-//           margin: 'auto',
-//           marginTop: 4,
-//           borderRadius: 4,
-//         }}
-//         variant='quilted'
-//         cols={4}
-//         rowHeight={248}
-//       ></ImageList>
-//     );
-//   }
+  if (!itemData.length) {
+    return (
+      <></>
+    );
+  }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const itemDataWithSizes = useMemo(() => {
@@ -82,10 +71,9 @@ export default function QuiltedImageList({ itemData }: QuiltedImageListProps) {
   return (
     <ImageList
       sx={{
-        width: 1000,
-        height: 500,
+        width: '100%',
+        height: 'auto',
         margin: 'auto',
-        marginTop: 4,
         borderRadius: 4,
       }}
       variant='quilted'

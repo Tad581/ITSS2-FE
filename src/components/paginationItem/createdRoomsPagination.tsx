@@ -22,7 +22,7 @@ export default function CreatedRoomsPagination() {
   });
 
   const [roomsParams, setRoomsParams] = useState({
-    owner_id: 1,
+    owner_id: 26,
     page: pagination.page,
     page_size: pageSize,
     order_direction: EOrderDirection.DESC,

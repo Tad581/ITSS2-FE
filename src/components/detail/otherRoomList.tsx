@@ -1,103 +1,89 @@
-import { Box, Card, Typography } from "@mui/material";
-
+import { Box, Card, Link, Typography, Grid } from '@mui/material';
+import { IRoom } from '../../interfaces/room';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 type OtherRoomListProps = {
-	roomList: RoomCardProps[];
-}
+  roomList: IRoom[];
+};
 
 export default function OtherRoomList(props: OtherRoomListProps) {
-	const { roomList } = props
+  const { roomList } = props;
 
-	return (
-		<Box
-			sx={{
-				display: 'flex',
-				gap: 1,
-				py: 1,
-				overflow: 'auto',
-				width: 1000,
-				scrollSnapType: 'x mandatory',
-				'& > *': {
-					scrollSnapAlign: 'center',
-				},
-				'::-webkit-scrollbar': { display: 'none' },
-			}}
-		>
-			{
-				roomList.map((room, index) => {
-					return (
-						<RoomCard key={index} {...room}></RoomCard>
-					)
-				})
-			}
-		</Box>
-	)
+  return (
+    <Grid
+      container
+      sx={{
+        display: 'flex',
+        py: 1,
+        width: '100%',
+      }}
+    >
+      {roomList.length > 0
+        ? roomList.length > 4
+          ? roomList.slice(0, 4).map((room) => {
+              return (
+                <Grid item sm={3} key={room.id}>
+                  <RoomCard {...room}></RoomCard>
+                </Grid>
+              );
+            })
+          : roomList.map((room) => {
+              return (
+                <Grid item sm={3} key={room.id}>
+                  <RoomCard {...room}></RoomCard>
+                </Grid>
+              );
+            })
+        : 'Không có dữ liệu'}
+    </Grid>
+  );
 }
 
-OtherRoomList.defaultProps = {
-	roomList: [
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "1km"
-		},
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "300m"
-		},
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "300m"
-		},
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "300m"
-		},
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "300m"
-		},
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "300m"
-		},
-		{
-			description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-			distance: "300m"
-		},
-	]
-}
-
-type RoomCardProps = {
-	description: string;
-	distance: string;
-}
-
-function RoomCard(props: RoomCardProps) {
-	const { description, distance } = props
-
-	return (
-		<Card
-			variant="outlined"
-			sx={{ minWidth: 300, width: 300, height: 300, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 2, border: 'none' }}>
-			<Box
-				component="img"
-				sx={{
-					height: 300,
-					width: 300,
-					marginBottom: 1
-				}}
-				alt="The house from the offer."
-				src="https://img.freepik.com/free-photo/blue-house-with-blue-roof-sky-background_1340-25953.jpg"
-			/>
-			<div>
-				<Typography variant="body2">{description}</Typography>
-				<Typography variant="subtitle1">Cách ĐHBKHN {distance}</Typography>
-			</div>
-		</Card>
-	)
-}
-
-RoomCard.defaultProps = {
-	description: "Chung cư mini cao cấp tại Hà Nội, gần khu vực Bách Kinh Xây",
-	distance: "Cách ĐHBKHN 300m"
+function RoomCard(props: IRoom) {
+  return (
+    <Card
+      variant='outlined'
+      sx={{
+        border: 'none',
+        marginX: 1,
+      }}
+    >
+      <Box
+        component='img'
+        sx={{
+          width: '100%',
+          height: 200,
+          marginBottom: 1,
+          objectFit: 'cover',
+        }}
+        alt='The house from the offer.'
+        src={props.room_image[0]?.image_url}
+      />
+      <Box>
+        <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
+          <Typography
+            variant='body2'
+            sx={{
+              color: '#000',
+              fontSize: 16,
+              width: '100%',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {props.name}
+          </Typography>
+        </Link>
+        <Typography>{props.price}/tháng</Typography>
+        <Typography
+          variant='subtitle1'
+          sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}
+        >
+          <MyLocationIcon sx={{ marginRight: 1, color: 'green' }} /> Cách ĐHBKHN{' '}
+          {props.distance_to_school}km
+        </Typography>
+      </Box>
+    </Card>
+  );
 }

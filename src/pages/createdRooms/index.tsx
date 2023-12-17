@@ -11,7 +11,7 @@ export default function CreatedRooms() {
         backgroundColor: '#F5F5F5',
       }}
     >
-      <Header />
+      <Header displayButton={true} />
       <CreatedRoomsPagination />
     </Box>
   );
