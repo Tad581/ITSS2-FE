@@ -140,6 +140,7 @@ export default function Detail() {
                 Nhận xét mới nhất:
               </Typography>
               <RatingMessageList
+                room_id={roomData?.id}
                 reviewCount={reviewCount}
                 rating={rating}
                 messages={roomData?.review}
@@ -152,7 +153,12 @@ export default function Detail() {
               <Typography variant='h4' component='h4'>
                 Chi tiết chỗ ở:
               </Typography>
-              <Collapse in={true} timeout='auto' unmountOnExit sx={{marginTop: 2}}>
+              <Collapse
+                in={true}
+                timeout='auto'
+                unmountOnExit
+                sx={{ marginTop: 2 }}
+              >
                 <Typography>{roomData?.room_attribute?.description}</Typography>
               </Collapse>
             </Box>

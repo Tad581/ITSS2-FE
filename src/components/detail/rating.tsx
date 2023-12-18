@@ -5,11 +5,14 @@ import {
   Rating,
   Typography,
   Pagination,
+  Button,
+  Grid,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { IReview } from '../../interfaces/room';
-
+import MakeReview from '../dialog/review';
 interface IProps {
+  room_id?: number;
   rating: number;
   reviewCount: number;
   messages?: IReview[];
@@ -18,6 +21,8 @@ interface IProps {
 const pageSize = 2;
 
 export default function RatingMessageList(props: IProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const [showData, setShowData] = useState<IReview[]>([]);
   const [pagination, setPagination] = useState({
     count: 0,
@@ -63,6 +68,9 @@ export default function RatingMessageList(props: IProps) {
           <span style={{ fontSize: 16, fontWeight: 400 }}>5.0</span>
           <Rating name='read-only' value={3.5} readOnly sx={{ marginX: 2 }} />
         </Typography>
+        <Button variant='text' color='inherit' onClick={() => setIsOpen(true)}>
+          Viết đánh giá
+        </Button>
       </Box>
       <Box
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -95,8 +103,22 @@ export default function RatingMessageList(props: IProps) {
           count={Math.ceil(props.messages.length / pageSize)}
           onChange={handlePageChange}
           page={pagination.page}
-          sx={{ display: 'flex', justifyContent: 'center', marginTop: 3, marginLeft: -6}}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: 3,
+            marginLeft: -6,
+          }}
         />
+      )}
+      {props.room_id ? (
+        <MakeReview
+          handleClose={() => setIsOpen(false)}
+          open={isOpen}
+          id={props.room_id}
+        />
+      ) : (
+        <></>
       )}
     </Box>
   );
@@ -108,7 +130,7 @@ function RatingMessage(props: IReview) {
       sx={{
         padding: 2,
         borderRadius: 4,
-        minWidth: 300,
+        maxWidth: 300,
         backgroundColor: '#5AB7FA',
       }}
     >
@@ -132,7 +154,29 @@ function RatingMessage(props: IReview) {
         flexWrap={'wrap'}
         marginTop={2}
       >
-        <Typography variant='subtitle1'>{props.content}</Typography>
+        <Grid container spacing={2}>
+          {props.review_image.map((image) => (
+            <Grid item sm={4} key={image.id}>
+              <Box
+                component='img'
+                sx={{
+                  aspectRatio: '1 / 1',
+                  width: '100%',
+                  borderRadius: '10px',
+                }}
+                src={
+                  image.image_url
+                    ? image.image_url
+                    : 'https://i.ibb.co/6WXYg60/cafe.jpg'
+                }
+                title='green iguana'
+              ></Box>
+            </Grid>
+          ))}
+        </Grid>
+        <Typography variant='subtitle1' mt={1}>
+          {props.content}
+        </Typography>
       </Box>
     </Box>
   );

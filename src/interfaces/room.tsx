@@ -89,6 +89,15 @@ export interface IReview {
   }[];
 }
 
+export interface IReviewParam {
+  user_id: number;
+  room_id: number;
+  content: string;
+  star: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  images: any[];
+}
+
 export enum ERoomType {
   PHONG_TRO = 'PHONG_TRO',
   CHUNG_CU_MINI = 'CHUNG_CU_MINI',
