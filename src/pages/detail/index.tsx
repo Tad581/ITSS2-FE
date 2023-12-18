@@ -9,15 +9,26 @@ import RatingMessageList from '../../components/detail/rating';
 import OtherRoomList from '../../components/detail/otherRoomList';
 import RoomAttribute from '../../components/detail/roomAttribute';
 import { RoomAPI } from '../../api/roomAPI';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { IRoom } from '../../interfaces/room';
 import { useParams } from 'react-router-dom';
 
 export default function Detail() {
   const { id } = useParams();
 
-  const [roomData, setRoomData] = useState<IRoom | null>(null);
+  const [roomData, setRoomData] = useState<IRoom>();
   const [ownerRoom, setOwnerRoom] = useState<IRoom[]>([]);
+
+  const { rating, reviewCount }: { rating: number; reviewCount: number } =
+    useMemo(() => {
+      let totalRating = 0;
+      if (roomData)
+        roomData.review.forEach((data) => (totalRating += data.star));
+      return {
+        rating: roomData ? totalRating / roomData.review.length : 0,
+        reviewCount: roomData ? roomData.review.length : 0,
+      };
+    }, [roomData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,8 +69,8 @@ export default function Detail() {
         {/* title, subtitle */}
         <RoomHeader
           title={roomData ? roomData.name : ''} //"Charm M1.2, Flamingo Đà lạt"
-          rating={5.0}
-          reviewCount={25}
+          rating={rating}
+          reviewCount={reviewCount}
           location={roomData ? roomData.address : ''} //"Thanh Xuân, Hà Nội"
         />
 
@@ -128,7 +139,11 @@ export default function Detail() {
               <Typography variant='h4' component='h4'>
                 Nhận xét mới nhất:
               </Typography>
-              <RatingMessageList />
+              <RatingMessageList
+                reviewCount={reviewCount}
+                rating={rating}
+                messages={roomData?.review}
+              />
             </Box>
 
             <Divider />
@@ -137,7 +152,7 @@ export default function Detail() {
               <Typography variant='h4' component='h4'>
                 Chi tiết chỗ ở:
               </Typography>
-              <Collapse in={true} timeout='auto' unmountOnExit>
+              <Collapse in={true} timeout='auto' unmountOnExit sx={{marginTop: 2}}>
                 <Typography>{roomData?.room_attribute?.description}</Typography>
               </Collapse>
             </Box>

@@ -38,6 +38,7 @@ export interface IRoom {
     created_at?: string;
     updated_at?: string;
   }[];
+  review: IReview[];
 }
 
 export interface IRoomCreateInput {}
@@ -66,6 +67,26 @@ export interface IRoomsParams {
   washing_machine?: boolean;
   enclosed_toilet?: boolean;
   safed_device?: boolean;
+}
+
+export interface IReview {
+  id: number;
+  room_id: number;
+  user_id: number;
+  content: string;
+  star: number;
+  created_at: string;
+  user: {
+    id: number;
+    username: string;
+    avatar: string | null;
+    role: number;
+  };
+  review_image: {
+    id: number;
+    review_id: number;
+    image_url: string;
+  }[];
 }
 
 export enum ERoomType {
