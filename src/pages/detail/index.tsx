@@ -12,6 +12,7 @@ import { RoomAPI } from '../../api/roomAPI';
 import { useEffect, useState, useMemo } from 'react';
 import { IRoom } from '../../interfaces/room';
 import { useParams } from 'react-router-dom';
+import MapContainer from '../../components/map';
 
 export default function Detail() {
   const { id } = useParams();
@@ -201,22 +202,16 @@ export default function Detail() {
 
             <Divider />
 
-            <Box sx={{ marginY: 4 }}>
+            <Box sx={{ marginTop: 4 }}>
               <Typography variant='h4' component='h4'>
                 Địa chỉ:
               </Typography>
               <Typography variant='subtitle1' component='span'>
-                Thanh Xuân, Hà Nội
+                {roomData?.address}
               </Typography>
               {/* map */}
               <Box sx={{ height: 400, width: '100%' }}>
-                <iframe
-                  width='100%'
-                  height='100%'
-                  loading='lazy'
-                  allowFullScreen
-                  src='https://www.google.com/maps/embed/v1/place?key=AIzaSyB-3JYr1Tq8LJ2eY9JYR7Xr2eG5J2q9J5c&q=Space+Needle,Seattle+WA'
-                />
+                <MapContainer address={roomData?.address} />
               </Box>
             </Box>
           </Box>
@@ -236,7 +231,7 @@ export default function Detail() {
           }}
         >
           {/* Other room */}
-          <Typography variant='h4' component='h4' marginTop={4}>
+          <Typography variant='h4' component='h4'>
             Phòng khác của chủ nhà:
           </Typography>
           <OtherRoomList roomList={ownerRoom} />
