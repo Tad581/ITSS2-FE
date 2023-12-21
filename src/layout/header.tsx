@@ -19,7 +19,14 @@ export default function Header(props: IProps) {
   const [keyword, setKeyword] = useState<string>('');
 
   return (
-    <Box sx={{ backgroundColor: '#fff', width: '100%', borderBottom: 1, borderColor: 'gray' }}>
+    <Box
+      sx={{
+        backgroundColor: '#fff',
+        width: '100%',
+        borderBottom: 1,
+        borderColor: 'gray',
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -78,7 +85,9 @@ export default function Header(props: IProps) {
             alignItems: 'center',
           }}
         >
-          <ChatOutlinedIcon sx={{ height: 40, width: 40, marginRight: 2 }} />
+          <Link href='/chat' sx={{color: '#000'}}>
+            <ChatOutlinedIcon sx={{ height: 40, width: 40, marginRight: 2 }} />
+          </Link>
           {props.displayButton ? (
             <Button
               variant='contained'
