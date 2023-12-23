@@ -1,76 +1,78 @@
-import { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useContext } from 'react';
 import { Box, OutlinedInput, Button } from '@mui/material';
-// import { AuthContext } from "../context/AuthContext";
-// import { ChatContext } from "../context/ChatContext";
-// import {
-//   arrayUnion,
-//   doc,
-//   serverTimestamp,
-//   Timestamp,
-//   updateDoc,
-// } from "firebase/firestore";
-// import { db, storage } from "../firebase";
-// import { v4 as uuid } from "uuid";
-// import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { AuthContext } from '../../context/authContext';
+import { ChatContext } from '../../context/chatContext';
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
+import { db, storage } from '../../firebase';
+import { v4 as uuid } from 'uuid';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 const Input = () => {
   const [text, setText] = useState('');
-  // const [img, setImg] = useState(null);
+  const [img, setImg] = useState(null);
 
-  // const { currentUser } = useContext(AuthContext);
-  // const { data } = useContext(ChatContext);
+  const { currentUser }: any = useContext(AuthContext);
+  const { data }: any = useContext(ChatContext);
 
-  // const handleSend = async () => {
-  //   if (img) {
-  //     const storageRef = ref(storage, uuid());
+  const handleSend = async () => {
+    if (img) {
+      const storageRef = ref(storage, uuid());
 
-  //     const uploadTask = uploadBytesResumable(storageRef, img);
+      const uploadTask = uploadBytesResumable(storageRef, img);
 
-  //     uploadTask.on(
-  //       (error) => {
-  //       },
-  //       () => {
-  //         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-  //           await updateDoc(doc(db, "chats", data.chatId), {
-  //             messages: arrayUnion({
-  //               id: uuid(),
-  //               text,
-  //               senderId: currentUser.uid,
-  //               date: Timestamp.now(),
-  //               img: downloadURL,
-  //             }),
-  //           });
-  //         });
-  //       }
-  //     );
-  //   } else {
-  //     await updateDoc(doc(db, "chats", data.chatId), {
-  //       messages: arrayUnion({
-  //         id: uuid(),
-  //         text,
-  //         senderId: currentUser.uid,
-  //         date: Timestamp.now(),
-  //       }),
-  //     });
-  //   }
+      uploadTask.on("state_changed",
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateDoc(doc(db, 'chats', data.chatId), {
+              messages: arrayUnion({
+                id: uuid(),
+                text,
+                senderId: currentUser.uid,
+                date: Timestamp.now(),
+                img: downloadURL,
+              }),
+            });
+          });
+        }
+      );
+    } else {
+      await updateDoc(doc(db, 'chats', data.chatId), {
+        messages: arrayUnion({
+          id: uuid(),
+          text,
+          senderId: currentUser.uid,
+          date: Timestamp.now(),
+        }),
+      });
+    }
 
-  //   await updateDoc(doc(db, "userChats", currentUser.uid), {
-  //     [data.chatId + ".lastMessage"]: {
-  //       text,
-  //     },
-  //     [data.chatId + ".date"]: serverTimestamp(),
-  //   });
+    await updateDoc(doc(db, 'userChats', currentUser.uid), {
+      [data.chatId + '.lastMessage']: {
+        text,
+      },
+      [data.chatId + '.date']: serverTimestamp(),
+    });
 
-  //   await updateDoc(doc(db, "userChats", data.user.uid), {
-  //     [data.chatId + ".lastMessage"]: {
-  //       text,
-  //     },
-  //     [data.chatId + ".date"]: serverTimestamp(),
-  //   });
+    await updateDoc(doc(db, 'userChats', data.user.uid), {
+      [data.chatId + '.lastMessage']: {
+        text,
+      },
+      [data.chatId + '.date']: serverTimestamp(),
+    });
 
-  //   setText("");
-  //   setImg(null);
-  // };
+    setText('');
+    setImg(null);
+  };
 
   return (
     <Box
@@ -121,13 +123,13 @@ const Input = () => {
           style={{ display: 'none' }}
           id='file'
           sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-          // onChange={(e) => setImg(e.target.files[0])}
+          onChange={(e: any) => setImg(e.target.files[0])}
         />
         <Box component='label' htmlFor='file'>
           <Box component='img' src='/img.png' alt='' />
         </Box>
         <Button
-          // onClick={handleSend}
+          onClick={handleSend}
           sx={{
             border: 'none',
             padding: '10px 15px',

@@ -1,10 +1,12 @@
-// import { useContext } from 'react'
-// import {signOut} from "firebase/auth"
-// import { auth } from '../firebase'
-// import { AuthContext } from '../context/AuthContext'
+import { useContext } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { AuthContext } from '../../context/authContext';
+
 import { Box, Button } from '@mui/material';
 const Navbar = () => {
-  // const {currentUser} = useContext(AuthContext)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { currentUser }: any = useContext(AuthContext);
 
   return (
     <Box
@@ -41,10 +43,10 @@ const Navbar = () => {
             borderRadius: '50%',
             objectFit: 'cover',
           }}
-          // src={currentUser.photoURL}
+          src={currentUser.photoURL}
           alt=''
         />
-        {/* <Box component='span'>{currentUser.displayName}</Box> */}
+        <Box component='span'>{currentUser.displayName}</Box>
         <Button
           sx={{
             backgroundColor: '#5d5b8d',
@@ -53,7 +55,7 @@ const Navbar = () => {
             border: 'none',
             cursor: 'pointer',
           }}
-          // onClick={() => signOut(auth)}
+          onClick={() => signOut(auth)}
         >
           logout
         </Button>

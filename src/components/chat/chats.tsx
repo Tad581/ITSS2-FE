@@ -1,37 +1,38 @@
-// import { doc, onSnapshot } from "firebase/firestore";
-// import { useContext, useEffect, useState } from "react";
-// import { AuthContext } from "../context/AuthContext";
-// import { ChatContext } from "../context/ChatContext";
-// import { db } from "../firebase";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { doc, onSnapshot } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/authContext";
+import { ChatContext } from "../../context/chatContext";
+import { db } from "../../firebase";
 import { Box } from '@mui/material';
 
 const Chats = () => {
-  // const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<any>([]);
 
-  // const { currentUser } = useContext(AuthContext);
-  // const { dispatch } = useContext(ChatContext);
+  const { currentUser }: any = useContext(AuthContext);
+  const { dispatch }: any = useContext(ChatContext);
 
-  // useEffect(() => {
-  //   const getChats = () => {
-  //     const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
-  //       setChats(doc.data());
-  //     });
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+        setChats(doc.data());
+      });
 
-  //     return () => {
-  //       unsub();
-  //     };
-  //   };
+      return () => {
+        unsub();
+      };
+    };
 
-  //   currentUser.uid && getChats();
-  // }, [currentUser.uid]);
+    currentUser.uid && getChats();
+  }, [currentUser.uid]);
 
-  // const handleSelect = (u) => {
-  //   dispatch({ type: "CHANGE_USER", payload: u });
-  // };
+  const handleSelect = (u: any) => {
+    dispatch({ type: "CHANGE_USER", payload: u });
+  };
 
   return (
     <Box>
-      {/* {Object.entries(chats)?.map((chat) => ( */}
+      {Object.entries(chats)?.map((chat: any) => (
         <Box
           sx={{
             padding: ' 10px',
@@ -45,12 +46,12 @@ const Chats = () => {
               backgroundColor: '#2f2d52',
             },
           }}
-          // key={chat[0]}
-          // onClick={() => handleSelect(chat[1].userInfo)}
+          key={chat[0]}
+          onClick={() => handleSelect(chat[1].userInfo)}
         >
           <Box
             component='img'
-            // src={chat[1].userInfo.photoURL}
+            src={chat[1].userInfo.photoURL}
             alt=''
             sx={{
               width: ' 50px',
@@ -62,14 +63,14 @@ const Chats = () => {
 
           <Box>
             <Box component='span' sx={{ fontSize: '18px', fontWeight: 500 }}>
-              {/* {chat[1].userInfo.displayName} */}
+              {chat[1].userInfo.displayName}
             </Box>
             <Box component='p' sx={{ fontSize: '14px', color: 'lightgray' }}>
-              {/* {chat[1].lastMessage?.text} */}
+              {chat[1].lastMessage?.text}
             </Box>
           </Box>
         </Box>
-      {/* ))} */}
+      ))}
     </Box>
   );
 };

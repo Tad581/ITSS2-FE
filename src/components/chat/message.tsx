@@ -1,22 +1,23 @@
-import { useEffect, useRef } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
-// import { AuthContext } from "../context/AuthContext";
-// import { ChatContext } from "../context/ChatContext";
+import { AuthContext } from '../../context/authContext';
+import { ChatContext } from '../../context/chatContext';
 
-const Message = ({ message }) => {
-  // const { currentUser } = useContext(AuthContext);
-  // const { data } = useContext(ChatContext);
+const Message = ({ message }: any) => {
+  const { currentUser }: any = useContext(AuthContext);
+  const { data }: any = useContext(ChatContext);
 
-  const ref = useRef();
+  const ref: any = useRef();
 
-  // useEffect(() => {
-  //   ref.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [message]);
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [message]);
 
   return (
     <Box
-      // ref={ref}
-      // className={`message ${message.senderId === currentUser.uid && "owner"}`}
+      ref={ref}
+      className={`message ${message.senderId === currentUser.uid && 'owner'}`}
       sx={{ display: 'flex', gap: '20px', marginBottom: '20px' }}
     >
       <Box
@@ -36,11 +37,11 @@ const Message = ({ message }) => {
             borderRadius: '50%',
             objectFit: 'cover',
           }}
-          // src={
-          //   message.senderId === currentUser.uid
-          //     ? currentUser.photoURL
-          //     : data.user.photoURL
-          // }
+          src={
+            message.senderId === currentUser.uid
+              ? currentUser.photoURL
+              : data.user.photoURL
+          }
           alt=''
         />
         <Box component='span'>just now</Box>

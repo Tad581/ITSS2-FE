@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Messages from './messages';
 import Input from './input';
-// import { ChatContext } from "../context/ChatContext";
+import { ChatContext } from '../../context/chatContext';
 import { Box } from '@mui/material';
+import { useContext } from 'react';
 
 const Chat = () => {
-  // const { data } = useContext(ChatContext);
+  const { data }: any = useContext(ChatContext);
 
   return (
     <Box sx={{ flex: 2 }}>
@@ -19,7 +21,7 @@ const Chat = () => {
           color: 'lightgray',
         }}
       >
-        {/* <span>{data.user?.displayName}</span> */}
+        <Box component='span'>{data.user?.displayName}</Box>
         <Box sx={{ display: 'flex', gap: '10px' }}>
           <Box
             component='img'
