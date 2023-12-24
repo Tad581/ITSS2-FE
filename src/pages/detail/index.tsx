@@ -23,7 +23,7 @@ export default function Detail() {
   const { rating, reviewCount }: { rating: number; reviewCount: number } =
     useMemo(() => {
       let totalRating = 0;
-      if (roomData)
+      if (roomData && roomData.review)
         roomData.review.forEach((data) => (totalRating += data.star));
       return {
         rating: roomData ? totalRating / roomData.review.length : 0,
@@ -98,6 +98,7 @@ export default function Detail() {
             marginTop: 4,
             marginX: 'auto',
             width: '100%',
+            gap: 11
           }}
         >
           <Box sx={{ flexGrow: 1 }}>
@@ -217,7 +218,7 @@ export default function Detail() {
           </Box>
 
           {/* Avatar */}
-          <RoomOwnerContact />
+          <RoomOwnerContact owner={roomData?.owner}/>
         </Box>
 
         <Box

@@ -64,9 +64,15 @@ export default function RatingMessageList(props: IProps) {
         }}
       >
         <Typography variant='h4' component='h4' sx={{ fontWeight: 600 }}>
-          {props.rating.toFixed(1)} /
+          {!Number.isNaN(props.rating) ? props.rating.toFixed(1) : 0} /
           <span style={{ fontSize: 16, fontWeight: 400 }}>5.0</span>
-          <Rating name='read-only' value={3.5} readOnly sx={{ marginX: 2 }} />
+          <Rating
+            name='read-only'
+            value={!Number.isNaN(props.rating) ? +props.rating.toFixed(1) : 0}
+            readOnly
+            precision={0.1}
+            sx={{ marginX: 2 }}
+          />
         </Typography>
         <Button variant='text' color='inherit' onClick={() => setIsOpen(true)}>
           Viết đánh giá
@@ -144,7 +150,15 @@ function RatingMessage(props: IReview) {
           <Typography variant='h6' color='black'>
             {props.user.username}
           </Typography>
-          <Typography variant='subtitle1'>{props.created_at}</Typography>
+          <Typography variant='subtitle1'>
+            {new Intl.DateTimeFormat('vi-VN', {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+            }).format(new Date(props.created_at))}
+          </Typography>
         </Box>
       </Box>
       <Divider light />
