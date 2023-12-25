@@ -8,14 +8,17 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import { useState } from 'react';
-
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/authContext';
 interface IProps {
   handleKeyword?: (keyword: string) => void;
   displayButton?: boolean;
 }
 
 export default function Header(props: IProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { currentUser }: any = useContext(AuthContext);
+
   const [keyword, setKeyword] = useState<string>('');
 
   return (
@@ -103,9 +106,12 @@ export default function Header(props: IProps) {
           ) : (
             <></>
           )}
-          <Link href='/created-rooms'>
-            <Avatar alt='avatar' src='/avatar.png' sx={{ cursor: 'pointer' }} />
-          </Link>
+          {
+            currentUser ? <Link href='/created-rooms'>
+            <Avatar alt='avatar' src={currentUser.photoURL} sx={{ cursor: 'pointer' }} />
+          </Link> : <></>
+          }
+
         </Box>
       </Box>
     </Box>

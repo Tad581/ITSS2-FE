@@ -4,7 +4,7 @@ import { AuthContext } from './authContext';
 
 interface ContextType {
   data: any;
-  dispatch: React.Dispatch<{ type: any; payload: { uid: number; }; }>;
+  dispatch: React.Dispatch<{ type: any; payload: { uid: number } }>;
 }
 
 export const ChatContext = createContext<ContextType | null>(null);
@@ -22,13 +22,17 @@ export const ChatContextProvider = ({ children }: { children: any }) => {
   ) => {
     switch (action.type) {
       case 'CHANGE_USER':
-        return {
-          user: action.payload,
-          chatId:
-            currentUser.uid > action.payload.uid
-              ? currentUser.uid + action.payload.uid
-              : action.payload.uid + currentUser.uid,
-        };
+        if (action.payload && currentUser.uid) {
+          return {
+            user: action.payload,
+            chatId:
+              currentUser.uid > action.payload.uid
+                ? currentUser.uid + action.payload.uid
+                : action.payload.uid + currentUser.uid,
+          };
+        } else {
+          return state;
+        }
 
       default:
         return state;
