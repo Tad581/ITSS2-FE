@@ -41,7 +41,26 @@ export interface IRoom {
   review: IReview[];
 }
 
-export interface IRoomCreateInput {}
+export interface IRoomCreateInput {
+  owner_id: number,
+  name: string,
+  address: string,
+  type: string,
+  area: number,
+  distance_to_school: number,
+  price: number,
+  electronic_price: number,
+  water_price: number,
+  description: string,
+  wifi_internet: boolean,
+  washing_machine: boolean,
+  air_conditioner: boolean,
+  water_heater: boolean,
+  refrigerator: boolean,
+  safed_device: boolean,
+  enclosed_toilet: boolean,
+  images: string[],
+}
 
 export interface IRoomsParams {
   page?: number;

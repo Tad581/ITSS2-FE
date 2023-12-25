@@ -10,6 +10,7 @@ interface IProps {
   image_url: string;
   handleOpenDialog: () => void;
   handleSelectedRoomId: (room_id: number) => void;
+  handleEditClick?: (room_id: number) => void;
 }
 
 export default function CreatedRooms(props: IProps) {
@@ -74,6 +75,10 @@ export default function CreatedRooms(props: IProps) {
             fontSize: 30,
             marginRight: 3,
             cursor: 'pointer',
+          }}
+          onClick={() => {
+            if (props?.handleEditClick)
+              props.handleEditClick(props.id)
           }}
         />
         <DeleteIcon
