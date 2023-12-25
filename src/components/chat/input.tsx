@@ -78,51 +78,51 @@ const Input = () => {
   };
 
   return (
-    <Box
-      sx={{
-        height: '50px',
-        backgroundColor: 'white',
-        padding: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderTop: '1px solid lightgray',
-      }}
-    >
-      <OutlinedInput
-        type='file'
-        style={{ display: 'none' }}
-        id='file'
-        sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-        onChange={(e: any) => setImg(e.target.files[0])}
-      />
-      <Box component='label' htmlFor='file' sx={{ marginRight: 1 }}>
-        <AddCircleIcon sx={{ fontSize: '40px' }} />
-      </Box>
-      <TextField
-        type='text'
-        placeholder='Nhập tin nhắn'
-        onChange={(e) => setText(e.target.value)}
-        value={text}
-        size='small'
+      <Box
         sx={{
-          width: '100%',
-          backgroundColor: 'lightgray',
-          borderRadius: 2,
-          '& fieldset': { border: 'none' },
+          height: '50px',
+          backgroundColor: 'white',
+          padding: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderTop: '1px solid lightgray',
         }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position='end'>
-              <SendIcon
-                sx={{ cursor: 'pointer', color: '#000' }}
-                onClick={handleSend}
-              />
-            </InputAdornment>
-          ),
-        }}
-      />
-    </Box>
+      >
+        <OutlinedInput
+          type='file'
+          style={{ display: 'none' }}
+          id='file'
+          sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+          onChange={(e: any) => setImg(e.target.files[0])}
+        />
+        <Box component='label' htmlFor='file' sx={{ marginRight: 1 }}>
+          <AddCircleIcon sx={{ fontSize: '40px' }} />
+        </Box>
+        <TextField
+          type='text'
+          placeholder='Nhập tin nhắn'
+          onChange={(e) => setText(e.target.value)}
+          value={text}
+          size='small'
+          sx={{
+            width: '100%',
+            backgroundColor: 'lightgray',
+            borderRadius: 2,
+            '& fieldset': { border: 'none' },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <SendIcon
+                  sx={{ cursor: 'pointer', color: '#000' }}
+                  onClick={handleSend}
+                />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
   );
 };
 

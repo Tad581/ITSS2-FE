@@ -23,7 +23,6 @@ const Message = ({ message }: any) => {
       }}
     >
       <Box
-        className='messageInfo'
         sx={{
           display: 'flex',
           flexDirection: 'column',

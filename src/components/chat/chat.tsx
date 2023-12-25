@@ -6,6 +6,8 @@ import { Box, Button } from '@mui/material';
 import { useContext } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
+import RecommendList from './recommendList';
+
 
 const Chat = () => {
   const { data }: any = useContext(ChatContext);
@@ -61,6 +63,7 @@ const Chat = () => {
         </Button>
       </Box>
       <Messages />
+      <RecommendList />
       <Input />
     </Box>
   );

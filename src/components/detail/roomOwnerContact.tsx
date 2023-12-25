@@ -1,4 +1,5 @@
 import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
+import Recommend from '../chat/recommend';
 
 const recommendMessage = [
   'Anh chị có onl k ạ?',
@@ -56,16 +57,7 @@ export default function RoomOwnerContact({
           marginTop={2}
         >
           {recommendMessage.map((message, index) => {
-            return (
-              <Button
-                key={index}
-                variant='contained'
-                color='inherit'
-                sx={{ maxHeight: '30px', borderRadius: 100, margin: 1 }}
-              >
-                {message}
-              </Button>
-            );
+            return <Recommend message={message} key={index} />;
           })}
         </Box>
         <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>

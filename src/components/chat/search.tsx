@@ -143,7 +143,7 @@ const Search = () => {
               component='span'
               sx={{
                 fontSize: '18px',
-                fontWeight: 500,
+                fontWeight: 700,
               }}
             >
               {user.displayName}
