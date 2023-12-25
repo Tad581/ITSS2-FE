@@ -2,11 +2,9 @@
 import { useContext, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { AuthContext } from '../../context/authContext';
-import { ChatContext } from '../../context/chatContext';
 
 const Message = ({ message }: any) => {
   const { currentUser }: any = useContext(AuthContext);
-  const { data }: any = useContext(ChatContext);
 
   const ref: any = useRef();
 
@@ -17,8 +15,12 @@ const Message = ({ message }: any) => {
   return (
     <Box
       ref={ref}
-      className={`message ${message.senderId === currentUser.uid && 'owner'}`}
-      sx={{ display: 'flex', gap: '20px', marginBottom: '20px' }}
+      sx={{
+        display: 'flex',
+        marginBottom: 1,
+        flexDirection:
+          message.senderId === currentUser.uid ? 'row-reverse' : 'row',
+      }}
     >
       <Box
         className='messageInfo'
@@ -29,7 +31,7 @@ const Message = ({ message }: any) => {
           fontWeight: 300,
         }}
       >
-        <Box
+        {/* <Box
           component='img'
           sx={{
             width: '40px',
@@ -43,24 +45,28 @@ const Message = ({ message }: any) => {
               : data.user.photoURL
           }
           alt=''
-        />
-        <Box component='span'>just now</Box>
+        /> */}
       </Box>
       <Box
-        className='messageContent'
         sx={{
           maxWidth: '80%',
           display: 'flex',
-          flexDirection: 'column',
           gap: '10px',
+          flexDirection: 'column',
+          alignItems:
+            message.senderId === currentUser.uid ? 'flex-end' : 'flex-start',
         }}
       >
         <Box
           component='p'
           sx={{
-            backgroundColor: 'white',
+            backgroundColor:
+              message.senderId === currentUser.uid
+                ? 'rgb(25, 118, 210)'
+                : 'lightgray',
+            color: message.senderId === currentUser.uid ? '#fff' : '#000',
             padding: '10px 20px',
-            borderRadius: '0px 10px 10px 10px',
+            borderRadius: 10,
             maxWidth: 'max-content',
           }}
         >

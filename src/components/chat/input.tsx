@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useContext } from 'react';
-import { Box, OutlinedInput, Button } from '@mui/material';
+import { Box, OutlinedInput, TextField, InputAdornment } from '@mui/material';
 import { AuthContext } from '../../context/authContext';
 import { ChatContext } from '../../context/chatContext';
 import {
@@ -13,6 +13,8 @@ import {
 import { db, storage } from '../../firebase';
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import SendIcon from '@mui/icons-material/Send';
 
 const Input = () => {
   const [text, setText] = useState('');
@@ -27,7 +29,8 @@ const Input = () => {
 
       const uploadTask = uploadBytesResumable(storageRef, img);
 
-      uploadTask.on("state_changed",
+      uploadTask.on(
+        'state_changed',
         (error) => {
           console.log(error);
         },
@@ -83,64 +86,42 @@ const Input = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        borderTop: '1px solid lightgray',
       }}
     >
       <OutlinedInput
+        type='file'
+        style={{ display: 'none' }}
+        id='file'
+        sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+        onChange={(e: any) => setImg(e.target.files[0])}
+      />
+      <Box component='label' htmlFor='file' sx={{ marginRight: 1 }}>
+        <AddCircleIcon sx={{ fontSize: '40px' }} />
+      </Box>
+      <TextField
         type='text'
-        placeholder='Type something...'
+        placeholder='Nhập tin nhắn'
         onChange={(e) => setText(e.target.value)}
         value={text}
+        size='small'
         sx={{
           width: '100%',
-          border: 'none',
-          outline: 'none',
-          color: '#2f2d52',
-          fontSize: '18px',
-          '&::placeholder': {
-            color: 'lightgray',
-          },
+          backgroundColor: 'lightgray',
+          borderRadius: 2,
+          '& fieldset': { border: 'none' },
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position='end'>
+              <SendIcon
+                sx={{ cursor: 'pointer', color: '#000' }}
+                onClick={handleSend}
+              />
+            </InputAdornment>
+          ),
         }}
       />
-      <Box
-        className='send'
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-        }}
-      >
-        <Box
-          component='img'
-          src='/attach.png'
-          alt=''
-          sx={{
-            height: '24px',
-            cursor: 'pointer',
-          }}
-        />
-        <OutlinedInput
-          type='file'
-          style={{ display: 'none' }}
-          id='file'
-          sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-          onChange={(e: any) => setImg(e.target.files[0])}
-        />
-        <Box component='label' htmlFor='file'>
-          <Box component='img' src='/img.png' alt='' />
-        </Box>
-        <Button
-          onClick={handleSend}
-          sx={{
-            border: 'none',
-            padding: '10px 15px',
-            color: 'white',
-            backgroundColor: '#8da4f1',
-            cursor: 'pointer',
-          }}
-        >
-          Send
-        </Button>
-      </Box>
     </Box>
   );
 };

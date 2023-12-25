@@ -1,5 +1,5 @@
 import Header from '../../layout/header';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import Chat from '../../components/chat/chat';
 import Sidebar from '../../components/chat/sidebar';
 import { useContext } from 'react';
@@ -20,30 +20,33 @@ export default function ChatPage() {
 
   return (
     <ProtectedRoute>
-      <Box>
+      <Box
+        sx={{
+          width: '100%',
+          backgroundColor: '#F5F5F5',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+        }}
+      >
         <Header />
         <Box
           sx={{
-            backgroundColor: '#a7bcff',
-            height: '100vh',
+            marginTop: 3,
+            border: '1px solid white',
+            borderRadius: '10px',
+            width: '90%',
+            height: '80%',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            overflow: 'hidden',
+            fontFamily: 'Raleway, Arial',
           }}
         >
-          <Box
-            sx={{
-              border: '1px solid white',
-              borderRadius: '10px',
-              width: '65%',
-              height: '80%',
-              display: 'flex',
-              overflow: 'hidden',
-            }}
-          >
-            <Sidebar />
-            <Chat />
-          </Box>
+          <Sidebar />
+          <Divider orientation='vertical' />
+          <Chat />
         </Box>
       </Box>
     </ProtectedRoute>

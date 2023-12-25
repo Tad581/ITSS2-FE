@@ -2,8 +2,10 @@
 import Messages from './messages';
 import Input from './input';
 import { ChatContext } from '../../context/chatContext';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useContext } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 const Chat = () => {
   const { data }: any = useContext(ChatContext);
@@ -13,35 +15,50 @@ const Chat = () => {
       <Box
         sx={{
           height: '50px',
-          backgroundColor: '#5d5b8d',
+          backgroundColor: '#fff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '10px',
-          color: 'lightgray',
+          borderBottom: '1px solid lightgray',
         }}
       >
-        <Box component='span'>{data.user?.displayName}</Box>
-        <Box sx={{ display: 'flex', gap: '10px' }}>
-          <Box
-            component='img'
-            sx={{ height: '24px', cursor: 'pointer' }}
-            alt='logo'
-            src='/cam.png'
-          />
-          <Box
-            component='img'
-            sx={{ height: '24px', cursor: 'pointer' }}
-            alt='logo'
-            src='/add.png'
-          />
-          <Box
-            component='img'
-            sx={{ height: '24px', cursor: 'pointer' }}
-            alt='logo'
-            src='/more.png'
-          />
-        </Box>
+        {data.user?.photoURL ? (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              component='img'
+              sx={{
+                width: '50px',
+                height: '50px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
+              src={data.user?.photoURL}
+              alt=''
+            />
+            <Box
+              component='span'
+              sx={{ color: '#000', marginLeft: 1, fontWeight: 700 }}
+            >
+              {data.user?.displayName}
+            </Box>
+          </Box>
+        ) : (
+          <Box></Box>
+        )}
+        <Button
+          sx={{
+            backgroundColor: '#1976d2',
+            color: '#fff',
+            fontSize: '12px',
+            '&: hover': {
+              backgroundColor: '#1976d2'
+            }
+          }}
+          onClick={() => signOut(auth)}
+        >
+          Đăng xuất
+        </Button>
       </Box>
       <Messages />
       <Input />

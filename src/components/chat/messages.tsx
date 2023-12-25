@@ -25,10 +25,10 @@ const Messages = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#ddddf7',
+        backgroundColor: '#fff',
         padding: '10px',
         height: 'calc(100% - 160px)',
-        overflow: 'scroll',
+        overflowY: 'scroll',
       }}
     >
       {messages.map((m: any) => (

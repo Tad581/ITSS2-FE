@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useState } from 'react';
-import { Box, OutlinedInput } from '@mui/material';
+import { Box, TextField, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   collection,
   query,
@@ -82,41 +83,47 @@ const Search = () => {
     setUsername('');
   };
   return (
-    <Box sx={{ borderBottom: '1px solid gray' }}>
-      <Box sx={{ padding: '10px' }}>
-        <OutlinedInput
+    <Box>
+      <Box sx={{ padding: '10px', height: '50px', display: 'flex', alignItems: 'center' }}>
+        <TextField
           type='text'
-          placeholder='Find a user'
+          placeholder='Nhập để tìm kiếm'
           onKeyDown={handleKey}
           onChange={(e) => setUsername(e.target.value)}
           value={username}
+          size='small'
           sx={{
             backgroundColor: 'transparent',
             border: 'none',
-            color: 'white',
+            color: '#000',
             outline: 'none',
-
-            '&::placeholder': {
-              color: 'lightgray',
-            },
+            width: '100%',
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <SearchIcon
+                  sx={{ cursor: 'pointer', color: '#000' }}
+                  onClick={() => handleSearch()}
+                />
+              </InputAdornment>
+            ),
           }}
         />
       </Box>
-      {err && <Box component='span'>User not found!</Box>}
+      {err && <Box component='span'>Không tìm thấy người dùng!</Box>}
       {user && (
         <Box
-          className='userChat'
           onClick={handleSelect}
           sx={{
             padding: '10px',
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            color: 'white',
+            color: '#000',
             cursor: 'pointer',
-
             '&:hover': {
-              backgroundColor: '#2f2d52',
+              backgroundColor: 'pink',
             },
           }}
         >
@@ -131,7 +138,7 @@ const Search = () => {
             src={user.photoURL}
             alt=''
           />
-          <Box className='userChatInfo'>
+          <Box>
             <Box
               component='span'
               sx={{
