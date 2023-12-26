@@ -11,11 +11,6 @@ const Messages = () => {
   const { data }: any = useContext(ChatContext);
 
   useEffect(() => {
-    // const targetUser = localStorage.getItem('targetUser');
-    // if (targetUser) {
-
-    // }
-    console.log("🚀 ~ file: messages.tsx:20 ~ unSub ~ data.chatId:", data.chatId)
     const unSub = onSnapshot(doc(db, 'chats', data.chatId), (doc) => {
       doc.exists() && setMessages(doc.data().messages);
     });

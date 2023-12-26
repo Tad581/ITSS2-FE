@@ -1,8 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
 import Recommend from '../chat/recommend';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { db } from '../../firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  serverTimestamp,
+  updateDoc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
+import { AuthContext } from '../../context/authContext';
+import { ChatContext } from '../../context/chatContext';
 
 const recommendMessage = [
   'Anh chị có onl k ạ?',
@@ -19,10 +32,53 @@ interface IOwner {
 export default function RoomOwnerContact({
   owner,
 }: Readonly<{ owner: IOwner }>) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { username, role } = owner;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ownerReal, setOwnerReal] = useState<any>();
+
+  const { currentUser }: any = useContext(AuthContext);
+  const { dispatch }: any = useContext(ChatContext);
+
+  const handleGoChat = async () => {
+    if (ownerReal) {
+      localStorage.setItem('targetUser', JSON.stringify(ownerReal));
+      dispatch({ type: 'CHANGE_USER', payload: ownerReal });
+      const combinedId =
+        currentUser.uid > ownerReal.uid
+          ? currentUser.uid + ownerReal.uid
+          : ownerReal.uid + currentUser.uid;
+      try {
+        const res = await getDoc(doc(db, 'chats', combinedId));
+
+        if (!res.exists()) {
+          //create a chat in chats collection
+          await setDoc(doc(db, 'chats', combinedId), { messages: [] });
+
+          //create user chats
+          await updateDoc(doc(db, 'userChats', currentUser.uid), {
+            [combinedId + '.userInfo']: {
+              uid: ownerReal.uid,
+              displayName: ownerReal.displayName,
+              photoURL: ownerReal.photoURL,
+            },
+            [combinedId + '.date']: serverTimestamp(),
+          });
+
+          await updateDoc(doc(db, 'userChats', ownerReal.uid), {
+            [combinedId + '.userInfo']: {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+            },
+            [combinedId + '.date']: serverTimestamp(),
+          });
+        }
+
+        window.location.replace('/chat');
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   useEffect(() => {
     const getOwner = async () => {
@@ -105,6 +161,7 @@ export default function RoomOwnerContact({
             variant='contained'
             color='success'
             sx={{ borderRadius: 2, margin: 1 }}
+            onClick={handleGoChat}
           >
             Chat với người bán
           </Button>
