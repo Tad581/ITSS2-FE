@@ -56,21 +56,26 @@ const Message = ({ message }: any) => {
             message.senderId === currentUser.uid ? 'flex-end' : 'flex-start',
         }}
       >
-        <Box
-          component='p'
-          sx={{
-            backgroundColor:
-              message.senderId === currentUser.uid
-                ? 'rgb(25, 118, 210)'
-                : 'lightgray',
-            color: message.senderId === currentUser.uid ? '#fff' : '#000',
-            padding: '10px 20px',
-            borderRadius: 10,
-            maxWidth: 'max-content',
-          }}
-        >
-          {message.text}
-        </Box>
+        {message.text !== '' ? (
+          <Box
+            component='p'
+            sx={{
+              backgroundColor:
+                message.senderId === currentUser.uid
+                  ? 'rgb(25, 118, 210)'
+                  : 'lightgray',
+              color: message.senderId === currentUser.uid ? '#fff' : '#000',
+              padding: '10px 20px',
+              borderRadius: 10,
+              maxWidth: 'max-content',
+            }}
+          >
+            {message.text}
+          </Box>
+        ) : (
+          <></>
+        )}
+
         {message.img && (
           <Box component='img' src={message.img} alt='' sx={{ width: '50%' }} />
         )}

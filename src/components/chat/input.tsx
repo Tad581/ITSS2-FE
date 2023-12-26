@@ -31,6 +31,21 @@ const Input = () => {
 
       uploadTask.on(
         'state_changed',
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        },
         (error) => {
           console.log(error);
         },
@@ -78,51 +93,51 @@ const Input = () => {
   };
 
   return (
-      <Box
-        sx={{
-          height: '50px',
-          backgroundColor: 'white',
-          padding: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderTop: '1px solid lightgray',
-        }}
-      >
-        <OutlinedInput
-          type='file'
-          style={{ display: 'none' }}
-          id='file'
-          sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-          onChange={(e: any) => setImg(e.target.files[0])}
-        />
-        <Box component='label' htmlFor='file' sx={{ marginRight: 1 }}>
-          <AddCircleIcon sx={{ fontSize: '40px' }} />
-        </Box>
-        <TextField
-          type='text'
-          placeholder='Nhập tin nhắn'
-          onChange={(e) => setText(e.target.value)}
-          value={text}
-          size='small'
-          sx={{
-            width: '100%',
-            backgroundColor: 'lightgray',
-            borderRadius: 2,
-            '& fieldset': { border: 'none' },
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <SendIcon
-                  sx={{ cursor: 'pointer', color: '#000' }}
-                  onClick={handleSend}
-                />
-              </InputAdornment>
-            ),
-          }}
-        />
+    <Box
+      sx={{
+        height: '50px',
+        backgroundColor: 'white',
+        padding: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderTop: '1px solid lightgray',
+      }}
+    >
+      <OutlinedInput
+        type='file'
+        style={{ display: 'none' }}
+        id='file'
+        sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+        onChange={(e: any) => setImg(e.target.files[0])}
+      />
+      <Box component='label' htmlFor='file' sx={{ marginRight: 1 }}>
+        <AddCircleIcon sx={{ fontSize: '40px' }} />
       </Box>
+      <TextField
+        type='text'
+        placeholder='Nhập tin nhắn'
+        onChange={(e) => setText(e.target.value)}
+        value={text}
+        size='small'
+        sx={{
+          width: '100%',
+          backgroundColor: 'lightgray',
+          borderRadius: 2,
+          '& fieldset': { border: 'none' },
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position='end'>
+              <SendIcon
+                sx={{ cursor: 'pointer', color: '#000' }}
+                onClick={handleSend}
+              />
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Box>
   );
 };
 
