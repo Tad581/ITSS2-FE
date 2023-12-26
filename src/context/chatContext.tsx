@@ -11,9 +11,15 @@ export const ChatContext = createContext<ContextType | null>(null);
 
 export const ChatContextProvider = ({ children }: { children: any }) => {
   const { currentUser }: any = useContext(AuthContext);
+  const targetUser = localStorage.getItem('targetUser');
   const INITIAL_STATE = {
-    chatId: 'null',
-    user: {},
+    chatId:
+      currentUser && targetUser
+        ? currentUser.uid > JSON.parse(targetUser).uid
+          ? currentUser.uid + JSON.parse(targetUser).uid
+          : JSON.parse(targetUser).uid + currentUser.uid
+        : 'null',
+    user: targetUser ? JSON.parse(targetUser) : {},
   };
 
   const chatReducer = (

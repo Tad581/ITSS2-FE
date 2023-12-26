@@ -28,6 +28,7 @@ export default function Recommend(props: IProps) {
   const handleSelect = async () => {
     //check whether the group(chats in firestore) exists, if not create
     if (props.owner) {
+      localStorage.setItem('targetUser', JSON.stringify(props.owner));
       dispatch({ type: 'CHANGE_USER', payload: props.owner });
       const combinedId =
         currentUser.uid > props.owner.uid
@@ -50,7 +51,7 @@ export default function Recommend(props: IProps) {
             [combinedId + '.date']: serverTimestamp(),
           });
 
-          await updateDoc(doc(db, 'userChats', props.owner.uid as any), {
+          await updateDoc(doc(db, 'userChats', props.owner.uid), {
             [combinedId + '.userInfo']: {
               uid: currentUser.uid,
               displayName: currentUser.displayName,

@@ -23,7 +23,7 @@ export default function Detail() {
   const { rating, reviewCount }: { rating: number; reviewCount: number } =
     useMemo(() => {
       let totalRating = 0;
-      if (roomData && roomData.review)
+      if (roomData?.review)
         roomData.review.forEach((data) => (totalRating += data.star));
       return {
         rating: roomData ? totalRating / roomData.review.length : 0,

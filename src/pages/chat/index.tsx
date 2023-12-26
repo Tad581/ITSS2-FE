@@ -3,14 +3,14 @@ import Header from '../../layout/header';
 import { Box, Divider } from '@mui/material';
 import Chat from '../../components/chat/chat';
 import Sidebar from '../../components/chat/sidebar';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
-// import { ChatContext } from '../../context/chatContext';
+import { ChatContext } from '../../context/chatContext';
 import { Navigate } from 'react-router-dom';
 
 export default function ChatPage() {
   const { currentUser }: any = useContext(AuthContext);
-  // const { dispatch }: any = useContext(ChatContext);
+  const { dispatch }: any = useContext(ChatContext);
 
   const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
     if (!currentUser) {
@@ -20,13 +20,14 @@ export default function ChatPage() {
     return children;
   };
 
-  // useEffect(() => {
-  //   if (!localStorage.getItem('targetUid')) return;
-  //   dispatch({
-  //     type: 'CHANGE_USER',
-  //     payload: { uid: localStorage.getItem('targetUid') },
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (!localStorage.getItem('targetUser')) return;
+    const targetUser = localStorage.getItem('targetUser');
+    dispatch({
+      type: 'CHANGE_USER',
+      payload: targetUser ? JSON.parse(targetUser) : null,
+    });
+  }, []);
 
   return (
     <ProtectedRoute>

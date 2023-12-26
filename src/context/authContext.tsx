@@ -11,10 +11,15 @@ export const AuthContext = createContext<ContextType | null>(null);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const AuthContextProvider = ({ children }: { children: any }) => {
-  const [currentUser, setCurrentUser] = useState<any>({});
+  const storageCurrentUser = localStorage.getItem('currentUser');
+
+  const [currentUser, setCurrentUser] = useState<any>(
+    storageCurrentUser ? JSON.parse(storageCurrentUser) : {}
+  );
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
+      localStorage.setItem('currentUser', JSON.stringify(user));
       setCurrentUser(user);
     });
 

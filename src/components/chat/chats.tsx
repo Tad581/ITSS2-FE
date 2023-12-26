@@ -27,6 +27,7 @@ const Chats = () => {
   }, [currentUser.uid]);
 
   const handleSelect = (u: any) => {
+    localStorage.setItem('targetUser', JSON.stringify(u));
     dispatch({ type: 'CHANGE_USER', payload: u });
   };
 
@@ -61,7 +62,6 @@ const Chats = () => {
               objectFit: 'cover',
             }}
           />
-
           <Box>
             <Box
               component='span'
