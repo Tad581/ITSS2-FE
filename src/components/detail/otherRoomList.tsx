@@ -48,17 +48,19 @@ function RoomCard(props: IRoom) {
         marginX: 1,
       }}
     >
-      <Box
-        component='img'
-        sx={{
-          width: '100%',
-          height: 200,
-          marginBottom: 1,
-          objectFit: 'cover',
-        }}
-        alt='The house from the offer.'
-        src={props.room_image[0]?.image_url}
-      />
+      <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
+        <Box
+          component='img'
+          sx={{
+            width: '100%',
+            height: 200,
+            marginBottom: 1,
+            objectFit: 'cover',
+          }}
+          alt='The house from the offer.'
+          src={props.room_image[0]?.image_url}
+        />
+      </Link>
       <Box>
         <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
           <Typography

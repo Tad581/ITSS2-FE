@@ -15,7 +15,7 @@ type ComboBoxProps = {
   label: string,
   title: string,
   name?: string,
-  value?: string | boolean,
+  value: any,
   onChange?: any,
 }
 
@@ -32,7 +32,7 @@ function ComboBox(props: ComboBoxProps) {
         sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={props.label} />}
       /> */}
-      <select id="cars" style={{ height: 40, width: 200 }}>
+      <select id="cars" style={{ height: 40, width: 200 }} name={props.name} onChange={props.onChange} value={props.value} >
         {
           props.options.map(opt => (
             <option value={opt.value}>{opt.label}</option>
@@ -290,20 +290,20 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
               <Grid container columnSpacing={4} width={'100%'}>
                 {/* <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} mt={2}> */}
                 <Grid item xs={3}>
-                  <FormControlLabel control={<Checkbox name={'air_conditioner'} value={formik.values.air_conditioner} onChange={formik.handleChange} />} label="Điều hòa" />
+                  <FormControlLabel control={<Checkbox name={'air_conditioner'} checked={formik.values.air_conditioner} onChange={formik.handleChange} />} label="Điều hòa" />
                 </Grid>
                 <Grid item xs={3}>
 
-                  <FormControlLabel control={<Checkbox name={'water_heater'} value={formik.values.water_heater} onChange={formik.handleChange} />} label="Nóng lạnh" />
+                  <FormControlLabel control={<Checkbox name={'water_heater'} checked={formik.values.water_heater} onChange={formik.handleChange} />} label="Nóng lạnh" />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormControlLabel control={<Checkbox name={'refrigerator'} value={formik.values.refrigerator} onChange={formik.handleChange} />} label="Tủ lạnh" />
+                  <FormControlLabel control={<Checkbox name={'refrigerator'} checked={formik.values.refrigerator} onChange={formik.handleChange} />} label="Tủ lạnh" />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormControlLabel control={<Checkbox name={'wifi_internet'} value={formik.values.wifi_internet} onChange={formik.handleChange} />} label="Wifi" />
+                  <FormControlLabel control={<Checkbox name={'wifi_internet'} checked={formik.values.wifi_internet} onChange={formik.handleChange} />} label="Wifi" />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormControlLabel control={<Checkbox name={'washing_machine'} value={formik.values.washing_machine} onChange={formik.handleChange} />} label="Máy giặt" />
+                  <FormControlLabel control={<Checkbox name={'washing_machine'} checked={formik.values.washing_machine} onChange={formik.handleChange} />} label="Máy giặt" />
                 </Grid>
                 {/* </Box> */}
               </Grid>
