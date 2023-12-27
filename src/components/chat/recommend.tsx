@@ -27,7 +27,7 @@ export default function Recommend(props: IProps) {
 
   const handleSelect = async () => {
     //check whether the group(chats in firestore) exists, if not create
-    if (props.owner) {
+    if (props.owner && currentUser) {
       localStorage.setItem('targetUser', JSON.stringify(props.owner));
       dispatch({ type: 'CHANGE_USER', payload: props.owner });
       const combinedId =
@@ -68,7 +68,7 @@ export default function Recommend(props: IProps) {
 
   useEffect(() => {
     handleSelect();
-  }, [props.owner]);
+  }, [props.owner, currentUser]);
 
   const handleSend = async () => {
     if (currentUser) {
