@@ -39,7 +39,7 @@ export default function RoomOwnerContact({
   const { dispatch }: any = useContext(ChatContext);
 
   const handleGoChat = async () => {
-    if (ownerReal) {
+    if (ownerReal && currentUser) {
       localStorage.setItem('targetUser', JSON.stringify(ownerReal));
       dispatch({ type: 'CHANGE_USER', payload: ownerReal });
       const combinedId =
@@ -77,6 +77,8 @@ export default function RoomOwnerContact({
       } catch (err) {
         console.log(err);
       }
+    } else {
+      window.location.replace('/login');
     }
   };
 
