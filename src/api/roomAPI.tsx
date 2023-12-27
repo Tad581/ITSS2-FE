@@ -1,5 +1,5 @@
 import { api } from './configs/axiosConfigs';
-import { IRoomsParams, EOrderDirection } from '../interfaces/room';
+import { IRoomsParams, EOrderDirection, IRoomCreateInput } from '../interfaces/room';
 import * as qs from 'qs';
 
 export const RoomAPI = {
@@ -69,6 +69,28 @@ export const RoomAPI = {
       url: '/room/' + params.id,
       method: 'DELETE',
     });
+    return response.data;
+  },
+  createRoom: async function (params: FormData) {
+    const response = await api.request({
+      url: '/room',
+      method: 'POST',
+      data: params,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data;
+  },
+  updateRoom: async function (id: number, params: FormData) {
+    const response = await api.request({
+      url: '/room/' + id,
+      method: 'PUT',
+      data: params,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     return response.data;
   },
 };

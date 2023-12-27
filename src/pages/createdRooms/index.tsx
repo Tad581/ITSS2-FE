@@ -1,7 +1,23 @@
+import React from 'react'
 import { Box } from '@mui/material';
 import Header from '../../layout/header';
 import CreatedRoomsPagination from '../../components/paginationItem/createdRoomsPagination';
+import CreateRoomModal from './createRoomModal';
 export default function CreatedRooms() {
+
+  const [open, setOpen] = React.useState(false);
+  const [roomId, setRoomId] = React.useState<number | null>(null);
+  const handleOpen = React.useCallback(() => setOpen(true), []);
+  const handleClose = React.useCallback(() => {
+    setOpen(false)
+    setRoomId(null);
+  }, []);
+  const handleEditClick = React.useCallback((id: number) => {
+    setRoomId(id);
+    setOpen(true);
+    console.log(id);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -11,8 +27,13 @@ export default function CreatedRooms() {
         backgroundColor: '#F5F5F5',
       }}
     >
-      <Header displayButton={true} />
-      <CreatedRoomsPagination />
+      <Header displayButton={true} onButtonClick={handleOpen} />
+      <CreatedRoomsPagination  handleEditClick={handleEditClick}/>
+      <CreateRoomModal
+        isOpen={open}
+        handleClose={handleClose}
+        roomId={roomId}
+      />
     </Box>
   );
 }

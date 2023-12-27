@@ -9,7 +9,11 @@ import ConfirmDialog from '../dialog/confirm';
 
 const pageSize = 5;
 
-export default function CreatedRoomsPagination() {
+type CreatedRoomsPaginationProps = {
+  handleEditClick?: (id: number) => void
+}
+
+export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedRoomId, setSelectedRoomId] = useState<number>();
 
@@ -96,6 +100,7 @@ export default function CreatedRoomsPagination() {
               handleSelectedRoomId={(room_id: number) =>
                 setSelectedRoomId(room_id)
               }
+              handleEditClick={props.handleEditClick}
             />
           ))
         ) : (

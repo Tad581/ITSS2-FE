@@ -13,6 +13,7 @@ import { AuthContext } from '../context/authContext';
 interface IProps {
   handleKeyword?: (keyword: string) => void;
   displayButton?: boolean;
+  onButtonClick?: () => void;
 }
 
 export default function Header(props: IProps) {
@@ -100,6 +101,7 @@ export default function Header(props: IProps) {
                 textTransform: 'none',
                 borderRadius: 2,
               }}
+              onClick={props.onButtonClick}
             >
               Đăng tin
             </Button>
