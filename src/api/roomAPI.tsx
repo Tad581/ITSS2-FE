@@ -1,5 +1,5 @@
 import { api } from './configs/axiosConfigs';
-import { IRoomsParams, EOrderDirection, IRoomCreateInput } from '../interfaces/room';
+import { IRoomsParams, EOrderDirection } from '../interfaces/room';
 import * as qs from 'qs';
 
 export const RoomAPI = {

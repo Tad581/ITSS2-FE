@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { Button, IconButton, Typography } from '@mui/material';
-import { Image } from '@mui/icons-material';
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 type ImageUploadCardProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handlePropsImage?: (files: any[]) => void;
   existedImageUrls?: string[];
-}
+};
 
 export default function ImageUploadCard(props: ImageUploadCardProps) {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -24,87 +23,83 @@ export default function ImageUploadCard(props: ImageUploadCardProps) {
       if (props?.handlePropsImage) {
         // Handle the image field change here
         props.handlePropsImage(filesArray);
-        console.log(filesArray)
+        console.log(filesArray);
       }
     }
   };
 
   return (
-    <>
-      <Grid container spacing={2} width={"calc(100%)"}>
-        {
-          props?.existedImageUrls && props?.existedImageUrls?.map((url) => (
-            <Grid item key={url} sm={2} md={2} lg={2} xl={2}>
+    <Grid container spacing={2} width={'calc(100%)'}>
+      {props?.existedImageUrls &&
+        props?.existedImageUrls?.map((url) => (
+          <Grid item key={url} sm={2} md={2} lg={2} xl={2}>
             <img
               src={url}
-              alt="Preview"
+              alt='Preview'
               style={{
-                width: "100%",
-                objectFit: "cover",
-                border: "1px solid black",
-                borderRadius: "10px",
-                aspectRatio: "1 / 1",
-              }}
-            />
-          </Grid>
-          ))
-        }
-        {previewImages.map((previewImage) => (
-          <Grid item key={previewImage} sm={2} md={2} lg={2} xl={2}>
-            <img
-              src={previewImage}
-              alt="Preview"
-              style={{
-                width: "100%",
-                objectFit: "cover",
-                border: "1px solid black",
-                borderRadius: "10px",
-                aspectRatio: "1 / 1",
+                width: '100%',
+                objectFit: 'cover',
+                border: '1px solid black',
+                borderRadius: '10px',
+                aspectRatio: '1 / 1',
               }}
             />
           </Grid>
         ))}
-        <Grid item sm={2} md={2} lg={2} xl={2}>
-          <Box
-            sx={{
-              border: "1px solid black",
-              padding: "0px",
-              aspectRatio: "1 / 1",
-              cursor: "pointer",
-              borderRadius: "10px",
+      {previewImages.map((previewImage) => (
+        <Grid item key={previewImage} sm={2} md={2} lg={2} xl={2}>
+          <img
+            src={previewImage}
+            alt='Preview'
+            style={{
+              width: '100%',
+              objectFit: 'cover',
+              border: '1px solid black',
+              borderRadius: '10px',
+              aspectRatio: '1 / 1',
+            }}
+          />
+        </Grid>
+      ))}
+      <Grid item sm={2} md={2} lg={2} xl={2}>
+        <Box
+          sx={{
+            border: '1px solid black',
+            padding: '0px',
+            aspectRatio: '1 / 1',
+            cursor: 'pointer',
+            borderRadius: '10px',
+          }}
+        >
+          <label
+            htmlFor='image-upload'
+            style={{
+              cursor: 'pointer',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <label
-              htmlFor="image-upload"
-              style={{
-                cursor: "pointer",
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <AddOutlinedIcon sx={{ fontSize: 60 }} />
-            </label>
-            <input
-              id="image-upload"
-              type="file"
-              name="images"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-              width="100%"
-              height="100%"
-            />
-          </Box>
-        </Grid>
+            <AddOutlinedIcon sx={{ fontSize: 60 }} />
+          </label>
+          <input
+            id='image-upload'
+            type='file'
+            name='images'
+            accept='image/*'
+            multiple
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+            width='100%'
+            height='100%'
+          />
+        </Box>
       </Grid>
-    </>
-  )
+    </Grid>
+  );
 }
-
 
 // export default function ImageUploadCard() {
 //   const [files, setFiles] = useState<unknown[]>([])
@@ -124,7 +119,7 @@ export default function ImageUploadCard(props: ImageUploadCardProps) {
 //   return (
 //     <Box>
 //       {
-//         fileUrls.map(f => 
+//         fileUrls.map(f =>
 //           <Image key={f} src={f} sx={{width: 100, height: 100}} />
 //         )
 //       }
