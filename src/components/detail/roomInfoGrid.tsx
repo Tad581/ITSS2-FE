@@ -48,9 +48,15 @@ export default function RoomInfoGrid(props: RoomInfoGridProps) {
       </Item>
       <Item icon={BathroomIcon}>{bathroomType}</Item>
       <Item icon={MyLocationIcon}>Cách ĐHBKHN {hustDistance}</Item>
-      <Item icon={ElectricBoltIcon}>{electricPrice}</Item>
-      <Item icon={LocalAtmIcon}>{price}</Item>
-      <Item icon={WaterDropIcon}>{waterPrice}</Item>
+      <Item icon={ElectricBoltIcon}>
+        {Intl.NumberFormat('vi-VN').format(parseInt(electricPrice))}
+      </Item>
+      <Item icon={LocalAtmIcon}>
+        {Intl.NumberFormat('vi-VN').format(parseInt(price))}
+      </Item>
+      <Item icon={WaterDropIcon}>
+        {Intl.NumberFormat('vi-VN').format(parseInt(waterPrice))}
+      </Item>
       <Item icon={LocationOnIcon}>{location}</Item>
       <Item icon={CropIcon}>{roomArea} m²</Item>
     </Grid>

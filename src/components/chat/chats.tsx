@@ -33,7 +33,7 @@ const Chats = () => {
 
   return (
     <Box>
-      {Object.entries(chats)?.map((chat: any) => (
+      {chats && Object.entries(chats)?.map((chat: any) => (
         <Box
           sx={{
             padding: '10px',

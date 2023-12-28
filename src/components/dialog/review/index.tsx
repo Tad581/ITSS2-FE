@@ -152,7 +152,6 @@ export default function MakeReview(props: IProps) {
       setPreviewImages(previewArray);
       setUploadFiles(filesArray);
       // Handle the image field change here
-      console.log(files);
     }
   };
 

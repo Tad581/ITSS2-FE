@@ -9,6 +9,8 @@ const Sidebar = () => {
         flex: 1,
         backgroundColor: '#fff',
         position: 'relative',
+        minWidth: '400px',
+        minHeight: '100%'
       }}
     >
       <Search />

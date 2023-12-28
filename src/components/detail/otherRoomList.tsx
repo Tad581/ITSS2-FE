@@ -77,7 +77,9 @@ function RoomCard(props: IRoom) {
             {props.name}
           </Typography>
         </Link>
-        <Typography>{props.price}/tháng</Typography>
+        <Typography>
+          {Intl.NumberFormat('vi-VN').format(props.price)}/tháng
+        </Typography>
         <Typography
           variant='subtitle1'
           sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}

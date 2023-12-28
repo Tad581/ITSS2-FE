@@ -13,8 +13,10 @@ export default function RecommendList() {
   return (
     <Box
       sx={{
-        maxWidth: '800px',
+        width: '800px',
+        minWidth: '100%',
         height: '50px',
+        paddingTop: 1,
         overflowX: 'auto',
         whiteSpace: 'nowrap',
         backgroundColor: '#fff',

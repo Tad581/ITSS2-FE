@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/index';
 import { Box, OutlinedInput, Button } from '@mui/material';
@@ -47,16 +47,6 @@ const Login = () => {
           alignItems: 'center',
         }}
       >
-        <Box
-          component='span'
-          sx={{
-            color: '#5d5b8d',
-            fontWeight: 'bold',
-            fontSize: '24px',
-          }}
-        >
-          Lama Chat
-        </Box>
         <Box
           component='span'
           sx={{
@@ -116,7 +106,7 @@ const Login = () => {
           </Button>
           {err && <Box component='span'>Something went wrong</Box>}
         </form>
-        <Box
+        {/* <Box
           component='p'
           sx={{
             color: '#5d5b8d',
@@ -124,8 +114,8 @@ const Login = () => {
             marginTop: '10px',
           }}
         >
-          You don't have an account? <Link to='/register'>Register</Link>
-        </Box>
+          You don't have an account? Register
+        </Box> */}
       </Box>
     </Box>
   );

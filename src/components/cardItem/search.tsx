@@ -19,20 +19,22 @@ export default function CardItem(props: IProps) {
         flexDirection: 'column',
       }}
     >
-      <Box
-        component='img'
-        src={
-          props.room_image
-            ? props.room_image
-            : 'https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
-        }
-        sx={{
-          objectFit: 'cover',
-          borderRadius: 2,
-          width: '100%',
-          aspectRatio: '1 / 1',
-        }}
-      />
+      <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
+        <Box
+          component='img'
+          src={
+            props.room_image
+              ? props.room_image
+              : 'https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
+          }
+          sx={{
+            objectFit: 'cover',
+            borderRadius: 2,
+            width: '100%',
+            aspectRatio: '1 / 1',
+          }}
+        />
+      </Link>
       <Box sx={{ width: '100%' }}>
         <Link href={'/detail/' + props.id} sx={{ textDecoration: 'none' }}>
           <Typography

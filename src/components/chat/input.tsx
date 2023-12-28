@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useContext } from 'react';
-import { Box, OutlinedInput, TextField, InputAdornment } from '@mui/material';
+import { Box, TextField, InputAdornment } from '@mui/material';
 import { AuthContext } from '../../context/authContext';
 import { ChatContext } from '../../context/chatContext';
 import {
@@ -18,8 +18,8 @@ import SendIcon from '@mui/icons-material/Send';
 
 const Input = () => {
   const [text, setText] = useState('');
-  const [img, setImg] = useState(null);
-
+  const [img, setImg] = useState<any>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>();
   const { currentUser }: any = useContext(AuthContext);
   const { data }: any = useContext(ChatContext);
 
@@ -90,6 +90,15 @@ const Input = () => {
 
     setText('');
     setImg(null);
+    if (previewImage) URL.revokeObjectURL(previewImage);
+    setPreviewImage(null);
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setImg(event.target.files[0]);
+      setPreviewImage(URL.createObjectURL(event.target.files[0]));
+    }
   };
 
   return (
@@ -104,12 +113,23 @@ const Input = () => {
         borderTop: '1px solid lightgray',
       }}
     >
-      <OutlinedInput
+      {previewImage ? (
+        <Box
+          component='img'
+          src={previewImage}
+          alt='preview image'
+          sx={{ width: '50px', height: 'auto', objectFit: 'cover' }}
+        />
+      ) : (
+        <></>
+      )}
+      <TextField
         type='file'
         style={{ display: 'none' }}
+        inputProps={{ accept: 'image/*' }}
         id='file'
         sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-        onChange={(e: any) => setImg(e.target.files[0])}
+        onChange={handleImageChange}
       />
       <Box component='label' htmlFor='file' sx={{ marginRight: 1 }}>
         <AddCircleIcon sx={{ fontSize: '40px' }} />
