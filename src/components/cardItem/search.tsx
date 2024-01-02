@@ -59,7 +59,7 @@ export default function CardItem(props: IProps) {
             color: '#35E908',
           }}
         >
-          Cách ĐH Back khoa {props.distance_to_school}km
+          Cách ĐH Bách khoa {props.distance_to_school}km
         </Typography>
         <Typography
           sx={{
