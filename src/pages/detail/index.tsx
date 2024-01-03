@@ -101,7 +101,7 @@ export default function Detail() {
             gap: 11
           }}
         >
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, maxWidth: '60%' }}>
             {/*  */}
             <RoomInfoGrid
               electricPrice={
