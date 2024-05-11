@@ -3,14 +3,14 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface IProps {
-  id: number;
+  id: string;
   name: string;
   area: number;
   price: number;
-  image_url: string;
+  imageUrl: string;
   handleOpenDialog: () => void;
-  handleSelectedRoomId: (room_id: number) => void;
-  handleEditClick?: (room_id: number) => void;
+  handleSelectedRoomId: (roomId: string) => void;
+  handleEditClick?: (roomId: string) => void;
 }
 
 export default function CreatedRooms(props: IProps) {
@@ -28,8 +28,8 @@ export default function CreatedRooms(props: IProps) {
       <Box
         component='img'
         src={
-          props.image_url
-            ? props.image_url
+          props.imageUrl
+            ? import.meta.env.VITE_BACKEND_URL + props.imageUrl
             : 'https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
         }
         sx={{

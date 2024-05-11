@@ -1,18 +1,18 @@
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
-import Header from '../../layout/header';
-import { Collapse } from '@mui/material';
-import QuiltedImageList from '../../components/gallery/QuiltedImageList';
-import RoomHeader from '../../components/detail/roomHeader';
-import RoomInfoGrid from '../../components/detail/roomInfoGrid';
-import RoomOwnerContact from '../../components/detail/roomOwnerContact';
-import RatingMessageList from '../../components/detail/rating';
-import OtherRoomList from '../../components/detail/otherRoomList';
-import RoomAttribute from '../../components/detail/roomAttribute';
-import { RoomAPI } from '../../api/roomAPI';
-import { useEffect, useState, useMemo } from 'react';
-import { IRoom } from '../../interfaces/room';
-import { useParams } from 'react-router-dom';
-import MapContainer from '../../components/map';
+import { Box, Container, Divider, Grid, Typography } from "@mui/material";
+import Header from "../../layout/header";
+import { Collapse } from "@mui/material";
+import QuiltedImageList from "../../components/gallery/QuiltedImageList";
+import RoomHeader from "../../components/detail/roomHeader";
+import RoomInfoGrid from "../../components/detail/roomInfoGrid";
+import RoomOwnerContact from "../../components/detail/roomOwnerContact";
+import RatingMessageList from "../../components/detail/rating";
+import OtherRoomList from "../../components/detail/otherRoomList";
+import RoomAttribute from "../../components/detail/roomAttribute";
+import { RoomAPI } from "../../api/roomAPI";
+import { useEffect, useState, useMemo } from "react";
+import { IRoom } from "../../interfaces/room";
+import { useParams } from "react-router-dom";
+import MapContainer from "../../components/map";
 
 export default function Detail() {
   const { id } = useParams();
@@ -23,23 +23,23 @@ export default function Detail() {
   const { rating, reviewCount }: { rating: number; reviewCount: number } =
     useMemo(() => {
       let totalRating = 0;
-      if (roomData?.review)
-        roomData.review.forEach((data) => (totalRating += data.star));
+      if (roomData?.reviews)
+        roomData.reviews.forEach((data) => (totalRating += data.star));
       return {
-        rating: roomData ? totalRating / roomData.review.length : 0,
-        reviewCount: roomData ? roomData.review.length : 0,
+        rating: roomData ? totalRating / roomData.reviews.length : 0,
+        reviewCount: roomData ? roomData.reviews.length : 0,
       };
     }, [roomData]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
-      const response = await RoomAPI.getOne(parseInt(id));
-      if (response?.success) {
+      const response = await RoomAPI.getOne(id);
+      if (response.message === "Success") {
         setRoomData(response.data);
       }
       const response2 = await RoomAPI.getOwnerRooms({
-        owner_id: parseInt(response.data.owner_id),
+        romOwnerId: response.data.romOwnerId,
       });
       if (response2?.success) {
         setOwnerRoom(response2.data);
@@ -51,9 +51,9 @@ export default function Detail() {
   return (
     <Box
       sx={{
-        height: 'auto',
-        width: '100%',
-        backgroundColor: '#F5F5F5',
+        height: "auto",
+        width: "100%",
+        backgroundColor: "#F5F5F5",
       }}
     >
       <Header />
@@ -61,18 +61,18 @@ export default function Detail() {
       <Container
         maxWidth={false}
         sx={{
-          backgroundColor: 'white',
+          backgroundColor: "white",
           borderRadius: 2,
           paddingY: 4,
-          paddingX: '60px!important',
+          paddingX: "60px!important",
         }}
       >
         {/* title, subtitle */}
         <RoomHeader
-          title={roomData ? roomData.name : ''} //"Charm M1.2, Flamingo Đà lạt"
+          title={roomData ? roomData.name : ""} //"Charm M1.2, Flamingo Đà lạt"
           rating={rating}
           reviewCount={reviewCount}
-          location={roomData ? roomData.address : ''} //"Thanh Xuân, Hà Nội"
+          location={roomData ? roomData.address : ""} //"Thanh Xuân, Hà Nội"
         />
 
         {/* image */}
@@ -80,8 +80,8 @@ export default function Detail() {
           <QuiltedImageList
             itemData={
               roomData
-                ? roomData.room_image.map((o) => ({
-                    img: o.image_url,
+                ? roomData.roomImages.map((o) => ({
+                    img: import.meta.env.VITE_BACKEND_URL + o.imageUrl,
                     title: o.id.toString(),
                   }))
                 : []
@@ -92,83 +92,81 @@ export default function Detail() {
         {/* description */}
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
             marginTop: 4,
-            marginX: 'auto',
-            width: '100%',
-            gap: 11
+            marginX: "auto",
+            width: "100%",
+            gap: 11,
           }}
         >
-          <Box sx={{ flexGrow: 1, maxWidth: '60%' }}>
+          <Box sx={{ flexGrow: 1, maxWidth: "60%" }}>
             {/*  */}
             <RoomInfoGrid
               electricPrice={
                 roomData
-                  ? roomData.room_attribute?.electronic_price?.toString() +
-                      ' đ/số' || ''
-                  : ''
+                  ? roomData.roomAttribute?.electronicPrice?.toString() || ""
+                  : ""
               }
               waterPrice={
                 roomData
-                  ? roomData.room_attribute?.water_price?.toString() +
-                      ' đ/khối' || ''
-                  : ''
+                  ? roomData.roomAttribute?.waterPrice?.toString() || ""
+                  : ""
               }
               roomArea={roomData ? roomData.area : 0}
-              hustDistance={
-                roomData
-                  ? roomData?.distance_to_school.toString() + 'km' || ''
-                  : ''
-              }
+              // hustDistance={
+              //   roomData
+              //     ? roomData?.distance_to_school.toString() + 'km' || ''
+              //     : ''
+              // }
               bathroomType={
                 roomData
-                  ? roomData?.room_attribute?.enclosed_toilet
-                    ? 'NVS riêng'
-                    : 'NVS Chung'
-                  : ''
+                  ? roomData?.roomAttribute?.enclosedToilet
+                    ? "NVS riêng"
+                    : "NVS Chung"
+                  : ""
               }
-              roomType={roomData ? roomData?.type : ''}
-              price={String(roomData ? roomData?.price : 0) + ' đ'}
-              location={roomData ? roomData?.address : ''}
+              roomType={roomData ? roomData?.type : ""}
+              price={String(roomData ? roomData?.price : 0)}
+              location={roomData ? roomData?.address : ""}
             />
 
             <Divider />
 
             <Box sx={{ marginY: 4 }}>
               {/* Rating */}
-              <Typography variant='h4' component='h4'>
+              <Typography variant="h4" component="h4">
                 Nhận xét mới nhất:
               </Typography>
               <RatingMessageList
-                room_id={roomData?.id}
+                roomId={roomData?.roomId}
                 reviewCount={reviewCount}
                 rating={rating}
-                messages={roomData?.review}
+                messages={roomData?.reviews}
               />
             </Box>
 
             <Divider />
 
             <Box sx={{ marginY: 4 }}>
-              <Typography variant='h4' component='h4'>
+              <Typography variant="h4" component="h4">
                 Chi tiết chỗ ở:
               </Typography>
               <Collapse
                 in={true}
-                timeout='auto'
+                timeout="auto"
                 unmountOnExit
                 sx={{ marginTop: 2 }}
               >
-                <Typography>{roomData?.room_attribute?.description}</Typography>
+                <Typography>{roomData?.roomAttribute?.description}</Typography>
               </Collapse>
             </Box>
 
             <Divider />
 
             <Box sx={{ marginY: 4 }}>
-              <Typography variant='h4' component='h4'>
+              <Typography variant="h4" component="h4">
                 Tiện nghi:
               </Typography>
 
@@ -176,26 +174,26 @@ export default function Detail() {
                 container
                 rowSpacing={1}
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                sx={{ maxWidth: 'sm' }}
+                sx={{ maxWidth: "sm" }}
               >
                 <RoomAttribute
                   haveAirConditioner={
-                    roomData ? roomData?.room_attribute?.air_conditioner : false
+                    roomData ? roomData?.roomAttribute?.airConditioner : false
                   }
                   haveFridge={
-                    roomData ? roomData?.room_attribute?.refrigerator : false
+                    roomData ? roomData?.roomAttribute?.refrigerator : false
                   }
                   haveHeater={
-                    roomData ? roomData?.room_attribute?.water_heater : false
+                    roomData ? roomData?.roomAttribute?.waterHeater : false
                   }
                   haveWashingMachine={
-                    roomData ? roomData?.room_attribute?.washing_machine : false
+                    roomData ? roomData?.roomAttribute?.washingMachine : false
                   }
                   haveWifi={
-                    roomData ? roomData?.room_attribute?.wifi_internet : false
+                    roomData ? roomData?.roomAttribute?.wifiInternet : false
                   }
                   havePCCC={
-                    roomData ? roomData?.room_attribute?.safed_device : false
+                    roomData ? roomData?.roomAttribute?.safedDevice : false
                   }
                 />
               </Grid>
@@ -204,35 +202,35 @@ export default function Detail() {
             <Divider />
 
             <Box sx={{ marginTop: 4 }}>
-              <Typography variant='h4' component='h4'>
+              <Typography variant="h4" component="h4">
                 Địa chỉ:
               </Typography>
-              <Typography variant='subtitle1' component='span'>
+              <Typography variant="subtitle1" component="span">
                 {roomData?.address}
               </Typography>
               {/* map */}
-              <Box sx={{ height: 400, width: '100%' }}>
+              <Box sx={{ height: 400, width: "100%" }}>
                 <MapContainer address={roomData?.address} />
               </Box>
             </Box>
           </Box>
 
           {/* Avatar */}
-          <RoomOwnerContact owner={roomData?.owner}/>
+          {/* <RoomOwnerContact owner={roomData?.owner}/> */}
         </Box>
 
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
             marginTop: 4,
-            marginX: 'auto',
-            width: '100%',
+            marginX: "auto",
+            width: "100%",
           }}
         >
           {/* Other room */}
-          <Typography variant='h4' component='h4'>
+          <Typography variant="h4" component="h4">
             Phòng khác của chủ nhà:
           </Typography>
           <OtherRoomList roomList={ownerRoom} />

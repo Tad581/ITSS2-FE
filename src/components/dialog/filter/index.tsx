@@ -109,11 +109,11 @@ export default function FilterDialog(props: Readonly<IProps>) {
   }>({ house: false, apartment: false, homestay: false });
 
   const [advances, setAdvances] = useState({
-    wifi_internet: false,
-    air_conditioner: false,
-    water_heater: false,
+    wifiInternet: false,
+    airConditioner: false,
+    waterHeater: false,
     refrigerator: false,
-    washing_machine: false,
+    washingMachine: false,
   });
 
   const [electronicPrice, setElectronicPrice] = useState<number[]>([0, 0]);
@@ -212,15 +212,15 @@ export default function FilterDialog(props: Readonly<IProps>) {
       distance_to_school_to: distances[1],
       price_from: prices[0],
       price_to: prices[1],
-      electronic_price_from: electronicPrice[0],
-      electronic_price_to: electronicPrice[1],
-      water_price_from: waterPrice[0],
-      water_price_to: waterPrice[1],
-      wifi_internet: advances.wifi_internet,
-      air_conditioner: advances.air_conditioner,
-      water_heater: advances.water_heater,
+      electronicPrice_from: electronicPrice[0],
+      electronicPrice_to: electronicPrice[1],
+      waterPrice_from: waterPrice[0],
+      waterPrice_to: waterPrice[1],
+      wifiInternet: advances.wifiInternet,
+      airConditioner: advances.airConditioner,
+      waterHeater: advances.waterHeater,
       refrigerator: advances.refrigerator,
-      washing_machine: advances.washing_machine,
+      washingMachine: advances.washingMachine,
     });
     props.handleClose();
   };
@@ -627,11 +627,11 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={advances.wifi_internet}
+                      checked={advances.wifiInternet}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
-                          wifi_internet: event.target.checked,
+                          wifiInternet: event.target.checked,
                         })
                       }
                     />
@@ -644,11 +644,11 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={advances.air_conditioner}
+                      checked={advances.airConditioner}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
-                          air_conditioner: event.target.checked,
+                          airConditioner: event.target.checked,
                         })
                       }
                     />
@@ -661,11 +661,11 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={advances.water_heater}
+                      checked={advances.waterHeater}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
-                          water_heater: event.target.checked,
+                          waterHeater: event.target.checked,
                         })
                       }
                     />
@@ -695,11 +695,11 @@ export default function FilterDialog(props: Readonly<IProps>) {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={advances.washing_machine}
+                      checked={advances.washingMachine}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         setAdvances({
                           ...advances,
-                          washing_machine: event.target.checked,
+                          washingMachine: event.target.checked,
                         })
                       }
                     />

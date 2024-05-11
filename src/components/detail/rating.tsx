@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { IReview } from '../../interfaces/room';
 import MakeReview from '../dialog/review';
 interface IProps {
-  room_id?: number;
+  roomId?: string;
   rating: number;
   reviewCount: number;
   messages?: IReview[];
@@ -117,11 +117,11 @@ export default function RatingMessageList(props: IProps) {
           }}
         />
       )}
-      {props.room_id ? (
+      {props.roomId ? (
         <MakeReview
           handleClose={() => setIsOpen(false)}
           open={isOpen}
-          id={props.room_id}
+          id={props.roomId}
         />
       ) : (
         <></>
@@ -169,7 +169,7 @@ function RatingMessage(props: IReview) {
         marginTop={2}
       >
         <Grid container spacing={2}>
-          {props.review_image.map((image) => (
+          {props.reviewImages.map((image) => (
             <Grid item sm={4} key={image.id}>
               <Box
                 component='img'
@@ -179,8 +179,8 @@ function RatingMessage(props: IReview) {
                   borderRadius: '10px',
                 }}
                 src={
-                  image.image_url
-                    ? image.image_url
+                  image.imageUrl
+                    ? import.meta.env.VITE_BACKEND_URL + image.imageUrl
                     : 'https://i.ibb.co/6WXYg60/cafe.jpg'
                 }
                 title='green iguana'

@@ -1,28 +1,26 @@
-import { Box, Pagination, Typography, Grid } from '@mui/material';
-import { useState, useEffect } from 'react';
-import CardItem from '../cardItem/search';
-import FilterDialog from '../dialog/filter';
-import Filterbar from '../../layout/filterbar';
-import { RoomAPI } from '../../api/roomAPI';
-import { IRoom, IRoomsParams, EOrderDirection } from '../../interfaces/room';
+import { Box, Pagination, Typography, Grid } from "@mui/material";
+import { useState, useEffect } from "react";
+import CardItem from "../cardItem/search";
+import FilterDialog from "../dialog/filter";
+import Filterbar from "../../layout/filterbar";
+import { RoomAPI } from "../../api/roomAPI";
+import { IRoom, IRoomsParams, EOrderDirection } from "../../interfaces/room";
 
 interface IProps {
   keyword: string;
 }
 
-const pageSize = 8;
-
 export default function ItemPagination(props: IProps) {
   const [showData, setShowData] = useState<IRoom[]>([]);
   const [isDialogShow, setIsDialogShow] = useState<boolean>(false);
   const [pagination, setPagination] = useState({
-    page: 1,
-    page_size: pageSize,
-    total: 0,
+    currentPage: 1,
+    pageSize: 12,
+    totalRecords: 0,
   });
   const [roomsParams, setRoomsParams] = useState<IRoomsParams>({
-    page: pagination.page,
-    page_size: pageSize,
+    page: pagination.currentPage,
+    pageSize: 12,
     order_direction: EOrderDirection.DESC,
   });
 
@@ -31,7 +29,7 @@ export default function ItemPagination(props: IProps) {
     page: number
   ) => {
     console.log(event);
-    setPagination({ ...pagination, page: page });
+    setPagination({ ...pagination, currentPage: page });
     setRoomsParams({ ...roomsParams, page: page });
   };
 
@@ -40,7 +38,7 @@ export default function ItemPagination(props: IProps) {
   };
 
   useEffect(() => {
-    if (props.keyword && props.keyword !== '') {
+    if (props.keyword && props.keyword !== "") {
       setRoomsParams({ ...roomsParams, address: props.keyword });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,9 +47,10 @@ export default function ItemPagination(props: IProps) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await RoomAPI.getAll(roomsParams);
+      const { currentPage, pageSize, totalRecords } = response.data;
       if (response) {
-        setShowData(response.data);
-        setPagination(response.pagination);
+        setShowData(response.data.content);
+        setPagination({ currentPage, pageSize, totalRecords });
       }
     };
     fetchData().catch((error) => console.log(error));
@@ -65,52 +64,52 @@ export default function ItemPagination(props: IProps) {
       />
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: -4
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: -4,
         }}
       >
         <Grid
           container
           spacing={5}
           sx={{
-            width: '80%',
-            height: 'auto',
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
+            width: "80%",
+            height: "auto",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
             marginTop: 1,
           }}
         >
           {showData.length > 0 ? (
             showData.map((item: IRoom) => (
-              <Grid item sm={12} md={6} lg={3} xl={2} key={item.id}>
+              <Grid item sm={12} md={6} lg={3} xl={2} key={item.roomId}>
                 <CardItem
-                  id={item.id}
+                  id={item.roomId}
                   name={item.name}
-                  room_image={item.room_image[0]?.image_url}
+                  roomImages={item.roomImages[0]?.imageUrl}
                   address={item.address}
-                  distance_to_school={item.distance_to_school}
+                  // distance_to_school={item.distance_to_school}
                   area={item.area}
                 />
               </Grid>
             ))
           ) : (
-            <Typography mt={10} mx='auto' textAlign='center'>
+            <Typography mt={10} mx="auto" textAlign="center">
               Không có dữ liệu
             </Typography>
           )}
         </Grid>
-        {Math.ceil(pagination.total / pageSize) <= 1 ? (
+        {Math.ceil(pagination.totalRecords / pagination.pageSize) <= 1 ? (
           <Box sx={{ marginBottom: 10 }}></Box>
         ) : (
           <Pagination
             sx={{ marginY: 6 }}
-            count={Math.ceil(pagination.total / pageSize)}
+            count={Math.ceil(pagination.totalRecords / pagination.pageSize)}
             onChange={handlePageChange}
-            page={pagination.page}
+            page={pagination.currentPage}
           />
         )}
       </Box>

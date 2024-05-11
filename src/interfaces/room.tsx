@@ -1,70 +1,70 @@
 export interface IRoom {
-  id: number;
-  owner_id: number;
+  roomId: string;
+  romOwnerId: string;
   name: string;
   address: string;
   type: ERoomType;
   area: number;
-  distance_to_school: number;
+  // distance_to_school: number;
   price: number;
   created_at?: string;
   updated_at?: string;
   owner: {
-    id: number;
+    id: string;
     username: string;
     avatar?: string;
     role?: string;
   };
-  room_attribute?: {
-    id: number;
-    room_id: number;
-    wifi_internet: boolean;
-    air_conditioner: boolean;
-    water_heater: boolean;
+  roomAttribute?: {
+    id: string;
+    roomId: number;
+    wifiInternet: boolean;
+    airConditioner: boolean;
+    waterHeater: boolean;
     refrigerator: boolean;
-    washing_machine: boolean;
-    enclosed_toilet: boolean;
-    safed_device: boolean;
-    electronic_price: number;
-    water_price: number;
+    washingMachine: boolean;
+    enclosedToilet: boolean;
+    safedDevice: boolean;
+    electronicPrice: number;
+    waterPrice: number;
     description: string;
     created_at?: string;
     updated_at?: string;
   };
-  room_image: {
-    id: number;
-    room_id: number;
-    image_url: string;
+  roomImages: {
+    id: string;
+    roomId: string;
+    imageUrl: string;
     created_at?: string;
     updated_at?: string;
   }[];
-  review: IReview[];
+  reviews: IReview[];
 }
 
 export interface IRoomCreateInput {
-  owner_id: number,
+  romOwnerId: number,
   name: string,
   address: string,
   type: string,
   area: number,
   distance_to_school: number,
   price: number,
-  electronic_price: number,
-  water_price: number,
+  electronicPrice: number,
+  waterPrice: number,
   description: string,
-  wifi_internet: boolean,
-  washing_machine: boolean,
-  air_conditioner: boolean,
-  water_heater: boolean,
+  wifiInternet: boolean,
+  washingMachine: boolean,
+  airConditioner: boolean,
+  waterHeater: boolean,
   refrigerator: boolean,
-  safed_device: boolean,
-  enclosed_toilet: boolean,
+  safedDevice: boolean,
+  enclosedToilet: boolean,
   images: string[],
 }
 
 export interface IRoomsParams {
   page?: number;
-  page_size?: number;
+  pageSize?: number;
   order_direction?: EOrderDirection;
   name?: string;
   address?: string;
@@ -75,22 +75,22 @@ export interface IRoomsParams {
   distance_to_school_to?: number;
   price_from?: number;
   price_to?: number;
-  electronic_price_from?: number;
-  electronic_price_to?: number;
-  water_price_from?: number;
-  water_price_to?: number;
-  wifi_internet?: boolean;
-  air_conditioner?: boolean;
-  water_heater?: boolean;
+  electronicPrice_from?: number;
+  electronicPrice_to?: number;
+  waterPrice_from?: number;
+  waterPrice_to?: number;
+  wifiInternet?: boolean;
+  airConditioner?: boolean;
+  waterHeater?: boolean;
   refrigerator?: boolean;
-  washing_machine?: boolean;
-  enclosed_toilet?: boolean;
-  safed_device?: boolean;
+  washingMachine?: boolean;
+  enclosedToilet?: boolean;
+  safedDevice?: boolean;
 }
 
 export interface IReview {
   id: number;
-  room_id: number;
+  roomId: number;
   user_id: number;
   content: string;
   star: number;
@@ -101,16 +101,16 @@ export interface IReview {
     avatar: string | null;
     role: number;
   };
-  review_image: {
-    id: number;
-    review_id: number;
-    image_url: string;
+  reviewImages: {
+    id: string;
+    reviewId: string;
+    imageUrl: string;
   }[];
 }
 
 export interface IReviewParam {
-  user_id: number;
-  room_id: number;
+  userId: string;
+  roomId: string;
   content: string;
   star: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

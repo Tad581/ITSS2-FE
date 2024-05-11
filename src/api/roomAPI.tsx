@@ -2,14 +2,16 @@ import { api } from './configs/axiosConfigs';
 import { IRoomsParams, EOrderDirection } from '../interfaces/room';
 import * as qs from 'qs';
 
+const prefix = '/rooms/'
+
 export const RoomAPI = {
   getAll: async function (params?: IRoomsParams) {
     const response = await api.request({
-      url: '/room',
+      url: prefix,
       method: 'GET',
       params: {
         page: params?.page,
-        page_size: params?.page_size ? params?.page_size : 8,
+        pageSize: params?.pageSize ? params?.pageSize : 8,
         order_direction: params?.order_direction
           ? params?.order_direction
           : EOrderDirection.DESC,
@@ -22,17 +24,17 @@ export const RoomAPI = {
         distance_to_school_to: params?.distance_to_school_to,
         price_from: params?.price_from,
         price_to: params?.price_to,
-        electronic_price_from: params?.electronic_price_from,
-        electronic_price_to: params?.electronic_price_to,
-        water_price_from: params?.water_price_from,
-        water_price_to: params?.water_price_to,
-        wifi_internet: params?.wifi_internet,
-        air_conditioner: params?.air_conditioner,
-        water_heater: params?.water_heater,
+        electronicPrice_from: params?.electronicPrice_from,
+        electronicPrice_to: params?.electronicPrice_to,
+        waterPrice_from: params?.waterPrice_from,
+        waterPrice_to: params?.waterPrice_to,
+        wifiInternet: params?.wifiInternet,
+        airConditioner: params?.airConditioner,
+        waterHeater: params?.waterHeater,
         refrigerator: params?.refrigerator,
-        washing_machine: params?.washing_machine,
-        enclosed_toilet: params?.enclosed_toilet,
-        safed_device: params?.safed_device,
+        washingMachine: params?.washingMachine,
+        enclosedToilet: params?.enclosedToilet,
+        safedDevice: params?.safedDevice,
       },
       paramsSerializer: (params) => {
         return qs.stringify(params, { arrayFormat: 'repeat' });
@@ -40,40 +42,40 @@ export const RoomAPI = {
     });
     return response.data;
   },
-  getOne: async function (id: number) {
+  getOne: async function (id: string) {
     const response = await api.request({
-      url: '/room/' + id,
+      url: prefix + id,
       method: 'GET',
     });
     return response.data;
   },
   getOwnerRooms: async function (params: {
-    owner_id: number;
+    romOwnerId: string;
     page?: number;
-    page_size?: number;
+    pageSize?: number;
     order_direction?: string;
   }) {
     const response = await api.request({
-      url: '/room/owner/' + params.owner_id,
+      url: prefix + 'owner/' + params.romOwnerId,
       method: 'GET',
       params: {
         page: params?.page,
-        page_size: params?.page_size,
+        pageSize: params?.pageSize,
         order_direction: params?.order_direction,
       },
     });
     return response.data;
   },
-  deleteRoom: async function (params: { id: number }) {
+  deleteRoom: async function (params: { id: string }) {
     const response = await api.request({
-      url: '/room/' + params.id,
+      url: prefix + params.id,
       method: 'DELETE',
     });
     return response.data;
   },
   createRoom: async function (params: FormData) {
     const response = await api.request({
-      url: '/room',
+      url: prefix,
       method: 'POST',
       data: params,
       headers: {
@@ -82,9 +84,9 @@ export const RoomAPI = {
     })
     return response.data;
   },
-  updateRoom: async function (id: number, params: FormData) {
+  updateRoom: async function (id: string, params: FormData) {
     const response = await api.request({
-      url: '/room/' + id,
+      url: prefix + id,
       method: 'PUT',
       data: params,
       headers: {

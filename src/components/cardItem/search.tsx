@@ -3,10 +3,10 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import Link from '@mui/material/Link';
 
 interface IProps {
-  id: number;
+  id: string;
   name: string;
-  room_image: string;
-  distance_to_school: number;
+  roomImages: string;
+  // distance_to_school: number;
   area: number;
   address: string;
 }
@@ -23,8 +23,8 @@ export default function CardItem(props: IProps) {
         <Box
           component='img'
           src={
-            props.room_image
-              ? props.room_image
+            props.roomImages
+              ? import.meta.env.VITE_BACKEND_URL+ props.roomImages
               : 'https://do84cgvgcm805.cloudfront.net/article/362/1200/25cf654358d7812a07902fa42f249dedbec8eb058bdda541c88b9e3b317a93d9.jpg'
           }
           sx={{
@@ -52,7 +52,7 @@ export default function CardItem(props: IProps) {
             {props.name}
           </Typography>
         </Link>
-        <Typography
+        {/* <Typography
           sx={{
             fontSize: '16px',
             fontWeight: 400,
@@ -60,7 +60,7 @@ export default function CardItem(props: IProps) {
           }}
         >
           Cách ĐH Bách khoa {props.distance_to_school}km
-        </Typography>
+        </Typography> */}
         <Typography
           sx={{
             fontSize: '16px',

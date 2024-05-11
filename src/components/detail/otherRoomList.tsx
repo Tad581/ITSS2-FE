@@ -58,7 +58,7 @@ function RoomCard(props: IRoom) {
             objectFit: 'cover',
           }}
           alt='The house from the offer.'
-          src={props.room_image[0]?.image_url}
+          src={import.meta.env.VITE_BACKEND_URL + props.roomImages[0]?.imageUrl}
         />
       </Link>
       <Box>
@@ -84,8 +84,8 @@ function RoomCard(props: IRoom) {
           variant='subtitle1'
           sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}
         >
-          <MyLocationIcon sx={{ marginRight: 1, color: 'green' }} /> Cách ĐHBKHN{' '}
-          {props.distance_to_school}km
+          {/* <MyLocationIcon sx={{ marginRight: 1, color: 'green' }} /> Cách ĐHBKHN{' '}
+          {props.distance_to_school}km */}
         </Typography>
       </Box>
     </Card>

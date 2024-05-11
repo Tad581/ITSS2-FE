@@ -3,15 +3,15 @@ import { RoomAPI } from '../../../api/roomAPI';
 import { toast } from 'react-toastify';
 
 interface IProps {
-  room_id: number | undefined;
+  roomId: string | undefined;
   open: boolean;
   handleClose: () => void;
 }
 
 export default function ConfirmDialog(props: IProps) {
-  const handleDelete = async (room_id: number | undefined) => {
-    if (room_id) {
-      const response = await RoomAPI.deleteRoom({ id: room_id });
+  const handleDelete = async (roomId: string | undefined) => {
+    if (roomId) {
+      const response = await RoomAPI.deleteRoom({ id: roomId });
       if (response.success) {
         toast.success(response.message, {
           position: 'top-right',
@@ -47,7 +47,7 @@ export default function ConfirmDialog(props: IProps) {
 
       <DialogActions>
         <Button onClick={props.handleClose}>Thoát</Button>
-        <Button onClick={() => handleDelete(props.room_id)}>Đồng ý</Button>
+        <Button onClick={() => handleDelete(props.roomId)}>Đồng ý</Button>
       </DialogActions>
     </Dialog>
   );

@@ -10,25 +10,25 @@ import ConfirmDialog from '../dialog/confirm';
 const pageSize = 5;
 
 type CreatedRoomsPaginationProps = {
-  handleEditClick?: (id: number) => void
+  handleEditClick?: (id: string) => void
 }
 
 export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedRoomId, setSelectedRoomId] = useState<number>();
+  const [selectedRoomId, setSelectedRoomId] = useState<string>();
 
   const [showData, setShowData] = useState<IRoom[]>([]);
   // For pagination
   const [pagination, setPagination] = useState({
     page: 1,
-    page_size: pageSize,
-    total: 0,
+    pageSize: pageSize,
+    totalPages: 0,
   });
 
   const [roomsParams, setRoomsParams] = useState({
-    owner_id: 26,
+    romOwnerId: 26,
     page: pagination.page,
-    page_size: pageSize,
+    pageSize: pageSize,
     order_direction: EOrderDirection.DESC,
   });
 
@@ -95,10 +95,10 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
               name={item?.name}
               price={item?.price}
               area={item?.area}
-              image_url={item?.room_image[0]?.image_url}
+              imageUrl={item?.roomImages[0]?.imageUrl}
               handleOpenDialog={() => setIsOpen(true)}
-              handleSelectedRoomId={(room_id: number) =>
-                setSelectedRoomId(room_id)
+              handleSelectedRoomId={(roomId: string) =>
+                setSelectedRoomId(roomId)
               }
               handleEditClick={props.handleEditClick}
             />
@@ -106,12 +106,12 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
         ) : (
           <Typography mt={10}>Không có dữ liệu</Typography>
         )}
-        {Math.ceil(pagination.total / pageSize) <= 1 ? (
+        {Math.ceil(pagination.totalPages / pageSize) <= 1 ? (
           <Box sx={{ marginBottom: 10 }}></Box>
         ) : (
           <Pagination
             sx={{ marginY: 6 }}
-            count={Math.ceil(pagination.total / pageSize)}
+            count={Math.ceil(pagination.totalPages / pageSize)}
             onChange={handlePageChange}
             page={pagination.page}
           />
@@ -132,7 +132,7 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
       <ConfirmDialog
         handleClose={() => setIsOpen(false)}
         open={isOpen}
-        room_id={selectedRoomId}
+        roomId={selectedRoomId}
       />
     </Box>
   );

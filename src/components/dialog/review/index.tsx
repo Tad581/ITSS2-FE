@@ -34,7 +34,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 interface IProps {
   handleClose: () => void;
   open: boolean;
-  id: number;
+  id: string;
 }
 
 interface DialogTitleProps {
@@ -69,10 +69,10 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 
 export default function MakeReview(props: IProps) {
   const initialValues: IReviewParam = {
-    user_id: 20,
+    userId: '',
     star: 0,
     content: '',
-    room_id: props.id,
+    roomId: props.id,
     images: [],
   };
 
@@ -94,7 +94,7 @@ export default function MakeReview(props: IProps) {
     if (props.id !== undefined) {
       const tempFormValue = {
         ...formValue,
-        room_id: parseInt(props.id as unknown as string, 10),
+        roomId: parseInt(props.id as unknown as string, 10),
       };
       setFormValue(tempFormValue);
     }
@@ -125,7 +125,7 @@ export default function MakeReview(props: IProps) {
       formData.append('images', file);
     }
 
-    formData.append('room_id', formValue.room_id as unknown as string);
+    formData.append('roomId', formValue.roomId as unknown as string);
     formData.append('user_id', formValue.user_id as unknown as string);
     formData.append('star', formValue.star as unknown as string);
     formData.append('content', formValue.content);
