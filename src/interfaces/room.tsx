@@ -42,7 +42,7 @@ export interface IRoom {
 }
 
 export interface IRoomCreateInput {
-  romOwnerId: number,
+  romOwnerId: string,
   name: string,
   address: string,
   type: string,
@@ -109,12 +109,12 @@ export interface IReview {
 }
 
 export interface IReviewParam {
-  userId: string;
-  roomId: string;
+  UserId: string;
+  RoomId: string;
   content: string;
-  star: number;
+  Star: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  images: any[];
+  Images: any[];
 }
 
 export enum ERoomType {

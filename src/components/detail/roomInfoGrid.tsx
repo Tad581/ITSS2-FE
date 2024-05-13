@@ -48,17 +48,29 @@ export default function RoomInfoGrid(props: RoomInfoGridProps) {
       </Item>
       <Item icon={BathroomIcon}>{bathroomType}</Item>
       {/* <Item icon={MyLocationIcon}>Cách ĐHBKHN {hustDistance}</Item> */}
-      <Item icon={ElectricBoltIcon}>
-        {Intl.NumberFormat("vi-VN").format(parseInt(electricPrice)) + " đ/số"}
-      </Item>
-      <Item icon={LocalAtmIcon}>
-        {Intl.NumberFormat("vi-VN").format(parseInt(price))  + " đ"}
-      </Item>
-      <Item icon={WaterDropIcon}>
-        {Intl.NumberFormat("vi-VN").format(parseInt(waterPrice))  + " đ/khối"}
-      </Item>
-      <Item icon={LocationOnIcon}>{location}</Item>
-      <Item icon={CropIcon}>{roomArea} m²</Item>
+      {electricPrice ? (
+        <Item icon={ElectricBoltIcon}>
+          {Intl.NumberFormat("vi-VN").format(parseInt(electricPrice)) + " đ/số"}
+        </Item>
+      ) : (
+        <></>
+      )}
+      {price ? (
+        <Item icon={LocalAtmIcon}>
+          {Intl.NumberFormat("vi-VN").format(parseInt(price)) + " đ"}
+        </Item>
+      ) : (
+        <></>
+      )}
+      {waterPrice ? (
+        <Item icon={WaterDropIcon}>
+          {Intl.NumberFormat("vi-VN").format(parseInt(waterPrice)) + " đ/khối"}
+        </Item>
+      ) : (
+        <></>
+      )}
+      {location ? <Item icon={LocationOnIcon}>{location}</Item> : <></>}
+      {roomArea ? <Item icon={CropIcon}>{roomArea} m²</Item> : <></>}
     </Grid>
   );
 }

@@ -1,43 +1,51 @@
-import { Box, Pagination, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
-import CreatedRooms from '../cardItem/createdRooms';
-import { RoomAPI } from '../../api/roomAPI';
-import { IRoom, EOrderDirection } from '../../interfaces/room';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import ConfirmDialog from '../dialog/confirm';
+import { Box, Pagination, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import CreatedRooms from "../cardItem/createdRooms";
+import { RoomAPI } from "../../api/roomAPI";
+import { IRoom, EOrderDirection } from "../../interfaces/room";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ConfirmDialog from "../dialog/confirm";
+import { defaultUserId } from "../../constant";
 
-const pageSize = 5;
+const defaultPageSize = 1000;
 
 type CreatedRoomsPaginationProps = {
-  handleEditClick?: (id: string) => void
-}
+  handleEditClick?: (id: string) => void;
+};
 
-export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProps) {
+export default function CreatedRoomsPagination(
+  props: CreatedRoomsPaginationProps
+) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string>();
 
   const [showData, setShowData] = useState<IRoom[]>([]);
   // For pagination
   const [pagination, setPagination] = useState({
-    page: 1,
-    pageSize: pageSize,
-    totalPages: 0,
+    currentPage: 1,
+    pageSize: defaultPageSize,
+    totalRecords: 0,
   });
 
   const [roomsParams, setRoomsParams] = useState({
-    romOwnerId: 26,
-    page: pagination.page,
-    pageSize: pageSize,
+    romOwnerId: defaultUserId,
+    page: pagination.currentPage,
+    pageSize: defaultPageSize,
     order_direction: EOrderDirection.DESC,
   });
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await RoomAPI.getOwnerRooms(roomsParams);
+      console.log(response);
       if (response) {
         setShowData(response.data);
-        setPagination(response.pagination);
+        setPagination({
+          currentPage: 1,
+          pageSize: defaultPageSize,
+          totalRecords: response.data.length,
+        });
       }
     };
     fetchData().catch((error) => console.log(error));
@@ -48,38 +56,38 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
     page: number
   ) => {
     console.log(event);
-    setPagination({ ...pagination, page: page });
+    setPagination({ ...pagination, currentPage: page });
     setRoomsParams({ ...roomsParams, page: page });
   };
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
         marginTop: 10,
       }}
     >
       <Box
         sx={{
-          width: '70%',
-          height: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#fff',
+          width: "70%",
+          height: "auto",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#fff",
         }}
       >
         <Box
           sx={{
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
             padding: 2,
-            alignSelf: 'flex-start',
+            alignSelf: "flex-start",
             marginTop: -7,
           }}
         >
@@ -87,11 +95,11 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
             Phòng đã đăng
           </Typography>
         </Box>
-        {showData.length > 0 ? (
+        {showData?.length > 0 ? (
           showData.map((item) => (
             <CreatedRooms
-              key={item?.id}
-              id={item?.id}
+              key={item?.roomId}
+              id={item?.roomId}
               name={item?.name}
               price={item?.price}
               area={item?.area}
@@ -106,19 +114,19 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
         ) : (
           <Typography mt={10}>Không có dữ liệu</Typography>
         )}
-        {Math.ceil(pagination.totalPages / pageSize) <= 1 ? (
+        {Math.ceil(pagination.totalRecords / defaultPageSize) <= 1 ? (
           <Box sx={{ marginBottom: 10 }}></Box>
         ) : (
           <Pagination
             sx={{ marginY: 6 }}
-            count={Math.ceil(pagination.totalPages / pageSize)}
+            count={Math.ceil(pagination.totalRecords / defaultPageSize)}
             onChange={handlePageChange}
-            page={pagination.page}
+            page={pagination.currentPage}
           />
         )}
       </Box>
       <ToastContainer
-        position='top-right'
+        position="top-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -127,7 +135,7 @@ export default function CreatedRoomsPagination(props: CreatedRoomsPaginationProp
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='light'
+        theme="light"
       />
       <ConfirmDialog
         handleClose={() => setIsOpen(false)}

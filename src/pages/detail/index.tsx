@@ -41,7 +41,7 @@ export default function Detail() {
       const response2 = await RoomAPI.getOwnerRooms({
         romOwnerId: response.data.romOwnerId,
       });
-      if (response2?.success) {
+      if (response2.message === "Success") {
         setOwnerRoom(response2.data);
       }
     };
@@ -80,7 +80,7 @@ export default function Detail() {
           <QuiltedImageList
             itemData={
               roomData
-                ? roomData.roomImages.map((o) => ({
+                ? roomData.roomImages?.map((o) => ({
                     img: import.meta.env.VITE_BACKEND_URL + o.imageUrl,
                     title: o.id.toString(),
                   }))
@@ -136,7 +136,7 @@ export default function Detail() {
 
             <Box sx={{ marginY: 4 }}>
               {/* Rating */}
-              <Typography variant="h4" component="h4">
+              {/* <Typography variant="h4" component="h4">
                 Nhận xét mới nhất:
               </Typography>
               <RatingMessageList
@@ -144,7 +144,7 @@ export default function Detail() {
                 reviewCount={reviewCount}
                 rating={rating}
                 messages={roomData?.reviews}
-              />
+              /> */}
             </Box>
 
             <Divider />
@@ -178,22 +178,34 @@ export default function Detail() {
               >
                 <RoomAttribute
                   haveAirConditioner={
-                    roomData ? roomData?.roomAttribute?.airConditioner : false
+                    roomData?.roomAttribute
+                      ? roomData.roomAttribute.airConditioner
+                      : false
                   }
                   haveFridge={
-                    roomData ? roomData?.roomAttribute?.refrigerator : false
+                    roomData?.roomAttribute
+                      ? roomData.roomAttribute.refrigerator
+                      : false
                   }
                   haveHeater={
-                    roomData ? roomData?.roomAttribute?.waterHeater : false
+                    roomData?.roomAttribute
+                      ? roomData.roomAttribute.waterHeater
+                      : false
                   }
                   haveWashingMachine={
-                    roomData ? roomData?.roomAttribute?.washingMachine : false
+                    roomData?.roomAttribute
+                      ? roomData.roomAttribute.washingMachine
+                      : false
                   }
                   haveWifi={
-                    roomData ? roomData?.roomAttribute?.wifiInternet : false
+                    roomData?.roomAttribute
+                      ? roomData.roomAttribute.wifiInternet
+                      : false
                   }
                   havePCCC={
-                    roomData ? roomData?.roomAttribute?.safedDevice : false
+                    roomData?.roomAttribute
+                      ? roomData.roomAttribute.safedDevice
+                      : false
                   }
                 />
               </Grid>
@@ -209,9 +221,9 @@ export default function Detail() {
                 {roomData?.address}
               </Typography>
               {/* map */}
-              <Box sx={{ height: 400, width: "100%" }}>
+              {/* <Box sx={{ height: 400, width: "100%" }}>
                 <MapContainer address={roomData?.address} />
-              </Box>
+              </Box> */}
             </Box>
           </Box>
 

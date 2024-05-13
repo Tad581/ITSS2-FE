@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { useState } from "react";
+import { Box, Grid } from "@mui/material";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 type ImageUploadCardProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,19 +29,19 @@ export default function ImageUploadCard(props: ImageUploadCardProps) {
   };
 
   return (
-    <Grid container spacing={2} width={'calc(100%)'}>
+    <Grid container spacing={2} width={"calc(100%)"}>
       {props?.existedImageUrls &&
         props?.existedImageUrls?.map((url) => (
           <Grid item key={url} sm={2} md={2} lg={2} xl={2}>
             <img
-              src={url}
-              alt='Preview'
+              src={import.meta.env.VITE_BACKEND_URL + url}
+              alt="Preview"
               style={{
-                width: '100%',
-                objectFit: 'cover',
-                border: '1px solid black',
-                borderRadius: '10px',
-                aspectRatio: '1 / 1',
+                width: "100%",
+                objectFit: "cover",
+                border: "1px solid black",
+                borderRadius: "10px",
+                aspectRatio: "1 / 1",
               }}
             />
           </Grid>
@@ -50,13 +50,13 @@ export default function ImageUploadCard(props: ImageUploadCardProps) {
         <Grid item key={previewImage} sm={2} md={2} lg={2} xl={2}>
           <img
             src={previewImage}
-            alt='Preview'
+            alt="Preview"
             style={{
-              width: '100%',
-              objectFit: 'cover',
-              border: '1px solid black',
-              borderRadius: '10px',
-              aspectRatio: '1 / 1',
+              width: "100%",
+              objectFit: "cover",
+              border: "1px solid black",
+              borderRadius: "10px",
+              aspectRatio: "1 / 1",
             }}
           />
         </Grid>
@@ -64,36 +64,36 @@ export default function ImageUploadCard(props: ImageUploadCardProps) {
       <Grid item sm={2} md={2} lg={2} xl={2}>
         <Box
           sx={{
-            border: '1px solid black',
-            padding: '0px',
-            aspectRatio: '1 / 1',
-            cursor: 'pointer',
-            borderRadius: '10px',
+            border: "1px solid black",
+            padding: "0px",
+            aspectRatio: "1 / 1",
+            cursor: "pointer",
+            borderRadius: "10px",
           }}
         >
           <label
-            htmlFor='image-upload'
+            htmlFor="image-upload"
             style={{
-              cursor: 'pointer',
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              cursor: "pointer",
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <AddOutlinedIcon sx={{ fontSize: 60 }} />
           </label>
           <input
-            id='image-upload'
-            type='file'
-            name='images'
-            accept='image/*'
+            id="image-upload"
+            type="file"
+            name="images"
+            accept="image/*"
             multiple
             onChange={handleImageChange}
-            style={{ display: 'none' }}
-            width='100%'
-            height='100%'
+            style={{ display: "none" }}
+            width="100%"
+            height="100%"
           />
         </Box>
       </Grid>

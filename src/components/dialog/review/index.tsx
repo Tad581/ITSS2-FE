@@ -19,6 +19,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import * as Yup from 'yup';
 import { IReviewParam } from '../../../interfaces/room';
 import { ReviewAPI } from '../../../api/reviewAPI';
+import { defaultUserId } from '../../../constant';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -69,11 +70,11 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 
 export default function MakeReview(props: IProps) {
   const initialValues: IReviewParam = {
-    userId: '',
-    star: 0,
+    UserId: defaultUserId,
+    Star: 0,
     content: '',
-    roomId: props.id,
-    images: [],
+    RoomId: props.id,
+    Images: [],
   };
 
   const validationSchema = Yup.object().shape({
@@ -109,7 +110,7 @@ export default function MakeReview(props: IProps) {
       '🚀 ~ file: index.tsx:107 ~ handleOnchangeRatingStar ~ event:',
       event
     );
-    const tempStar = { ...formValue, star: newValue };
+    const tempStar = { ...formValue, Star: newValue };
     setFormValue(tempStar);
   };
 
@@ -122,12 +123,12 @@ export default function MakeReview(props: IProps) {
   const handleSubmit = async () => {
     const formData = new FormData();
     for (const file of uploadFiles) {
-      formData.append('images', file);
+      formData.append('Images', file);
     }
 
-    formData.append('roomId', formValue.roomId as unknown as string);
-    formData.append('user_id', formValue.user_id as unknown as string);
-    formData.append('star', formValue.star as unknown as string);
+    formData.append('RoomId', formValue.RoomId as unknown as string);
+    formData.append('UserId', formValue.UserId as unknown as string);
+    formData.append('Star', formValue.Star as unknown as string);
     formData.append('content', formValue.content);
 
     try {
@@ -137,8 +138,8 @@ export default function MakeReview(props: IProps) {
       // Handle the error
       console.log(error);
     }
-    window.location.reload();
-    props.handleClose();
+    // window.location.reload();
+    // props.handleClose();
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,7 +185,7 @@ export default function MakeReview(props: IProps) {
                 <Box display={'flex'} alignItems={'center'}>
                   <Field
                     as={Rating}
-                    name='star'
+                    name='Star'
                     label='Star'
                     type='number'
                     inputprops={{ min: 0, max: 5 }}
@@ -192,10 +193,10 @@ export default function MakeReview(props: IProps) {
                     precision={1}
                     required
                     onChange={handleOnchangeRatingStar}
-                    value={formValue.star}
+                    value={formValue.Star}
                   />
                   <Typography ml={2} fontSize={18}>
-                    {formValue.star}
+                    {formValue.Star}
                   </Typography>
                 </Box>
                 <ErrorMessage name='star' component='div' />
@@ -267,7 +268,7 @@ export default function MakeReview(props: IProps) {
                     <input
                       id='image-upload'
                       type='file'
-                      name='images'
+                      name='Images'
                       accept='image/*'
                       multiple
                       onChange={handleImageChange}

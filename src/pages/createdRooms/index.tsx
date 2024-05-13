@@ -3,16 +3,17 @@ import { Box } from '@mui/material';
 import Header from '../../layout/header';
 import CreatedRoomsPagination from '../../components/paginationItem/createdRoomsPagination';
 import CreateRoomModal from './createRoomModal';
-export default function CreatedRooms() {
 
+export default function CreatedRooms() {
   const [open, setOpen] = React.useState(false);
-  const [roomId, setRoomId] = React.useState<number | null>(null);
+  const [roomId, setRoomId] = React.useState<string | null>(null);
   const handleOpen = React.useCallback(() => setOpen(true), []);
   const handleClose = React.useCallback(() => {
     setOpen(false)
     setRoomId(null);
   }, []);
-  const handleEditClick = React.useCallback((id: number) => {
+
+  const handleEditClick = React.useCallback((id: string) => {
     setRoomId(id);
     setOpen(true);
     console.log(id);
