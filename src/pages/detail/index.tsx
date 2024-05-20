@@ -136,7 +136,7 @@ export default function Detail() {
 
             <Box sx={{ marginY: 4 }}>
               {/* Rating */}
-              {/* <Typography variant="h4" component="h4">
+              <Typography variant="h4" component="h4">
                 Nhận xét mới nhất:
               </Typography>
               <RatingMessageList
@@ -144,7 +144,7 @@ export default function Detail() {
                 reviewCount={reviewCount}
                 rating={rating}
                 messages={roomData?.reviews}
-              /> */}
+              />
             </Box>
 
             <Divider />

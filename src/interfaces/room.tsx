@@ -42,24 +42,24 @@ export interface IRoom {
 }
 
 export interface IRoomCreateInput {
-  romOwnerId: string,
-  name: string,
-  address: string,
-  type: string,
-  area: number,
-  distance_to_school: number,
-  price: number,
-  electronicPrice: number,
-  waterPrice: number,
-  description: string,
-  wifiInternet: boolean,
-  washingMachine: boolean,
-  airConditioner: boolean,
-  waterHeater: boolean,
-  refrigerator: boolean,
-  safedDevice: boolean,
-  enclosedToilet: boolean,
-  images: string[],
+  ownerId: string,
+  Name: string,
+  Address: string,
+  Type: string,
+  Area: number,
+  Price: number,
+  ElectronicPrice: number,
+  WaterPrice: number,
+  Description: string,
+  WifiInternet: boolean,
+  WashingMachine: boolean,
+  AirConditioner: boolean,
+  WaterHeater: boolean,
+  Refrigerator: boolean,
+  SafedDevice: boolean,
+  EnclosedToilet: boolean,
+  Tag: string,
+  Images: string[],
 }
 
 export interface IRoomsParams {
@@ -91,10 +91,10 @@ export interface IRoomsParams {
 export interface IReview {
   id: number;
   roomId: number;
-  user_id: number;
+  userid: number;
   content: string;
   star: number;
-  created_at: string;
+  createdAt: string;
   user: {
     id: number;
     username: string;
@@ -118,8 +118,8 @@ export interface IReviewParam {
 }
 
 export enum ERoomType {
-  PHONG_TRO = 'PHONG_TRO',
-  CHUNG_CU_MINI = 'CHUNG_CU_MINI',
+  PHONGTRO = 'PHONGTRO',
+  CCMN = 'CCMN',
   HOMESTAY = 'HOMESTAY',
 }
 

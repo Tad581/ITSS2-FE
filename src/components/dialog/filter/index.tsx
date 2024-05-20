@@ -189,10 +189,10 @@ export default function FilterDialog(props: Readonly<IProps>) {
   const handleSubmit = () => {
     const typesArray: string[] = [];
     if (types.house) {
-      typesArray.push('PHONG_TRO');
+      typesArray.push('PHONGTRO');
     }
     if (types.apartment) {
-      typesArray.push('CHUNG_CU_MINI');
+      typesArray.push('CCMN');
     }
     if (types.homestay) {
       typesArray.push('HOME_STAY');

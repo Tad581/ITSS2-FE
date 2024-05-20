@@ -10,24 +10,24 @@ import {
   TextField,
   Rating,
   Grid,
-} from '@mui/material';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
-import CloseIcon from '@mui/icons-material/Close';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import * as Yup from 'yup';
-import { IReviewParam } from '../../../interfaces/room';
-import { ReviewAPI } from '../../../api/reviewAPI';
-import { defaultUserId } from '../../../constant';
+} from "@mui/material";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
+import CloseIcon from "@mui/icons-material/Close";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import * as Yup from "yup";
+import { IReviewParam } from "../../../interfaces/room";
+import { ReviewAPI } from "../../../api/reviewAPI";
+import { defaultUserId } from "../../../constant";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
     paddingBottom: 20,
     minWidth: 500,
   },
-  '& .MuiDialogActions-root': {
+  "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
@@ -52,10 +52,10 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
       {children}
       {onClose ? (
         <IconButton
-          aria-label='close'
+          aria-label="close"
           onClick={onClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
@@ -72,16 +72,16 @@ export default function MakeReview(props: IProps) {
   const initialValues: IReviewParam = {
     UserId: defaultUserId,
     Star: 0,
-    content: '',
+    content: "",
     RoomId: props.id,
     Images: [],
   };
 
   const validationSchema = Yup.object().shape({
     inputValue: Yup.number()
-      .min(1, 'Value must be at least 1')
-      .max(5, 'Value must be at most 5')
-      .required('Value is required'),
+      .min(1, "Value must be at least 1")
+      .max(5, "Value must be at most 5")
+      .required("Value is required"),
   });
 
   const [formValue, setFormValue] = useState<IReviewParam>(initialValues);
@@ -107,7 +107,7 @@ export default function MakeReview(props: IProps) {
     newValue: number
   ) => {
     console.log(
-      '🚀 ~ file: index.tsx:107 ~ handleOnchangeRatingStar ~ event:',
+      "🚀 ~ file: index.tsx:107 ~ handleOnchangeRatingStar ~ event:",
       event
     );
     const tempStar = { ...formValue, Star: newValue };
@@ -123,13 +123,13 @@ export default function MakeReview(props: IProps) {
   const handleSubmit = async () => {
     const formData = new FormData();
     for (const file of uploadFiles) {
-      formData.append('Images', file);
+      formData.append("Images", file);
     }
 
-    formData.append('RoomId', formValue.RoomId as unknown as string);
-    formData.append('UserId', formValue.UserId as unknown as string);
-    formData.append('Star', formValue.Star as unknown as string);
-    formData.append('content', formValue.content);
+    formData.append("RoomId", formValue.RoomId as unknown as string);
+    formData.append("UserId", formValue.UserId as unknown as string);
+    formData.append("Star", formValue.Star as unknown as string);
+    formData.append("content", formValue.content);
 
     try {
       const response = await ReviewAPI.postOneReview(formData);
@@ -159,14 +159,14 @@ export default function MakeReview(props: IProps) {
   return (
     <BootstrapDialog
       onClose={props.handleClose}
-      aria-labelledby='customized-dialog-title'
+      aria-labelledby="customized-dialog-title"
       open={props.open}
     >
       <BootstrapDialogTitle
-        id='customized-dialog-title'
+        id="customized-dialog-title"
         onClose={props.handleClose}
       >
-        <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>
+        <Typography sx={{ fontSize: "30px", fontWeight: "bold" }}>
           Viết đánh giá
         </Typography>
       </BootstrapDialogTitle>
@@ -177,19 +177,19 @@ export default function MakeReview(props: IProps) {
       >
         <Form>
           <DialogContent dividers>
-            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", mt: 1 }}>
               <Box sx={{ my: 0.5 }}>
                 <Typography sx={{ fontSize: 16, fontWeight: 700, my: 1 }}>
                   Đánh giá của bạn
                 </Typography>
-                <Box display={'flex'} alignItems={'center'}>
+                <Box display={"flex"} alignItems={"center"}>
                   <Field
                     as={Rating}
-                    name='Star'
-                    label='Star'
-                    type='number'
+                    name="Star"
+                    label="Star"
+                    type="number"
                     inputprops={{ min: 0, max: 5 }}
-                    id='rating-star'
+                    id="rating-star"
                     precision={1}
                     required
                     onChange={handleOnchangeRatingStar}
@@ -199,7 +199,7 @@ export default function MakeReview(props: IProps) {
                     {formValue.Star}
                   </Typography>
                 </Box>
-                <ErrorMessage name='star' component='div' />
+                <ErrorMessage name="star" component="div" />
               </Box>
 
               <Box sx={{ my: 0.5 }}>
@@ -208,36 +208,36 @@ export default function MakeReview(props: IProps) {
                 </Typography>
                 <Field
                   as={TextField}
-                  name='content'
+                  name="content"
                   multiline
                   rows={4}
                   required
                   onChange={handleOnchangeReview}
                   value={formValue.content}
-                  sx={{ width: '100%', my: 1 }}
-                  placeholder='Tại sao bạn lại đánh giá như vậy?'
+                  sx={{ width: "100%", my: 1 }}
+                  placeholder="Tại sao bạn lại đánh giá như vậy?"
                 />
-                <ErrorMessage name='review' component='div' />
+                <ErrorMessage name="review" component="div" />
               </Box>
             </Box>
             <Box>
               <Typography
-                sx={{ fontSize: 16, fontWeight: 700, my: 1, width: '95%' }}
+                sx={{ fontSize: 16, fontWeight: 700, my: 1, width: "95%" }}
               >
                 Ảnh
               </Typography>
-              <Grid container spacing={2} width={'calc(100%)'}>
+              <Grid container spacing={2} width={"calc(100%)"}>
                 {previewImages.map((previewImage) => (
                   <Grid item key={previewImage} sm={4} md={4} lg={4} xl={4}>
                     <img
                       src={previewImage}
-                      alt='Preview'
+                      alt="Preview"
                       style={{
-                        width: '100%',
-                        objectFit: 'cover',
-                        border: '1px solid black',
-                        borderRadius: '10px',
-                        aspectRatio: '1 / 1',
+                        width: "100%",
+                        objectFit: "cover",
+                        border: "1px solid black",
+                        borderRadius: "10px",
+                        aspectRatio: "1 / 1",
                       }}
                     />
                   </Grid>
@@ -245,51 +245,51 @@ export default function MakeReview(props: IProps) {
                 <Grid item sm={4} md={4} lg={4} xl={4}>
                   <Box
                     sx={{
-                      border: '1px solid black',
-                      padding: '0px',
-                      aspectRatio: '1 / 1',
-                      cursor: 'pointer',
-                      borderRadius: '10px',
+                      border: "1px solid black",
+                      padding: "0px",
+                      aspectRatio: "1 / 1",
+                      cursor: "pointer",
+                      borderRadius: "10px",
                     }}
                   >
                     <label
-                      htmlFor='image-upload'
+                      htmlFor="image-upload"
                       style={{
-                        cursor: 'pointer',
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        cursor: "pointer",
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
                       <AddOutlinedIcon sx={{ fontSize: 60 }} />
                     </label>
                     <input
-                      id='image-upload'
-                      type='file'
-                      name='Images'
-                      accept='image/*'
+                      id="image-upload"
+                      type="file"
+                      name="Images"
+                      accept="image/*"
                       multiple
                       onChange={handleImageChange}
-                      style={{ display: 'none' }}
-                      width='100%'
-                      height='100%'
+                      style={{ display: "none" }}
+                      width="100%"
+                      height="100%"
                     />
                   </Box>
                 </Grid>
               </Grid>
             </Box>
           </DialogContent>
-          <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+          <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               autoFocus
               onClick={handleSubmit}
-              type='submit'
-              variant='contained'
-              color='primary'
+              type="submit"
+              variant="contained"
+              color="primary"
               startIcon={<AddOutlinedIcon />}
-              sx={{ width: '20%' }}
+              sx={{ width: "20%" }}
             >
               Gửi
             </Button>

@@ -131,6 +131,7 @@ export default function RatingMessageList(props: IProps) {
 }
 
 function RatingMessage(props: IReview) {
+  console.log(props);
   return (
     <Box
       sx={{
@@ -140,7 +141,7 @@ function RatingMessage(props: IReview) {
         backgroundColor: '#5AB7FA',
       }}
     >
-      <Box display={'flex'} flexDirection={'row'}>
+      <Box display={'flex'} flexDirection={'row'} sx={{ mb: 2 }}>
         <Avatar
           alt={props.user.username}
           src={props.user.avatar ? props.user.avatar : ''}
@@ -157,7 +158,7 @@ function RatingMessage(props: IReview) {
               day: 'numeric',
               hour: 'numeric',
               minute: 'numeric',
-            }).format(new Date(props.created_at))}
+            }).format(new Date(props.createdAt))}
           </Typography>
         </Box>
       </Box>

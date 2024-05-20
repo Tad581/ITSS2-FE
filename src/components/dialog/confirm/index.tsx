@@ -12,7 +12,7 @@ export default function ConfirmDialog(props: IProps) {
   const handleDelete = async (roomId: string | undefined) => {
     if (roomId) {
       const response = await RoomAPI.deleteRoom({ id: roomId });
-      if (response.success) {
+      if (response.message === 'Success') {
         toast.success(response.message, {
           position: 'top-right',
           autoClose: 5000,
@@ -35,6 +35,7 @@ export default function ConfirmDialog(props: IProps) {
           progress: undefined,
           theme: 'light',
         });
+        props.handleClose();
       }
     }
   };

@@ -15,6 +15,8 @@ import { useFormik } from "formik";
 import { defaultUserId } from "../../constant";
 import { IRoomCreateInput } from "../../interfaces/room";
 import { RoomAPI } from "../../api/roomAPI";
+import RoomAttribute from '../../components/detail/roomAttribute';
+import { toast } from "react-toastify";
 
 type ComboBoxProps = {
   options: any[];
@@ -59,9 +61,9 @@ function ComboBox(props: ComboBoxProps) {
 }
 
 const roomTypeOptions = [
-  { label: "Chung cư mini", value: "CHUNG_CU_MINI" },
-  { label: "Phòng trọ", value: "PHONG_TRO" },
-  { label: "Homestay", value: "HOME_STAY" },
+  { label: "Chung cư mini", value: "CCMN" },
+  { label: "Phòng trọ", value: "PHONGTRO" },
+  { label: "Homestay", value: "HOMESTAY" },
 ];
 
 const enclosedToiletOptions = [
@@ -100,24 +102,24 @@ const style = {
 
 export default function CreateRoomModal(props: CreateRoomModalProps) {
   const initialValues: IRoomCreateInput = {
-    romOwnerId: defaultUserId,
-    name: "",
-    address: "",
-    type: "Homestay",
-    area: 0,
-    distance_to_school: 0,
-    price: 0,
-    electronicPrice: 0,
-    waterPrice: 0,
-    description: "",
-    wifiInternet: false,
-    washingMachine: false,
-    airConditioner: false,
-    waterHeater: false,
-    refrigerator: false,
-    safedDevice: false,
-    enclosedToilet: false,
-    images: [],
+    ownerId: defaultUserId,
+    Name: "",
+    Address: "",
+    Type: "Homestay",
+    Area: 0,
+    Price: 0,
+    ElectronicPrice: 0,
+    WaterPrice: 0,
+    Description: "",
+    WifiInternet: false,
+    WashingMachine: false,
+    AirConditioner: false,
+    WaterHeater: false,
+    Refrigerator: false,
+    SafedDevice: false,
+    EnclosedToilet: false,
+    Tag: "Empty",
+    Images: [],
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -129,57 +131,53 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
     initialValues: initialValues,
     onSubmit: async (formValue) => {
       const formData = new FormData();
-
-      for (const file of uploadFiles) {
-        formData.append("images", file);
+      for (let i = 0; i < uploadFiles.length; i++) {
+        formData.append(`Images`, uploadFiles[i]);
       }
 
-      formData.append("romOwnerId", formValue.romOwnerId as unknown as string);
-      formData.append("name", formValue.name as unknown as string);
-      formData.append("address", formValue.address as unknown as string);
-      formData.append("type", formValue.type as unknown as string);
-      formData.append("area", formValue.area as unknown as string);
+      formData.append("ownerId", formValue.ownerId as unknown as string);
+      formData.append("Name", formValue.Name as unknown as string);
+      formData.append("Address", formValue.Address as unknown as string);
+      formData.append("Type", formValue.Type as unknown as string);
+      formData.append("Tag", formValue.Tag as unknown as string);
+      formData.append("Area", formValue.Area as unknown as string);
+      formData.append("Price", formValue.Price as unknown as string);
       formData.append(
-        "distance_to_school",
-        formValue.distance_to_school as unknown as string
+        "ElectronicPrice",
+        formValue.ElectronicPrice as unknown as string
       );
-      formData.append("price", formValue.price as unknown as string);
+      formData.append("WaterPrice", formValue.WaterPrice as unknown as string);
       formData.append(
-        "electronicPrice",
-        formValue.electronicPrice as unknown as string
-      );
-      formData.append("waterPrice", formValue.waterPrice as unknown as string);
-      formData.append(
-        "description",
-        formValue.description as unknown as string
+        "Description",
+        formValue.Description as unknown as string
       );
       formData.append(
-        "wifiInternet",
-        formValue.wifiInternet as unknown as string
+        "WifiInternet",
+        formValue.WifiInternet as unknown as string
       );
       formData.append(
-        "washingMachine",
-        formValue.washingMachine as unknown as string
+        "WashingMachine",
+        formValue.WashingMachine as unknown as string
       );
       formData.append(
-        "airConditioner",
-        formValue.airConditioner as unknown as string
+        "AirConditioner",
+        formValue.AirConditioner as unknown as string
       );
       formData.append(
-        "waterHeater",
-        formValue.waterHeater as unknown as string
+        "WaterHeater",
+        formValue.WaterHeater as unknown as string
       );
       formData.append(
-        "refrigerator",
-        formValue.refrigerator as unknown as string
+        "Refrigerator",
+        formValue.Refrigerator as unknown as string
       );
       formData.append(
-        "safedDevice",
-        formValue.safedDevice as unknown as string
+        "SafedDevice",
+        formValue.SafedDevice as unknown as string
       );
       formData.append(
-        "enclosedToilet",
-        formValue.enclosedToilet as unknown as string
+        "EnclosedToilet",
+        formValue.EnclosedToilet as unknown as string
       );
 
       try {
@@ -188,6 +186,29 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
           response = await RoomAPI.updateRoom(props.roomId, formData);
         } else {
           response = await RoomAPI.createRoom(formData);
+        }
+        if (response.message === "Success") {
+          toast.success(response.message, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        } else {
+          toast.error(response.message, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
         }
 
         setBtnDisabled(false);
@@ -206,58 +227,55 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
 
   React.useEffect(() => {
     if (!props.isOpen) {
-      formik.setValues(initialValues)
+      formik.setValues(initialValues);
       setExistedImages([]);
     }
     (async () => {
       if (props.isOpen && props.roomId) {
         const room = await RoomAPI.getOne(props.roomId);
 
-        formik.setFieldValue("romOwnerId", room?.data?.owner?.id);
-        formik.setFieldValue("name", room?.data?.name);
-        formik.setFieldValue("address", room?.data?.address);
-        formik.setFieldValue("type", room?.data?.type);
-        formik.setFieldValue("area", room?.data?.area);
+        formik.setFieldValue("pwnerId", room?.data?.owner?.id);
+        formik.setFieldValue("Name", room?.data?.name);
+        formik.setFieldValue("Address", room?.data?.address);
+        formik.setFieldValue("Type", room?.data?.type);
+        formik.setFieldValue("Area", room?.data?.area);
+        formik.setFieldValue("Tag", room?.data?.tag);
+        formik.setFieldValue("Price", room?.data?.price);
         formik.setFieldValue(
-          "distance_to_school",
-          room?.data?.distance_to_school
-        );
-        formik.setFieldValue("price", room?.data?.price);
-        formik.setFieldValue(
-          "electronicPrice",
+          "ElectronicPrice",
           room?.data?.roomAttribute?.electronicPrice
         );
         formik.setFieldValue(
-          "waterPrice",
+          "WaterPrice",
           room?.data?.roomAttribute?.waterPrice
         );
         formik.setFieldValue(
-          "description",
+          "Description",
           room?.data?.roomAttribute?.description
         );
-        formik.setFieldValue("wifiInternet", room?.data?.wifiInternet);
+        formik.setFieldValue("WifiInternet", room?.data?.roomAttribute.wifiInternet);
         formik.setFieldValue(
-          "washingMachine",
+          "WashingMachine",
           room?.data?.roomAttribute?.washingMachine
         );
         formik.setFieldValue(
-          "airConditioner",
+          "AirConditioner",
           room?.data?.roomAttribute?.airConditioner
         );
         formik.setFieldValue(
-          "waterHeater",
+          "WaterHeater",
           room?.data?.roomAttribute?.waterHeater
         );
         formik.setFieldValue(
-          "refrigerator",
+          "Refrigerator",
           room?.data?.roomAttribute?.refrigerator
         );
         formik.setFieldValue(
-          "safedDevice",
+          "SafedDevice",
           room?.data?.roomAttribute?.safedDevice
         );
         formik.setFieldValue(
-          "enclosedToilet",
+          "EnclosedToilet",
           room?.data?.roomAttribute?.enclosedToilet
         );
 
@@ -285,7 +303,12 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
       >
         <form>
           <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h2" component="h2" sx={{ my: 3 }}>
+            <Typography
+              id="modal-modal-title"
+              variant="h2"
+              component="h2"
+              sx={{ my: 3 }}
+            >
               Đăng phòng
             </Typography>
             <ImageUploadCard
@@ -303,21 +326,21 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
 
             <FormInputText
               label="Tên phòng"
-              name={"name"}
-              value={formik.values.name}
+              name={"Name"}
+              value={formik.values.Name}
               onChange={formik.handleChange}
             />
             <FormInputText
               label="Mô tả"
               multiline
-              name={"description"}
-              value={formik.values.description}
+              name={"Description"}
+              value={formik.values.Description}
               onChange={formik.handleChange}
             />
             <FormInputText
               label="Địa chỉ"
-              name={"address"}
-              value={formik.values.address}
+              name={"Address"}
+              value={formik.values.Address}
               onChange={formik.handleChange}
             />
 
@@ -339,8 +362,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   rows={1}
                   sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
                   endAdornment={"VND/tháng"}
-                  name={"price"}
-                  value={formik.values.price}
+                  name={"Price"}
+                  value={formik.values.Price}
                   onChange={formik.handleChange}
                 />
               </Box>
@@ -355,8 +378,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   rows={1}
                   sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
                   endAdornment={"m2"}
-                  name={"area"}
-                  value={formik.values.area}
+                  name={"Area"}
+                  value={formik.values.Area}
                   onChange={formik.handleChange}
                 />
               </Box>
@@ -371,8 +394,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   rows={1}
                   sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
                   endAdornment={"VND/số"}
-                  name={"electronicPrice"}
-                  value={formik.values.electronicPrice}
+                  name={"ElectronicPrice"}
+                  value={formik.values.ElectronicPrice}
                   onChange={formik.handleChange}
                 />
               </Box>
@@ -387,8 +410,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   rows={1}
                   sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
                   endAdornment={"VND/số"}
-                  name={"waterPrice"}
-                  value={formik.values.waterPrice}
+                  name={"WaterPrice"}
+                  value={formik.values.WaterPrice}
                   onChange={formik.handleChange}
                 />
               </Box>
@@ -400,16 +423,16 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
               title="Loại phòng"
               label="Chọn loại phòng bạn muốn đăng"
               options={roomTypeOptions}
-              name={"type"}
-              value={formik.values.type}
+              name={"Type"}
+              value={formik.values.Type}
               onChange={formik.handleChange}
             />
             <ComboBox
               title="Nhà vệ sinh"
               label="Chọn loại phòng bạn muốn đăng"
               options={enclosedToiletOptions}
-              name={"enclosedToilet"}
-              value={formik.values.enclosedToilet}
+              name={"EnclosedToilet"}
+              value={formik.values.EnclosedToilet}
               onChange={formik.handleChange}
             />
             {/*  */}
@@ -429,8 +452,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        name={"airConditioner"}
-                        checked={formik.values.airConditioner}
+                        name={"AirConditioner"}
+                        checked={formik.values.AirConditioner}
                         onChange={formik.handleChange}
                       />
                     }
@@ -441,8 +464,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        name={"waterHeater"}
-                        checked={formik.values.waterHeater}
+                        name={"WaterHeater"}
+                        checked={formik.values.WaterHeater}
                         onChange={formik.handleChange}
                       />
                     }
@@ -453,8 +476,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        name={"refrigerator"}
-                        checked={formik.values.refrigerator}
+                        name={"Refrigerator"}
+                        checked={formik.values.Refrigerator}
                         onChange={formik.handleChange}
                       />
                     }
@@ -465,8 +488,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        name={"wifiInternet"}
-                        checked={formik.values.wifiInternet}
+                        name={"WifiInternet"}
+                        checked={formik.values.WifiInternet}
                         onChange={formik.handleChange}
                       />
                     }
@@ -477,8 +500,8 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        name={"washingMachine"}
-                        checked={formik.values.washingMachine}
+                        name={"WashingMachine"}
+                        checked={formik.values.WashingMachine}
                         onChange={formik.handleChange}
                       />
                     }
