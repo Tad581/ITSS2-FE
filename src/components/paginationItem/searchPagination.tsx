@@ -91,8 +91,9 @@ export default function ItemPagination(props: IProps) {
                   name={item.name}
                   roomImages={item.roomImages[0]?.imageUrl}
                   address={item.address}
-                  // distance_to_school={item.distance_to_school}
                   area={item.area}
+                  reviews={item.reviews}
+                  tag={item.roomAttribute!.tag}
                 />
               </Grid>
             ))

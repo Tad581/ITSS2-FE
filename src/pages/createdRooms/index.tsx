@@ -16,7 +16,6 @@ export default function CreatedRooms() {
   const handleEditClick = React.useCallback((id: string) => {
     setRoomId(id);
     setOpen(true);
-    console.log(id);
   }, []);
 
   return (

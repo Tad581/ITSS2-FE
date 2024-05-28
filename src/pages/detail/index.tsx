@@ -115,11 +115,6 @@ export default function Detail() {
                   : ""
               }
               roomArea={roomData ? roomData.area : 0}
-              // hustDistance={
-              //   roomData
-              //     ? roomData?.distance_to_school.toString() + 'km' || ''
-              //     : ''
-              // }
               bathroomType={
                 roomData
                   ? roomData?.roomAttribute?.enclosedToilet
@@ -221,9 +216,9 @@ export default function Detail() {
                 {roomData?.address}
               </Typography>
               {/* map */}
-              {/* <Box sx={{ height: 400, width: "100%" }}>
+              <Box sx={{ height: 400, width: "100%" }}>
                 <MapContainer address={roomData?.address} />
-              </Box> */}
+              </Box>
             </Box>
           </Box>
 

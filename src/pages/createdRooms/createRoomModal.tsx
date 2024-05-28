@@ -6,16 +6,20 @@ import Modal from "@mui/material/Modal";
 import ImageUploadCard from "./imageUploadCard";
 import {
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
   InputBase,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { defaultUserId } from "../../constant";
 import { IRoomCreateInput } from "../../interfaces/room";
 import { RoomAPI } from "../../api/roomAPI";
-import RoomAttribute from '../../components/detail/roomAttribute';
+import RoomAttribute from "../../components/detail/roomAttribute";
 import { toast } from "react-toastify";
 
 type ComboBoxProps = {
@@ -63,12 +67,17 @@ function ComboBox(props: ComboBoxProps) {
 const roomTypeOptions = [
   { label: "Chung cư mini", value: "CCMN" },
   { label: "Phòng trọ", value: "PHONGTRO" },
-  { label: "Homestay", value: "HOMESTAY" },
+  { label: "Homestay", value: "Homestay" },
 ];
 
 const enclosedToiletOptions = [
   { label: "Chung", value: true },
   { label: "Khép kín", value: false },
+];
+
+const tagOptions = [
+  { label: "Đã đầy", value: "Full" },
+  { label: "Còn trống", value: "Empty" },
 ];
 
 ComboBox.defaultProps = {
@@ -130,6 +139,7 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (formValue) => {
+      console.log("formValue", formValue);
       const formData = new FormData();
       for (let i = 0; i < uploadFiles.length; i++) {
         formData.append(`Images`, uploadFiles[i]);
@@ -189,25 +199,25 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
         }
         if (response.message === "Success") {
           toast.success(response.message, {
-            position: 'top-right',
+            position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'light',
+            theme: "light",
           });
         } else {
           toast.error(response.message, {
-            position: 'top-right',
+            position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'light',
+            theme: "light",
           });
         }
 
@@ -234,13 +244,13 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
       if (props.isOpen && props.roomId) {
         const room = await RoomAPI.getOne(props.roomId);
 
-        formik.setFieldValue("pwnerId", room?.data?.owner?.id);
+        formik.setFieldValue("ownerId", room?.data?.romOwnerId);
         formik.setFieldValue("Name", room?.data?.name);
         formik.setFieldValue("Address", room?.data?.address);
         formik.setFieldValue("Type", room?.data?.type);
         formik.setFieldValue("Area", room?.data?.area);
-        formik.setFieldValue("Tag", room?.data?.tag);
         formik.setFieldValue("Price", room?.data?.price);
+        formik.setFieldValue("Tag", room?.data?.roomAttribute?.tag);
         formik.setFieldValue(
           "ElectronicPrice",
           room?.data?.roomAttribute?.electronicPrice
@@ -253,7 +263,10 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
           "Description",
           room?.data?.roomAttribute?.description
         );
-        formik.setFieldValue("WifiInternet", room?.data?.roomAttribute.wifiInternet);
+        formik.setFieldValue(
+          "WifiInternet",
+          room?.data?.roomAttribute.wifiInternet
+        );
         formik.setFieldValue(
           "WashingMachine",
           room?.data?.roomAttribute?.washingMachine
@@ -343,7 +356,6 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
               value={formik.values.Address}
               onChange={formik.handleChange}
             />
-
             <Box
               display={"flex"}
               flexDirection={"row"}
@@ -421,7 +433,7 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
             {/*  */}
             <ComboBox
               title="Loại phòng"
-              label="Chọn loại phòng bạn muốn đăng"
+              label="Chọn loại phòng"
               options={roomTypeOptions}
               name={"Type"}
               value={formik.values.Type}
@@ -429,10 +441,18 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
             />
             <ComboBox
               title="Nhà vệ sinh"
-              label="Chọn loại phòng bạn muốn đăng"
+              label="Chọn loại nhà vệ sinh"
               options={enclosedToiletOptions}
               name={"EnclosedToilet"}
               value={formik.values.EnclosedToilet}
+              onChange={formik.handleChange}
+            />
+            <ComboBox
+              title="Tình trạng phòng"
+              label="Chọn tình trạng phòng"
+              options={tagOptions}
+              name={"Tag"}
+              value={formik.values.Tag}
               onChange={formik.handleChange}
             />
             {/*  */}

@@ -1,7 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import Home from "@mui/icons-material/HomeOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
@@ -10,7 +9,6 @@ import CropIcon from "@mui/icons-material/Crop";
 
 type RoomInfoGridProps = {
   roomType: string;
-  hustDistance: string;
   price: string;
   location: string;
   bathroomType: string;
@@ -22,7 +20,6 @@ type RoomInfoGridProps = {
 export default function RoomInfoGrid(props: RoomInfoGridProps) {
   const {
     roomType,
-    hustDistance,
     price,
     location,
     bathroomType,

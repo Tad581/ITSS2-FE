@@ -76,30 +76,19 @@ function valuetextPrice(value: number) {
   return `${value} VNĐ`;
 }
 
-function valuetextDistance(value: number) {
-  return `${value} km`;
-}
-
 function valuetextArea(value: number) {
   return `${value} m²`;
 }
 
 const minPriceRange = 500000;
-const minDistanceRange = 1;
 const minAreaRange = 1;
 const minPrice = 0;
-const maxPrice = 10000000;
-const minDistance = 0;
-const maxDistance = 8;
+const maxPrice = 100000000;
 const minArea = 0;
-const maxArea = 100;
+const maxArea = 1000;
 
 export default function FilterDialog(props: Readonly<IProps>) {
   const [prices, setPrices] = useState<number[]>([minPrice, maxPrice]);
-  const [distances, setDistances] = useState<number[]>([
-    minDistance,
-    maxDistance,
-  ]);
   const [areas, setAreas] = useState<number[]>([minArea, maxArea]);
 
   const [types, setTypes] = useState<{
@@ -146,29 +135,6 @@ export default function FilterDialog(props: Readonly<IProps>) {
     }
   };
 
-  const handleChangeDistance = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number
-  ) => {
-    console.log('🚀 ~ file: index.tsx:99 ~ FilterDialog ~ event:', event);
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (activeThumb === 0) {
-      setDistances([
-        Math.min(newValue[0], distances[1] - minDistanceRange),
-        distances[1],
-      ]);
-    } else {
-      setDistances([
-        distances[0],
-        Math.max(newValue[1], distances[0] + minDistanceRange),
-      ]);
-    }
-  };
-
   const handleChangeArea = (
     event: Event,
     newValue: number | number[],
@@ -195,7 +161,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
       typesArray.push('CCMN');
     }
     if (types.homestay) {
-      typesArray.push('HOME_STAY');
+      typesArray.push('Homestay');
     }
 
     if (typesArray.length === 3) {
@@ -208,8 +174,6 @@ export default function FilterDialog(props: Readonly<IProps>) {
       type: typesArray,
       area_from: areas[0],
       area_to: areas[1],
-      distance_to_school_from: distances[0],
-      distance_to_school_to: distances[1],
       price_from: prices[0],
       price_to: prices[1],
       electronicPrice_from: electronicPrice[0],
@@ -306,72 +270,6 @@ export default function FilterDialog(props: Readonly<IProps>) {
               min={minPrice}
               step={minPriceRange}
               max={maxPrice}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingX: 1,
-          }}
-        >
-          <Typography
-            sx={{
-              fontWeight: 600,
-              fontSize: 16,
-              color: 'black',
-              marginBottom: 1,
-              alignSelf: 'start',
-              marginLeft: 1,
-            }}
-          >
-            Khoảng cách đến ĐH Báck khoa
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Box sx={{ marginX: 1 }}>
-              <OutlinedInput
-                id='distance-start'
-                endAdornment={
-                  <InputAdornment position='end'>km</InputAdornment>
-                }
-                type='number'
-                value={distances[0]}
-                disabled
-              />
-            </Box>
-            <Box sx={{ marginX: 1 }}>
-              <OutlinedInput
-                id='distance-end'
-                endAdornment={
-                  <InputAdornment position='end'>km</InputAdornment>
-                }
-                type='number'
-                value={distances[1]}
-                disabled
-              />
-            </Box>
-          </Box>
-          <Box sx={{ width: '95%', marginX: 1, marginTop: 1 }}>
-            <Slider
-              getAriaLabel={() => 'Distance range'}
-              value={distances}
-              onChange={handleChangeDistance}
-              valueLabelDisplay='auto'
-              getAriaValueText={valuetextDistance}
-              disableSwap
-              min={minDistance}
-              step={minDistanceRange}
-              max={maxDistance}
             />
           </Box>
         </Box>

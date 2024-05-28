@@ -30,6 +30,7 @@ export interface IRoom {
     description: string;
     created_at?: string;
     updated_at?: string;
+    tag: string;
   };
   roomImages: {
     id: string;
@@ -71,8 +72,6 @@ export interface IRoomsParams {
   type?: ERoomType;
   area_from?: number;
   area_to?: number;
-  distance_to_school_from?: number;
-  distance_to_school_to?: number;
   price_from?: number;
   price_to?: number;
   electronicPrice_from?: number;
@@ -120,7 +119,7 @@ export interface IReviewParam {
 export enum ERoomType {
   PHONGTRO = 'PHONGTRO',
   CCMN = 'CCMN',
-  HOMESTAY = 'HOMESTAY',
+  Homestay = 'Homestay',
 }
 
 export enum EOrderDirection {
