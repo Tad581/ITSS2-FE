@@ -34,7 +34,7 @@ export default function ChatPage() {
       <Box
         sx={{
           width: '100%',
-          backgroundColor: '#F5F5F5',
+          backgroundColor: '#EEEDEB',
           height: '100vh',
           display: 'flex',
           flexDirection: 'column',

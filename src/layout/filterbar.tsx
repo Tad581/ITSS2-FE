@@ -12,7 +12,8 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
 import { useState, useEffect } from "react";
-import { Widgets } from "@mui/icons-material";
+import { EOrderDirection, ERoomType } from "../interfaces/room";
+
 interface IProps {
   handleDialogToggle: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,50 +21,81 @@ interface IProps {
 }
 
 export default function Filterbar(props: Readonly<IProps>) {
-  const [types, setTypes] = useState<{
+  const [type, setTypes] = useState<{
     house: boolean;
     apartment: boolean;
     homestay: boolean;
   }>({ house: false, apartment: false, homestay: false });
 
-  const [sortOption, setSortOption] = useState("");
+  const [sortOptions, setSortOptions] = useState(EOrderDirection.PLUS_DATE);
 
   const handlePickTypes = (value: string) => {
     if (value === "house") {
-      setTypes({ ...types, house: !types.house });
+      setTypes({ house: !type.house, apartment: false, homestay: false });
     } else if (value === "apartment") {
-      setTypes({ ...types, apartment: !types.apartment });
+      setTypes({ house: false, apartment: !type.apartment, homestay: false });
     } else if (value === "homestay") {
-      setTypes({ ...types, homestay: !types.homestay });
+      setTypes({ homestay: !type.homestay, apartment: false, house: false });
     }
   };
 
   useEffect(() => {
-    const typesArray: string[] = [];
-    if (types.house) {
-      typesArray.push("PHONGTRO");
-    }
-    if (types.apartment) {
-      typesArray.push("CCMN");
-    }
-    if (types.homestay) {
-      typesArray.push("Homestay");
+    let typeValue: string = "";
+    // const typesArray: string[] = [];
+    // if (types.house) {
+    //   typesArray.push("PHONGTRO");
+    // }
+    // if (types.apartment) {
+    //   typesArray.push("CCMN");
+    // }
+    // if (types.homestay) {
+    //   typesArray.push("Homestay");
+    // }
+
+    // if (typesArray.length === 3) {
+    //   typesArray.pop();
+    //   typesArray.pop();
+    //   typesArray.pop();
+    // }
+    if (type.house) {
+      typeValue = ERoomType.PHONGTRO;
+    } else if (type.apartment) {
+      typeValue = ERoomType.CCMN;
+    } else if (type.homestay) {
+      typeValue = ERoomType.Homestay;
+    } else if (
+      type.house === false &&
+      type.apartment === false &&
+      type.homestay === false
+    )
+      typeValue = "";
+    if (typeValue === "") {
+      props.handleParams({
+        type: "",
+        sortOptions,
+      });
+    } else {
+      props.handleParams({
+        type: typeValue,
+        sortOptions,
+      });
     }
 
-    if (typesArray.length === 3) {
-      typesArray.pop();
-      typesArray.pop();
-      typesArray.pop();
-    }
-
-    props.handleParams({
-      type: typesArray,
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [types]);
+  }, [type, sortOptions]);
 
   return (
-    <Box component="div" sx={{ marginTop: 1 }}>
+    <Box
+      component="div"
+      sx={{
+        marginTop: 1,
+        backgroundColor: "#fff",
+        width: "80%",
+        marginX: "auto",
+        borderRadius: "20px",
+        paddingY: 2
+      }}
+    >
       <Box
         component="div"
         sx={{
@@ -74,27 +106,41 @@ export default function Filterbar(props: Readonly<IProps>) {
           position: "relative",
         }}
       >
-        <Box sx={{ position: "absolute", left: "calc(11% + 5px)" }}>
+        <Box sx={{ position: "absolute", left: 30 }}>
           <FormControl sx={{ minWidth: 200, marginRight: 2 }}>
             <InputLabel id="sort-select-label">Sắp xếp</InputLabel>
             <Select
               labelId="sort-select-label"
               id="sort-select"
-              value={sortOption}
+              value={sortOptions}
               label="Sắp xếp"
-              onChange={(e) => setSortOption(e.target.value)}
+              onChange={(e) =>
+                setSortOptions(e.target.value as EOrderDirection)
+              }
             >
-              <MenuItem value={"priceAsc"}>Giá phòng tăng dần</MenuItem>
-              <MenuItem value={"priceDesc"}>Giá phòng giảm dần</MenuItem>
-              <MenuItem value={"areaAsc"}>Diện tích tăng dần</MenuItem>
-              <MenuItem value={"areaDesc"}>Diện tích giảm dần</MenuItem>
-              <MenuItem value={"newest"}>Thời gian đăng gần nhất</MenuItem>
-              <MenuItem value={"oldest"}>Thời gian đăng xa nhất</MenuItem>
+              <MenuItem value={EOrderDirection.PLUS_PRICE}>
+                Giá phòng tăng dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.MINUS_PRICE}>
+                Giá phòng giảm dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.PLUS_AREA}>
+                Diện tích tăng dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.MINUS_AREA}>
+                Diện tích giảm dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.PLUS_DATE}>
+                Thời gian đăng gần nhất
+              </MenuItem>
+              <MenuItem value={EOrderDirection.MINUS_DATE}>
+                Thời gian đăng xa nhất
+              </MenuItem>
             </Select>
           </FormControl>
         </Box>
         <Box onClick={() => handlePickTypes("house")}>
-          {types.house ? (
+          {type.house ? (
             <CustomCheckbox
               icon={<HomeOutlinedIcon sx={{ fontSize: 40, color: "#fff" }} />}
               title="Nhà trọ"
@@ -102,7 +148,7 @@ export default function Filterbar(props: Readonly<IProps>) {
               borderStyle="solid"
               borderWidth={1}
               height={50}
-              backgroundColor="#1976d2"
+              backgroundColor="#40A578"
               color="#fff"
               fontSize="22px"
               fontWeight="700"
@@ -124,7 +170,7 @@ export default function Filterbar(props: Readonly<IProps>) {
           )}
         </Box>
         <Box onClick={() => handlePickTypes("apartment")}>
-          {types.apartment ? (
+          {type.apartment ? (
             <CustomCheckbox
               icon={
                 <ApartmentOutlinedIcon sx={{ fontSize: 40, color: "#fff" }} />
@@ -134,7 +180,7 @@ export default function Filterbar(props: Readonly<IProps>) {
               borderStyle="solid"
               borderWidth={1}
               height={50}
-              backgroundColor="#1976d2"
+              backgroundColor="#40A578"
               color="#fff"
               fontSize="22px"
               fontWeight="700"
@@ -158,7 +204,7 @@ export default function Filterbar(props: Readonly<IProps>) {
           )}
         </Box>
         <Box onClick={() => handlePickTypes("homestay")}>
-          {types.homestay ? (
+          {type.homestay ? (
             <CustomCheckbox
               icon={
                 <HomeWorkOutlinedIcon sx={{ fontSize: 40, color: "#fff" }} />
@@ -168,7 +214,7 @@ export default function Filterbar(props: Readonly<IProps>) {
               borderStyle="solid"
               borderWidth={1}
               height={50}
-              backgroundColor="#1976d2"
+              backgroundColor="#40A578"
               color="#fff"
               fontSize="22px"
               fontWeight="700"
@@ -205,7 +251,7 @@ export default function Filterbar(props: Readonly<IProps>) {
             flexDirection: "row",
             borderRadius: 10,
             position: "absolute",
-            right: "10%",
+            right: 30,
             cursor: "pointer",
           }}
           onClick={props.handleDialogToggle}

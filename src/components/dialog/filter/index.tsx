@@ -21,6 +21,7 @@ import CustomCheckbox from './customCheckbox';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import { ERoomType } from '../../../interfaces/room';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -91,7 +92,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
   const [prices, setPrices] = useState<number[]>([minPrice, maxPrice]);
   const [areas, setAreas] = useState<number[]>([minArea, maxArea]);
 
-  const [types, setTypes] = useState<{
+  const [type, setTypes] = useState<{
     house: boolean;
     apartment: boolean;
     homestay: boolean;
@@ -109,12 +110,12 @@ export default function FilterDialog(props: Readonly<IProps>) {
   const [waterPrice, setWaterPrice] = useState<number[]>([0, 0]);
 
   const handlePickTypes = (value: string) => {
-    if (value === 'house') {
-      setTypes({ ...types, house: !types.house });
-    } else if (value === 'apartment') {
-      setTypes({ ...types, apartment: !types.apartment });
-    } else if (value === 'homestay') {
-      setTypes({ ...types, homestay: !types.homestay });
+    if (value === "house") {
+      setTypes({ house: !type.house, apartment: false, homestay: false });
+    } else if (value === "apartment") {
+      setTypes({ house: false, apartment: !type.apartment, homestay: false });
+    } else if (value === "homestay") {
+      setTypes({ homestay: !type.homestay, apartment: false, house: false });
     }
   };
 
@@ -153,25 +154,38 @@ export default function FilterDialog(props: Readonly<IProps>) {
   };
 
   const handleSubmit = () => {
-    const typesArray: string[] = [];
-    if (types.house) {
-      typesArray.push('PHONGTRO');
-    }
-    if (types.apartment) {
-      typesArray.push('CCMN');
-    }
-    if (types.homestay) {
-      typesArray.push('Homestay');
-    }
+    let typeValue: string = "";
+    // const typesArray: string[] = [];
+    // if (types.house) {
+    //   typesArray.push('PHONGTRO');
+    // }
+    // if (types.apartment) {
+    //   typesArray.push('CCMN');
+    // }
+    // if (types.homestay) {
+    //   typesArray.push('Homestay');
+    // }
 
-    if (typesArray.length === 3) {
-      typesArray.pop();
-      typesArray.pop();
-      typesArray.pop();
-    }
+    // if (typesArray.length === 3) {
+    //   typesArray.pop();
+    //   typesArray.pop();
+    //   typesArray.pop();
+    // }
+    if (type.house) {
+      typeValue = ERoomType.PHONGTRO;
+    } else if (type.apartment) {
+      typeValue = ERoomType.CCMN;
+    } else if (type.homestay) {
+      typeValue = ERoomType.Homestay;
+    } else if (
+      type.house === false &&
+      type.apartment === false &&
+      type.homestay === false
+    )
+      typeValue = "";
 
     props.handleParams({
-      type: typesArray,
+      type: typeValue,
       area_from: areas[0],
       area_to: areas[1],
       price_from: prices[0],
@@ -378,13 +392,13 @@ export default function FilterDialog(props: Readonly<IProps>) {
               sx={{ marginRight: -1 }}
               onClick={() => handlePickTypes('house')}
             >
-              {types.house ? (
+              {type.house ? (
                 <CustomCheckbox
                   icon={
                     <HomeOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                   }
                   title='Nhà trọ'
-                  backgroundColor='#1976d2'
+                  backgroundColor='#40A578'
                   color='#fff'
                   fontSize='16px'
                   fontWeight='500'
@@ -413,7 +427,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
               )}
             </Grid>
             <Grid item xs={4} onClick={() => handlePickTypes('apartment')}>
-              {types.apartment ? (
+              {type.apartment ? (
                 <CustomCheckbox
                   icon={
                     <ApartmentOutlinedIcon
@@ -421,7 +435,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                     />
                   }
                   title='Chung cư mini'
-                  backgroundColor='#1976d2'
+                  backgroundColor='#40A578'
                   color='#fff'
                   fontSize='16px'
                   fontWeight='500'
@@ -457,7 +471,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
               sx={{ marginLeft: -1 }}
               onClick={() => handlePickTypes('homestay')}
             >
-              {types.homestay ? (
+              {type.homestay ? (
                 <CustomCheckbox
                   icon={
                     <HomeWorkOutlinedIcon
@@ -465,7 +479,7 @@ export default function FilterDialog(props: Readonly<IProps>) {
                     />
                   }
                   title='Homestay'
-                  backgroundColor='#1976d2'
+                  backgroundColor='#40A578'
                   color='#fff'
                   fontSize='16px'
                   fontWeight='500'

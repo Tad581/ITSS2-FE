@@ -43,8 +43,10 @@ function RoomCard(props: IRoom) {
     <Card
       variant="outlined"
       sx={{
-        border: "none",
-        marginX: 1,
+        border: "1px solid gray",
+        borderRadius: "10px",
+        padding: 2,
+        marginRight: 2,
       }}
     >
       <Link href={"/detail/" + props.roomId} sx={{ textDecoration: "none" }}>

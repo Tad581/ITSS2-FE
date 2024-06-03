@@ -139,7 +139,6 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (formValue) => {
-      console.log("formValue", formValue);
       const formData = new FormData();
       for (let i = 0; i < uploadFiles.length; i++) {
         formData.append(`Images`, uploadFiles[i]);

@@ -53,7 +53,7 @@ export default function Detail() {
       sx={{
         height: "auto",
         width: "100%",
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "#EEEDEB",
       }}
     >
       <Header />

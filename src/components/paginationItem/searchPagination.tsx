@@ -21,7 +21,7 @@ export default function ItemPagination(props: IProps) {
   const [roomsParams, setRoomsParams] = useState<IRoomsParams>({
     page: pagination.currentPage,
     pageSize: 12,
-    order_direction: EOrderDirection.DESC,
+    sortOptions: EOrderDirection.PLUS_DATE,
   });
 
   const handlePageChange = (
@@ -68,7 +68,6 @@ export default function ItemPagination(props: IProps) {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: -4,
         }}
       >
         <Grid
@@ -79,13 +78,19 @@ export default function ItemPagination(props: IProps) {
             height: "auto",
             display: "flex",
             justifyContent: "flex-start",
-            alignItems: "center",
-            marginTop: 1,
+            alignItems: "flex-start",
+            marginTop: 2,
+            borderRadius: 5,
+            paddingBottom: "40px",
+            background: "#fff",
+            minHeight: "100vh",
+            paddingRight: "40px",
+            marginX: "auto"
           }}
         >
           {showData.length > 0 ? (
             showData.map((item: IRoom) => (
-              <Grid item sm={12} md={6} lg={3} xl={2} key={item.roomId}>
+              <Grid item sm={12} md={6} lg={4} xl={3} key={item.roomId}>
                 <CardItem
                   id={item.roomId}
                   name={item.name}

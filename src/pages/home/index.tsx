@@ -12,7 +12,7 @@ export default function Home() {
         height: 'auto',
         minHeight: '100vh',
         width: '100%',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#EEEDEB',
       }}
     >
       <Header handleKeyword={(keyword: string) => setKeyword(keyword)} />

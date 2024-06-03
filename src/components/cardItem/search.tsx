@@ -36,6 +36,9 @@ export default function CardItem(props: IProps) {
         display: "flex",
         flexDirection: "column",
         position: "relative",
+        border: "1px solid gray",
+        padding: "15px",
+        borderRadius: "10px",
       }}
     >
       <Link href={"/detail/" + props.id} sx={{ textDecoration: "none" }}>
@@ -56,8 +59,8 @@ export default function CardItem(props: IProps) {
         <Box
           sx={{
             position: "absolute",
-            top: 8,
-            left: 8,
+            top: 15,
+            left: 15,
             backgroundColor: tagColor,
             color: "#fff",
             padding: "5px 8px",

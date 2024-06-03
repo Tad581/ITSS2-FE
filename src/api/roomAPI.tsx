@@ -11,9 +11,9 @@ export const RoomAPI = {
     const PriceRange: any = {};
     const WaterPriceRange: any = {};
     const ElectronicPriceRange: any = {};
-    
-    console.log('params', params)
-
+    if (params?.type && params?.type !== "") {
+      filterParams["Type"] = params.type
+    } 
     if (params?.name) {
       filterParams["Name"] = params.name;
     }
@@ -84,9 +84,9 @@ export const RoomAPI = {
       params: {
         page: params?.page,
         pageSize: params?.pageSize ? params?.pageSize : 8,
-        sort: params?.order_direction
-          ? params?.order_direction
-          : EOrderDirection.DESC,
+        sort: params?.sortOptions
+          ? params?.sortOptions
+          : EOrderDirection.PLUS_DATE,
         filter: JSON.stringify(filterParams),
       },
       paramsSerializer: (params) => {

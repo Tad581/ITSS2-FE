@@ -39,6 +39,8 @@ export default function Header(props: IProps) {
           paddingY: 1,
           justifyContent: "space-between",
           alignItems: "center",
+          maxWidth: "75%",
+          marginX: "auto",
         }}
       >
         <Link href="/">
@@ -85,19 +87,41 @@ export default function Header(props: IProps) {
             flexGrow: 1,
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-around",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Link href="/chat" sx={{ color: "#000" }}>
-            <ChatOutlinedIcon sx={{ height: 40, width: 40, marginRight: 2 }} />
-          </Link>
+          <Box
+            sx={{
+              height: 40,
+              width: 40,
+              borderRadius: "50%",
+              border: "2px solid #40A578",
+              backgroundColor: "#40A578",
+              marginRight: 2
+            }}
+          >
+            <Link
+              href="/chat"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              <ChatOutlinedIcon
+                sx={{ height: "70%", width: "70%", color: "#fff" }}
+              />
+            </Link>
+          </Box>
           {props.displayButton ? (
             <Button
               variant="contained"
               sx={{
                 marginRight: 2,
-                backgroundColor: "#21b6ae",
+                backgroundColor: "#40A578",
                 textTransform: "none",
                 borderRadius: 2,
               }}
@@ -111,8 +135,12 @@ export default function Header(props: IProps) {
           <Link href="/created-rooms">
             <Avatar
               alt="avatar"
-              src="https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png"
-              sx={{ cursor: "pointer" }}
+              src={
+                currentUser
+                  ? currentUser.photoUrl
+                  : "https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png"
+              }
+              sx={{ cursor: "pointer", border: "2px solid #40A578" }}
             />
           </Link>
         </Box>

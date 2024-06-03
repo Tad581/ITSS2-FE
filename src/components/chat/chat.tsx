@@ -50,11 +50,11 @@ const Chat = () => {
         )}
         <Button
           sx={{
-            backgroundColor: '#1976d2',
+            backgroundColor: '#40A578',
             color: '#fff',
             fontSize: '12px',
             '&: hover': {
-              backgroundColor: '#1976d2'
+              backgroundColor: '#40A578'
             }
           }}
           onClick={() => signOut(auth)}

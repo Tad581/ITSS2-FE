@@ -66,10 +66,9 @@ export interface IRoomCreateInput {
 export interface IRoomsParams {
   page?: number;
   pageSize?: number;
-  order_direction?: EOrderDirection;
   name?: string;
   address?: string;
-  type?: ERoomType;
+  type?: ERoomType | string;
   area_from?: number;
   area_to?: number;
   price_from?: number;
@@ -85,6 +84,7 @@ export interface IRoomsParams {
   washingMachine?: boolean;
   enclosedToilet?: boolean;
   safedDevice?: boolean;
+  sortOptions?: EOrderDirection;
 }
 
 export interface IReview {
@@ -123,6 +123,10 @@ export enum ERoomType {
 }
 
 export enum EOrderDirection {
-  DESC = 'desc',
-  ASC = 'asc',
+  PLUS_PRICE = "+Price",
+  MINUS_PRICE = "-Price",
+  PLUS_AREA = "+Area",
+  MINUS_AREA = "-Area",
+  PLUS_DATE = "+CreatedOnDate",
+  MINUS_DATE = "-CreatedOnDate",
 }
