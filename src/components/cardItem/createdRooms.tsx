@@ -17,12 +17,11 @@ export default function CreatedRooms(props: IProps) {
   return (
     <Box
       sx={{
-        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 3,
+        width: '100%',
       }}
     >
       <Box

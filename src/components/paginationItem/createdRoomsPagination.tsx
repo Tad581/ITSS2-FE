@@ -1,8 +1,8 @@
-import { Box, Pagination, Typography } from "@mui/material";
+import { Box, Divider, Pagination, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import CreatedRooms from "../cardItem/createdRooms";
 import { RoomAPI } from "../../api/roomAPI";
-import { IRoom, EOrderDirection } from "../../interfaces/room";
+import { IRoom } from "../../interfaces/room";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../dialog/confirm";
@@ -32,7 +32,6 @@ export default function CreatedRoomsPagination(
     romOwnerId: defaultUserId,
     page: pagination.currentPage,
     pageSize: defaultPageSize,
-    order_direction: EOrderDirection.DESC,
   });
 
   useEffect(() => {
@@ -87,8 +86,10 @@ export default function CreatedRoomsPagination(
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
             padding: 2,
+            paddingX: 5,
             alignSelf: "flex-start",
             marginTop: -7,
+            marginBottom: 2,
           }}
         >
           <Typography sx={{ fontWeight: 500, fontSize: 20 }}>
@@ -97,19 +98,22 @@ export default function CreatedRoomsPagination(
         </Box>
         {showData?.length > 0 ? (
           showData.map((item) => (
-            <CreatedRooms
-              key={item?.roomId}
-              id={item?.roomId}
-              name={item?.name}
-              price={item?.price}
-              area={item?.area}
-              imageUrl={item?.roomImages[0]?.imageUrl}
-              handleOpenDialog={() => setIsOpen(true)}
-              handleSelectedRoomId={(roomId: string) =>
-                setSelectedRoomId(roomId)
-              }
-              handleEditClick={props.handleEditClick}
-            />
+            <>
+              <CreatedRooms
+                key={item?.roomId}
+                id={item?.roomId}
+                name={item?.name}
+                price={item?.price}
+                area={item?.area}
+                imageUrl={item?.roomImages[0]?.imageUrl}
+                handleOpenDialog={() => setIsOpen(true)}
+                handleSelectedRoomId={(roomId: string) =>
+                  setSelectedRoomId(roomId)
+                }
+                handleEditClick={props.handleEditClick}
+              />
+                <Divider sx={{ marginY: 3, marginX: 'auto', width: "100%" }}/>
+            </>
           ))
         ) : (
           <Typography mt={10}>Không có dữ liệu</Typography>

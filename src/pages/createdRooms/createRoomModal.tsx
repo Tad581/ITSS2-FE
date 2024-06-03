@@ -21,6 +21,7 @@ import { IRoomCreateInput } from "../../interfaces/room";
 import { RoomAPI } from "../../api/roomAPI";
 import RoomAttribute from "../../components/detail/roomAttribute";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
 
 type ComboBoxProps = {
   options: any[];
@@ -35,10 +36,11 @@ function ComboBox(props: ComboBoxProps) {
   return (
     <Box
       display={"flex"}
-      flexDirection={"row"}
+      flexDirection={"column"}
       justifyContent={"center"}
-      alignItems={"center"}
+      alignItems={"flex-start"}
       mt={2}
+      mr={2}
     >
       <Typography sx={{ fontSize: 16, fontWeight: 400, my: 1, marginRight: 1 }}>
         {props.title}
@@ -63,6 +65,25 @@ function ComboBox(props: ComboBoxProps) {
     </Box>
   );
 }
+
+const validationSchema = Yup.object({
+  Name: Yup.string().required("Tên phòng không được bỏ trống"),
+  Address: Yup.string().required("Địa chỉ không được bỏ trống"),
+  Area: Yup.number()
+    .required("Diện tích không được bỏ trống")
+    .positive("Diện tích phải là số dương"),
+  Price: Yup.number()
+    .required("Giá không được bỏ trống")
+    .positive("Giá phải là số dương"),
+  ElectronicPrice: Yup.number()
+    .required("Giá điện không được bỏ trống")
+    .positive("Giá điện phải là số dương"),
+  WaterPrice: Yup.number()
+    .required("Giá nước không được bỏ trống")
+    .positive("Giá nước phải là số dương"),
+  Description: Yup.string().required("Mô tả không được bỏ trống"),
+  Images: Yup.array().min(1, "Vui lòng tải lên ít nhất một hình ảnh"),
+});
 
 const roomTypeOptions = [
   { label: "Chung cư mini", value: "CCMN" },
@@ -102,11 +123,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 1000,
+  maxHeight: '90vh',
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  pt: 50,
+  overflow: 'auto',
+  pb: 10,
 };
 
 export default function CreateRoomModal(props: CreateRoomModalProps) {
@@ -138,6 +161,7 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
 
   const formik = useFormik({
     initialValues: initialValues,
+    validationSchema: validationSchema,
     onSubmit: async (formValue) => {
       const formData = new FormData();
       for (let i = 0; i < uploadFiles.length; i++) {
@@ -306,14 +330,16 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={{
-          overflow: "scroll",
-          maxHeight: "90%",
           top: "5%",
-          // left: '10%',
-          position: "absolute",
+          height: "100%",
         }}
       >
-        <form>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          encType="multipart/form-data"
+          noValidate
+        >
           <Box sx={style}>
             <Typography
               id="modal-modal-title"
@@ -324,9 +350,15 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
               Đăng phòng
             </Typography>
             <ImageUploadCard
-              handlePropsImage={setUploadFiles}
+              handlePropsImage={(images: any[]) => {
+                formik.setFieldValue("Images", images);
+                setUploadFiles(images);
+              }}
               existedImageUrls={existedImages}
             />
+            {formik.errors.Images && formik.touched.Images && (
+              <Typography color="error" sx={{ marginTop: 1 }}>{formik.errors.Images}</Typography>
+            )}
             <Typography
               id="modal-modal-description"
               sx={{ mt: 2 }}
@@ -337,124 +369,218 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
             </Typography>
 
             <FormInputText
-              label="Tên phòng"
+              label="Tên phòng*"
               name={"Name"}
               value={formik.values.Name}
               onChange={formik.handleChange}
             />
+            {formik.errors.Name && formik.touched.Name && (
+              <Typography color="error" sx={{ marginTop: 1 }}>
+                {formik.errors.Name}
+              </Typography>
+            )}
             <FormInputText
-              label="Mô tả"
+              label="Mô tả*"
               multiline
               name={"Description"}
               value={formik.values.Description}
               onChange={formik.handleChange}
             />
+            {formik.errors.Description && formik.touched.Description && (
+              <Typography color="error" sx={{ marginTop: 1 }}>
+                {formik.errors.Description}
+              </Typography>
+            )}
             <FormInputText
               label="Địa chỉ"
               name={"Address"}
               value={formik.values.Address}
               onChange={formik.handleChange}
             />
+            {formik.errors.Address && formik.touched.Address && (
+              <Typography color="error" sx={{ marginTop: 1 }}>
+                {formik.errors.Address}
+              </Typography>
+            )}
             <Box
               display={"flex"}
-              flexDirection={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"flex-start"}
               mt={2}
             >
               {/*  */}
-              <Box display={"flex"} flexDirection={"row"}>
+              <Box display={"flex"} flexDirection={"row"} marginBottom={2}>
                 <Typography
-                  sx={{ fontSize: 16, fontWeight: 400, my: 1, marginRight: 1 }}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    my: 1,
+                    marginRight: 1,
+                    width: 100,
+                  }}
                 >
                   Giá
                 </Typography>
-                <InputBase
-                  rows={1}
-                  sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
-                  endAdornment={"VND/tháng"}
-                  name={"Price"}
-                  value={formik.values.Price}
-                  onChange={formik.handleChange}
-                />
+                <Box>
+                  <InputBase
+                    rows={1}
+                    sx={{
+                      border: 1,
+                      p: 0.5,
+                      px: 1,
+                      borderRadius: 2,
+                      width: 150,
+                    }}
+                    endAdornment={"VND/tháng"}
+                    name={"Price"}
+                    value={formik.values.Price}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.Price && formik.touched.Price && (
+                    <Typography color="error" sx={{ marginTop: 1 }}>
+                      {formik.errors.Price}
+                    </Typography>
+                  )}
+                </Box>
               </Box>
               {/*  */}
-              <Box display={"flex"} flexDirection={"row"}>
+              <Box display={"flex"} flexDirection={"row"} marginBottom={2}>
                 <Typography
-                  sx={{ fontSize: 16, fontWeight: 400, my: 1, marginRight: 1 }}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    my: 1,
+                    marginRight: 1,
+                    width: 100,
+                  }}
                 >
                   Diện tích
                 </Typography>
-                <InputBase
-                  rows={1}
-                  sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
-                  endAdornment={"m2"}
-                  name={"Area"}
-                  value={formik.values.Area}
-                  onChange={formik.handleChange}
-                />
+                <Box>
+                  <InputBase
+                    rows={1}
+                    sx={{
+                      border: 1,
+                      p: 0.5,
+                      px: 1,
+                      borderRadius: 2,
+                      width: 150,
+                    }}
+                    endAdornment={"m2"}
+                    name={"Area"}
+                    value={formik.values.Area}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.Area && formik.touched.Area && (
+                    <Typography color="error" sx={{ marginTop: 1 }}>
+                      {formik.errors.Area}
+                    </Typography>
+                  )}
+                </Box>
               </Box>
               {/*  */}
-              <Box display={"flex"} flexDirection={"row"}>
+              <Box display={"flex"} flexDirection={"row"} marginBottom={2}>
                 <Typography
-                  sx={{ fontSize: 16, fontWeight: 400, my: 1, marginRight: 1 }}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    my: 1,
+                    marginRight: 1,
+                    width: 100,
+                  }}
                 >
                   Điện
                 </Typography>
-                <InputBase
-                  rows={1}
-                  sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
-                  endAdornment={"VND/số"}
-                  name={"ElectronicPrice"}
-                  value={formik.values.ElectronicPrice}
-                  onChange={formik.handleChange}
-                />
+                <Box>
+                  <InputBase
+                    rows={1}
+                    sx={{
+                      border: 1,
+                      p: 0.5,
+                      px: 1,
+                      borderRadius: 2,
+                      width: 150,
+                    }}
+                    endAdornment={"VND/số"}
+                    name={"ElectronicPrice"}
+                    value={formik.values.ElectronicPrice}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.ElectronicPrice &&
+                    formik.touched.ElectronicPrice && (
+                      <Typography color="error" sx={{ marginTop: 1 }}>
+                        {formik.errors.ElectronicPrice}
+                      </Typography>
+                    )}
+                </Box>
               </Box>
               {/*  */}
-              <Box display={"flex"} flexDirection={"row"}>
+              <Box display={"flex"} flexDirection={"row"} marginBottom={2}>
                 <Typography
-                  sx={{ fontSize: 16, fontWeight: 400, my: 1, marginRight: 1 }}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    my: 1,
+                    marginRight: 1,
+                    width: 100,
+                  }}
                 >
                   Nước
                 </Typography>
-                <InputBase
-                  rows={1}
-                  sx={{ border: 1, p: 0.5, px: 1, borderRadius: 2, width: 150 }}
-                  endAdornment={"VND/số"}
-                  name={"WaterPrice"}
-                  value={formik.values.WaterPrice}
-                  onChange={formik.handleChange}
-                />
+                <Box>
+                  <InputBase
+                    rows={1}
+                    sx={{
+                      border: 1,
+                      p: 0.5,
+                      px: 1,
+                      borderRadius: 2,
+                      width: 150,
+                    }}
+                    endAdornment={"VND/số"}
+                    name={"WaterPrice"}
+                    value={formik.values.WaterPrice}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.WaterPrice && formik.touched.WaterPrice && (
+                    <Typography color="error" sx={{ marginTop: 1 }}>
+                      {formik.errors.WaterPrice}
+                    </Typography>
+                  )}
+                </Box>
               </Box>
               {/*  */}
             </Box>
 
             {/*  */}
-            <ComboBox
-              title="Loại phòng"
-              label="Chọn loại phòng"
-              options={roomTypeOptions}
-              name={"Type"}
-              value={formik.values.Type}
-              onChange={formik.handleChange}
-            />
-            <ComboBox
-              title="Nhà vệ sinh"
-              label="Chọn loại nhà vệ sinh"
-              options={enclosedToiletOptions}
-              name={"EnclosedToilet"}
-              value={formik.values.EnclosedToilet}
-              onChange={formik.handleChange}
-            />
-            <ComboBox
-              title="Tình trạng phòng"
-              label="Chọn tình trạng phòng"
-              options={tagOptions}
-              name={"Tag"}
-              value={formik.values.Tag}
-              onChange={formik.handleChange}
-            />
-            {/*  */}
+            <Box display={"flex"} flexDirection={"row"}>
+              <ComboBox
+                title="Loại phòng"
+                label="Chọn loại phòng"
+                options={roomTypeOptions}
+                name={"Type"}
+                value={formik.values.Type}
+                onChange={formik.handleChange}
+              />
+              <ComboBox
+                title="Nhà vệ sinh"
+                label="Chọn loại nhà vệ sinh"
+                options={enclosedToiletOptions}
+                name={"EnclosedToilet"}
+                value={formik.values.EnclosedToilet}
+                onChange={formik.handleChange}
+              />
+              <ComboBox
+                title="Tình trạng phòng"
+                label="Chọn tình trạng phòng"
+                options={tagOptions}
+                name={"Tag"}
+                value={formik.values.Tag}
+                onChange={formik.handleChange}
+              />
+              {/*  */}
+            </Box>
 
             <Typography
               id="modal-modal-description"
@@ -550,8 +676,7 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
               </Button>
               <Button
                 variant="contained"
-                color="primary"
-                sx={{ mx: 2 }}
+                sx={{ mx: 2, backgroundColor: "#40A578" }}
                 onClick={formik.submitForm}
                 disabled={btnDisabled}
               >
@@ -559,7 +684,7 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
               </Button>
             </Box>
           </Box>
-        </form>
+        </Box>
       </Modal>
     </div>
   );
