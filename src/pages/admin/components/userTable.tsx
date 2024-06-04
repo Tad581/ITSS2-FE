@@ -4,20 +4,12 @@ import {
   Avatar, IconButton, TablePagination
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-interface User {
-  id: number;
-  avatar: string;
-  fullname: string;
-  email: string;
-  phonenumber: string;
-  dateOfBirth: string;
-  gender: string;
-}
+import { IUser } from '../../../interfaces/user';
+import * as dayjs from 'dayjs'
 
 interface UserTableProps {
-  users: User[];
-  onDelete: (userId: number) => void;
+  users: IUser[];
+  onDelete: (userId: string) => void;
   page: number;
   rowsPerPage: number;
   handleChangePage: (event: unknown, newPage: number) => void;
@@ -25,6 +17,7 @@ interface UserTableProps {
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users, onDelete, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
+  console.log("users", users)
   return (
     <Paper>
       <TableContainer>
@@ -41,18 +34,18 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete, page, rowsPerPag
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
-              <TableRow key={user.id}>
+            {users.map((user) => (
+              <TableRow key={user.uid}>
                 <TableCell>
-                  <Avatar src={user.avatar} />
+                  <Avatar src={user.avatarUrl} />
                 </TableCell>
-                <TableCell>{user.fullname}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phonenumber}</TableCell>
-                <TableCell>{user.dateOfBirth}</TableCell>
+                <TableCell>{user.fullName}</TableCell>
+                <TableCell>{user.userName}</TableCell>
+                <TableCell>{user.phoneNumber}</TableCell>
+                <TableCell>{dayjs(user.dateOfBirth).format('DD-MM-YYYY')}</TableCell>
                 <TableCell>{user.gender}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => onDelete(user.id)}>
+                  <IconButton onClick={() => onDelete(user.uid)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

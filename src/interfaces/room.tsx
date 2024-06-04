@@ -6,14 +6,14 @@ export interface IRoom {
   type: ERoomType;
   area: number;
   // distance_to_school: number;
-  price: number;
+  price: string;
   created_at?: string;
   updated_at?: string;
-  owner: {
+  user: {
     id: string;
     username: string;
     avatar?: string;
-    role?: string;
+    role?: number;
   };
   roomAttribute?: {
     id: string;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
-import Recommend from '../chat/recommend';
-import { useEffect, useState, useContext } from 'react';
-import { db } from '../../firebase';
+import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
+import Recommend from "../chat/recommend";
+import { useEffect, useState, useContext } from "react";
+import { db } from "../../firebase";
 import {
   collection,
   query,
@@ -13,81 +13,78 @@ import {
   updateDoc,
   getDoc,
   setDoc,
-} from 'firebase/firestore';
-import { AuthContext } from '../../context/authContext';
-import { ChatContext } from '../../context/chatContext';
+} from "firebase/firestore";
+import { AuthContext } from "../../context/authContext";
+import { ChatContext } from "../../context/chatContext";
 
 const recommendMessage = [
-  'Anh chị có onl k ạ?',
-  'Thời hạn thuê tối đa là bao lâu',
+  "Anh chị có onl k ạ?",
+  "Thời hạn thuê tối đa là bao lâu",
 ];
 
 interface IOwner {
-  id: number;
+  id: string;
   username: string;
   avatar?: string;
-  role?: string;
+  phoneNumber?: string;
+  role?: number;
 }
 
 export default function RoomOwnerContact({
   owner,
 }: Readonly<{ owner: IOwner }>) {
-  const { username, role } = owner;
+  const { username, phoneNumber } = owner;
   const [ownerReal, setOwnerReal] = useState<any>();
-
   const { currentUser }: any = useContext(AuthContext);
   const { dispatch }: any = useContext(ChatContext);
 
   const handleGoChat = async () => {
     if (ownerReal && currentUser) {
-      localStorage.setItem('targetUser', JSON.stringify(ownerReal));
-      dispatch({ type: 'CHANGE_USER', payload: ownerReal });
+      localStorage.setItem("targetUser", JSON.stringify(ownerReal));
+      dispatch({ type: "CHANGE_USER", payload: ownerReal });
       const combinedId =
         currentUser.uid > ownerReal.uid
           ? currentUser.uid + ownerReal.uid
           : ownerReal.uid + currentUser.uid;
       try {
-        const res = await getDoc(doc(db, 'chats', combinedId));
+        const res = await getDoc(doc(db, "chats", combinedId));
 
         if (!res.exists()) {
           //create a chat in chats collection
-          await setDoc(doc(db, 'chats', combinedId), { messages: [] });
+          await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
           //create user chats
-          await updateDoc(doc(db, 'userChats', currentUser.uid), {
-            [combinedId + '.userInfo']: {
+          await updateDoc(doc(db, "userChats", currentUser.uid), {
+            [combinedId + ".userInfo"]: {
               uid: ownerReal.uid,
               displayName: ownerReal.displayName,
               photoURL: ownerReal.photoURL,
             },
-            [combinedId + '.date']: serverTimestamp(),
+            [combinedId + ".date"]: serverTimestamp(),
           });
 
-          await updateDoc(doc(db, 'userChats', ownerReal.uid), {
-            [combinedId + '.userInfo']: {
+          await updateDoc(doc(db, "userChats", ownerReal.uid), {
+            [combinedId + ".userInfo"]: {
               uid: currentUser.uid,
               displayName: currentUser.displayName,
               photoURL: currentUser.photoURL,
             },
-            [combinedId + '.date']: serverTimestamp(),
+            [combinedId + ".date"]: serverTimestamp(),
           });
         }
 
-        window.location.replace('/chat');
+        window.location.replace("/chat");
       } catch (err) {
         console.log(err);
       }
     } else {
-      window.location.replace('/login');
+      window.location.replace("/login");
     }
   };
 
   useEffect(() => {
     const getOwner = async () => {
-      const q = query(
-        collection(db, 'users'),
-        where('displayName', '==', username)
-      );
+      const q = query(collection(db, "users"), where("email", "==", username));
 
       try {
         const querySnapshot = await getDocs(q);
@@ -96,7 +93,7 @@ export default function RoomOwnerContact({
         });
       } catch (err) {
         console.log(
-          '🚀 ~ file: roomOwnerContact.tsx:52 ~ handleSearch ~ err:',
+          "🚀 ~ file: roomOwnerContact.tsx:52 ~ handleSearch ~ err:",
           err
         );
       }
@@ -105,21 +102,21 @@ export default function RoomOwnerContact({
   }, [username]);
 
   return (
-    <Box sx={{ maxWidth: '100%' }}>
+    <Box sx={{ maxWidth: "100%" }}>
       <Box
         sx={{
           border: 1,
           padding: 2,
           borderRadius: 4,
-          position: 'sticky',
+          position: "sticky",
           top: 30,
         }}
       >
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
             marginBottom: 2,
           }}
         >
@@ -129,20 +126,20 @@ export default function RoomOwnerContact({
             sx={{ width: 56, height: 56 }}
           />
           <Box marginLeft={2}>
-            <Typography variant='h6' color='blue'>
+            <Typography variant="h6" color="black">
               {ownerReal?.displayName}
             </Typography>
-            <Typography variant='subtitle1'>
-              {role === 'OWNER' ? 'Chủ nhà' : 'Khách'}
+            <Typography variant="h6" color="gray">
+              {phoneNumber}
             </Typography>
           </Box>
         </Box>
         <Divider light />
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
             gap: 1,
           }}
           marginTop={2}
@@ -154,14 +151,14 @@ export default function RoomOwnerContact({
           })}
         </Box>
         <Box
-          display={'flex'}
-          justifyContent={'center'}
-          alignItems={'center'}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
           mt={2}
         >
           <Button
-            variant='contained'
-            color='success'
+            variant="contained"
+            color="success"
             sx={{ borderRadius: 2, margin: 1 }}
             onClick={handleGoChat}
           >
@@ -176,8 +173,8 @@ export default function RoomOwnerContact({
 RoomOwnerContact.defaultProps = {
   owner: {
     id: 0,
-    name: 'Duy Trọng',
-    avatar: '/static/images/avatar/1.jpg',
-    role: 'Chủ nhà',
+    name: "Duy Trọng",
+    avatar: "/static/images/avatar/1.jpg",
+    role: "Chủ nhà",
   },
 };

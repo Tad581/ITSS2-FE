@@ -2,6 +2,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { UserAPI } from '../api/userAPI';
 
 interface ContextType {
   currentUser: any;
@@ -18,10 +19,16 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
   );
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      setCurrentUser(user);
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const res = await UserAPI.getUser(user.uid)
+        const localId = res.data.uid;
+        const {phoneNumber, dateOfBirth, role, gender} = res.data
+        localStorage.setItem('currentUser', JSON.stringify({...user, localId, phoneNumber, dateOfBirth, role, gender}));
+        setCurrentUser({...user, localId, phoneNumber, dateOfBirth, role, gender});
+      }
     });
+
 
     return () => {
       unsub();

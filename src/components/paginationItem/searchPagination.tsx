@@ -99,6 +99,7 @@ export default function ItemPagination(props: IProps) {
                   area={item.area}
                   reviews={item.reviews}
                   tag={item.roomAttribute!.tag}
+                  price={item.price}
                 />
               </Grid>
             ))

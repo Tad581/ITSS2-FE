@@ -19,7 +19,6 @@ interface IProps {
 export default function Header(props: IProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { currentUser }: any = useContext(AuthContext);
-
   const [keyword, setKeyword] = useState<string>("");
 
   return (
@@ -98,7 +97,7 @@ export default function Header(props: IProps) {
               borderRadius: "50%",
               border: "2px solid #40A578",
               backgroundColor: "#40A578",
-              marginRight: 2
+              marginRight: 2,
             }}
           >
             <Link
@@ -132,17 +131,21 @@ export default function Header(props: IProps) {
           ) : (
             <></>
           )}
-          <Link href="/created-rooms">
-            <Avatar
-              alt="avatar"
-              src={
-                currentUser
-                  ? currentUser.photoUrl
-                  : "https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png"
-              }
-              sx={{ cursor: "pointer", border: "2px solid #40A578" }}
-            />
-          </Link>
+          {currentUser.uid ? (
+            <Link href="/created-rooms">
+              <Avatar
+                alt="avatar"
+                src={currentUser.photoURL}
+                sx={{ cursor: "pointer", border: "2px solid #40A578" }}
+              />
+            </Link>
+          ) : (
+            <Button>
+              <Link href="/login" sx={{ textDecoration: "none" }}>
+                Đăng nhập
+              </Link>
+            </Button>
+          )}
         </Box>
       </Box>
     </Box>

@@ -6,7 +6,8 @@ import { IRoom } from "../../interfaces/room";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../dialog/confirm";
-import { defaultUserId } from "../../constant";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 
 const defaultPageSize = 1000;
 
@@ -17,6 +18,7 @@ type CreatedRoomsPaginationProps = {
 export default function CreatedRoomsPagination(
   props: CreatedRoomsPaginationProps
 ) {
+  const { currentUser }: any = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string>();
 
@@ -29,7 +31,7 @@ export default function CreatedRoomsPagination(
   });
 
   const [roomsParams, setRoomsParams] = useState({
-    romOwnerId: defaultUserId,
+    romOwnerId: currentUser.localId,
     page: pagination.currentPage,
     pageSize: defaultPageSize,
   });
@@ -37,7 +39,6 @@ export default function CreatedRoomsPagination(
   useEffect(() => {
     const fetchData = async () => {
       const response = await RoomAPI.getOwnerRooms(roomsParams);
-      console.log(response);
       if (response) {
         setShowData(response.data);
         setPagination({

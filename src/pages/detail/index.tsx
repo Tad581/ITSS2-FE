@@ -223,7 +223,7 @@ export default function Detail() {
           </Box>
 
           {/* Avatar */}
-          {/* <RoomOwnerContact owner={roomData?.owner}/> */}
+          {roomData?.user && <RoomOwnerContact owner={roomData?.user}/>}
         </Box>
 
         <Box

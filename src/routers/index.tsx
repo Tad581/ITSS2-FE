@@ -5,6 +5,9 @@ import CreatedRooms from "../pages/createdRooms";
 import ChatPage from "../pages/chat";
 import Login from "../pages/signIn";
 import Signup from "../pages/signUp";
+import Profile from "../pages/profile";
+import Admin from "../pages/admin";
+import ProtectedRoute from "./protectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -17,11 +20,35 @@ const router = createBrowserRouter([
   },
   {
     path: "/created-rooms",
-    element: <CreatedRooms />,
+    element: (
+      <ProtectedRoute>
+        <CreatedRooms />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/chat",
-    element: <ChatPage />,
+    element: (
+      <ProtectedRoute>
+        <ChatPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <Admin />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/login",

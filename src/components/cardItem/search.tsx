@@ -13,6 +13,7 @@ interface IProps {
   address: string;
   reviews: IReview[];
   tag: string;
+  price: string;
 }
 
 export default function CardItem(props: IProps) {
@@ -67,7 +68,7 @@ export default function CardItem(props: IProps) {
             borderRadius: "4px",
           }}
         >
-          {props.tag === "Empty" ? 'Trống' : props.tag === "Full" ? 'Đầy' : ''}
+          {props.tag === "Empty" ? "Trống" : props.tag === "Full" ? "Đầy" : ""}
         </Box>
       </Link>
       <Box sx={{ width: "100%" }}>
@@ -87,6 +88,14 @@ export default function CardItem(props: IProps) {
             {props.name}
           </Typography>
         </Link>
+        <Typography
+          sx={{
+            fontSize: "16px",
+            fontWeight: 400,
+          }}
+        >
+          {Intl.NumberFormat("vi-VN").format(parseInt(props.price)) + " VNĐ"}
+        </Typography>
         <Typography
           sx={{
             fontSize: "16px",
