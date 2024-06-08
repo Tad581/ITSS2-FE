@@ -131,10 +131,10 @@ export default function Filterbar(props: Readonly<IProps>) {
                 Diện tích giảm dần
               </MenuItem>
               <MenuItem value={EOrderDirection.PLUS_DATE}>
-                Thời gian đăng gần nhất
+                Thời gian xa nhất
               </MenuItem>
               <MenuItem value={EOrderDirection.MINUS_DATE}>
-                Thời gian đăng xa nhất
+                Thời gian gần nhất
               </MenuItem>
             </Select>
           </FormControl>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Pagination, Typography } from "@mui/material";
 import { default as UserTable } from "./components/userTable";
 import { default as SearchBar } from "./components/searchBar";
 import { UserAPI } from "../../api/userAPI";
@@ -8,37 +8,42 @@ import { IUser } from "../../interfaces/user";
 const Admin: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 10,
+    totalRecords: 0,
+  });
 
   const handleDelete = (userId: string) => {
     setUsers(users.filter((user) => user.uid !== userId));
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
   ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    console.log(event);
+    setPagination({ ...pagination, currentPage: page });
   };
-
-  // const filteredUsers = users.filter(
-  //   (user) =>
-  //     user.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     user.email.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
 
   useEffect(() => {
     const fetchData = async () => {
-      const users = await UserAPI.getAllUser({ page: 1, pageSize: 100 });
-      setUsers(users);
+      const response = await UserAPI.getAllUser({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
+      const { currentPage, pageSize, totalRecords } = response;
+      setUsers(
+        response.content.filter(
+          (user: IUser) =>
+            user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.userName.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+      setPagination({ currentPage, pageSize, totalRecords });
     };
     fetchData().catch((error) => console.log(error));
-  }, []);
+  }, [pagination.currentPage, pagination.pageSize, searchQuery]);
 
   return (
     <Container sx={{ marginTop: 5 }}>
@@ -47,15 +52,18 @@ const Admin: React.FC = () => {
       </Typography>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Box sx={{ marginTop: 5 }}>
-        <UserTable
-          users={users}
-          onDelete={handleDelete}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        <UserTable users={users} onDelete={handleDelete} />
       </Box>
+      {Math.ceil(pagination.totalRecords / pagination.pageSize) <= 1 ? (
+        <Box sx={{ marginBottom: 10 }}></Box>
+      ) : (
+        <Pagination
+          sx={{ marginY: 6 }}
+          count={Math.ceil(pagination.totalRecords / pagination.pageSize)}
+          onChange={handlePageChange}
+          page={pagination.currentPage}
+        />
+      )}
     </Container>
   );
 };

@@ -81,12 +81,12 @@ function valuetextArea(value: number) {
   return `${value} m²`;
 }
 
-const minPriceRange = 500000;
+const minPriceRange = 100000;
 const minAreaRange = 1;
 const minPrice = 0;
-const maxPrice = 100000000;
+const maxPrice = 20000000;
 const minArea = 0;
-const maxArea = 1000;
+const maxArea = 500;
 
 export default function FilterDialog(props: Readonly<IProps>) {
   const [prices, setPrices] = useState<number[]>([minPrice, maxPrice]);

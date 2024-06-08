@@ -1,23 +1,28 @@
-import React from 'react';
+import React from "react";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  Avatar, IconButton, TablePagination
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IUser } from '../../../interfaces/user';
-import * as dayjs from 'dayjs'
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Avatar,
+  IconButton,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IUser } from "../../../interfaces/user";
+import * as dayjs from "dayjs";
 
 interface UserTableProps {
   users: IUser[];
   onDelete: (userId: string) => void;
-  page: number;
-  rowsPerPage: number;
-  handleChangePage: (event: unknown, newPage: number) => void;
-  handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onDelete, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
-  console.log("users", users)
+const UserTable: React.FC<UserTableProps> = ({
+  users,
+  onDelete,
+}) => {
   return (
     <Paper>
       <TableContainer>
@@ -25,12 +30,12 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete, page, rowsPerPag
           <TableHead>
             <TableRow>
               <TableCell>Avatar</TableCell>
-              <TableCell>Fullname</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone Number</TableCell>
-              <TableCell>Date of Birth</TableCell>
-              <TableCell>Gender</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Họ tên</TableCell>
+              <TableCell>Tên đăng nhập</TableCell>
+              <TableCell>Số điện thoại</TableCell>
+              <TableCell>Ngày sinh</TableCell>
+              <TableCell>Giới tính</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -42,8 +47,16 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete, page, rowsPerPag
                 <TableCell>{user.fullName}</TableCell>
                 <TableCell>{user.userName}</TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
-                <TableCell>{dayjs(user.dateOfBirth).format('DD-MM-YYYY')}</TableCell>
-                <TableCell>{user.gender}</TableCell>
+                <TableCell>
+                  {dayjs(user.dateOfBirth).format("DD-MM-YYYY")}
+                </TableCell>
+                <TableCell>
+                  {user.gender === "MALE"
+                    ? "Nam"
+                    : user.gender === "FEMALE"
+                    ? "Nữ"
+                    : "Khác"}
+                </TableCell>
                 <TableCell>
                   <IconButton onClick={() => onDelete(user.uid)}>
                     <DeleteIcon />
@@ -54,15 +67,6 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete, page, rowsPerPag
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
-        component="div"
-        count={users.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </Paper>
   );
 };

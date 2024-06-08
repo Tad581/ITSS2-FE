@@ -1,25 +1,78 @@
+import React, { useState, useContext } from "react";
 import {
   Box,
   TextField,
   InputAdornment,
-  Button,
-  Avatar,
   Link,
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
-import { useState, useContext } from "react";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import HistoryIcon from '@mui/icons-material/History';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
 import { AuthContext } from "../context/authContext";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { auth } from '../firebase';
+
 interface IProps {
   handleKeyword?: (keyword: string) => void;
-  displayButton?: boolean;
-  onButtonClick?: () => void;
 }
 
 export default function Header(props: IProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { currentUser }: any = useContext(AuthContext);
   const [keyword, setKeyword] = useState<string>("");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('targetUser');
+    navigate('/login');
+    handleMenuClose();
+  };
+
+  const handleProfileClick = () => {
+    if (!currentUser) {
+      navigate('/login');
+    } else {
+      navigate('/profile');
+    }
+    handleMenuClose();
+  };
+
+  const handleHistoryClick = () => {
+    if (!currentUser) {
+      navigate('/login');
+    } else {
+      navigate('/created-rooms');
+    }
+    handleMenuClose();
+  };
+
+  const handlePostClick = () => {
+    if (!currentUser) {
+      navigate('/login');
+    } else {
+      navigate('/created-rooms');
+    }
+  };
 
   return (
     <Box
@@ -28,17 +81,16 @@ export default function Header(props: IProps) {
         width: "100%",
         borderBottom: 1,
         borderColor: "gray",
+        padding: '10px 20px',
       }}
     >
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
-          paddingX: 4,
-          paddingY: 1,
           justifyContent: "space-between",
           alignItems: "center",
-          maxWidth: "75%",
+          maxWidth: "1200px",
           marginX: "auto",
         }}
       >
@@ -48,7 +100,7 @@ export default function Header(props: IProps) {
             sx={{
               maxHeight: 45,
               maxWidth: 100,
-              marginRight: 5,
+              marginRight: 20,
               objectFit: "cover",
               cursor: "pointer",
             }}
@@ -56,9 +108,9 @@ export default function Header(props: IProps) {
             src="/logo.png"
           />
         </Link>
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, marginRight: 20 }}>
           <TextField
-            sx={{ width: "100%", height: 40 }}
+            sx={{ width: "100%" }}
             variant="outlined"
             size="small"
             onChange={(
@@ -80,72 +132,48 @@ export default function Header(props: IProps) {
             }}
           />
         </Box>
-        <Box
-          sx={{
-            maxWidth: 230,
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            sx={{
-              height: 40,
-              width: 40,
-              borderRadius: "50%",
-              border: "2px solid #40A578",
-              backgroundColor: "#40A578",
-              marginRight: 2,
-            }}
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<PostAddIcon />}
+            onClick={handlePostClick}
+            sx={{ marginRight: 2 }}
           >
-            <Link
-              href="/chat"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                width: "100%",
-              }}
-            >
-              <ChatOutlinedIcon
-                sx={{ height: "70%", width: "70%", color: "#fff" }}
-              />
-            </Link>
-          </Box>
-          {props.displayButton ? (
-            <Button
-              variant="contained"
-              sx={{
-                marginRight: 2,
-                backgroundColor: "#40A578",
-                textTransform: "none",
-                borderRadius: 2,
-              }}
-              onClick={props.onButtonClick}
-            >
-              Đăng tin
-            </Button>
-          ) : (
-            <></>
-          )}
-          {currentUser.uid ? (
-            <Link href="/created-rooms">
-              <Avatar
-                alt="avatar"
-                src={currentUser.photoURL}
-                sx={{ cursor: "pointer", border: "2px solid #40A578" }}
-              />
-            </Link>
-          ) : (
-            <Button>
-              <Link href="/login" sx={{ textDecoration: "none" }}>
+            Đăng tin
+          </Button>
+          <IconButton onClick={handleMenuOpen}>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem component={Link} href="/chat">
+              <ChatOutlinedIcon sx={{ marginRight: 1 }} />
+              Tin nhắn
+            </MenuItem>
+            <MenuItem onClick={handleProfileClick}>
+              <AccountCircleIcon sx={{ marginRight: 1 }} />
+              Thông tin cá nhân
+            </MenuItem>
+            <MenuItem onClick={handleHistoryClick}>
+              <HistoryIcon sx={{ marginRight: 1 }} />
+              Lịch sử phòng đã đăng
+            </MenuItem>
+            {currentUser?.uid ? (
+              <MenuItem onClick={handleSignOut}>
+                <LogoutIcon sx={{ marginRight: 1 }} />
+                Đăng xuất
+              </MenuItem>
+            ) : (
+              <MenuItem component={Link} href="/login">
+                <LoginIcon sx={{ marginRight: 1 }} />
                 Đăng nhập
-              </Link>
-            </Button>
-          )}
+              </MenuItem>
+            )}
+          </Menu>
         </Box>
       </Box>
     </Box>

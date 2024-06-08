@@ -1,5 +1,6 @@
-import { ImageList, ImageListItem } from '@mui/material';
-import { useMemo } from 'react';
+import { ImageList, ImageListItem, Box, IconButton } from '@mui/material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { useMemo, useState } from 'react';
 
 type QuiltedImageListItem = {
   img: string;
@@ -10,92 +11,90 @@ type QuiltedImageListProps = {
   itemData: QuiltedImageListItem[];
 };
 
-function srcset(image: string, size: number, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
-
-const quiltedSizes = [
-  [[4, 2]],
-  [
-    [2, 2],
-    [2, 2],
-  ],
-  [
-    [2, 2],
-    [2, 1],
-    [2, 1],
-  ],
-  [
-    [2, 2],
-    [2, 1],
-    [1, 1],
-    [1, 1],
-  ],
-  [
-    [2, 2],
-    [1, 1],
-    [1, 1],
-    [1, 1],
-    [1, 1],
-  ],
-];
-
 export default function QuiltedImageList({ itemData }: QuiltedImageListProps) {
-  if (!itemData.length) {
-    return (
-      <></>
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % itemData.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? itemData.length - 1 : prevIndex - 1
     );
+  };
+
+  if (!itemData.length) {
+    return <></>;
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const itemDataWithSizes = useMemo(() => {
-    const length =
-      itemData.length < quiltedSizes.length
-        ? itemData.length
-        : quiltedSizes.length;
-    const quiltedSize = quiltedSizes[length - 1];
-    return new Array(length).fill(0).map((_, i) => {
-      return {
-        ...itemData[i],
-        cols: quiltedSize[i][0],
-        rows: quiltedSize[i][1],
-      };
-    });
-  }, [itemData]);
-
   return (
-    <ImageList
-      sx={{
-        width: '100%',
-        height: 'auto',
-        margin: 'auto',
-        borderRadius: 4,
-      }}
-      variant='quilted'
-      cols={4}
-      rowHeight={248}
-    >
-      {itemDataWithSizes.map((item) => (
-        <ImageListItem
-          key={item.img}
-          cols={item.cols || 1}
-          rows={item.rows || 1}
-        >
-          <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
-            alt={item.title}
-            loading='lazy'
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
+    <Box sx={{ textAlign: 'center', position: 'relative', maxWidth: '600px', margin: 'auto' }}>
+      <ImageList
+        sx={{
+          width: '100%',
+          height: 'auto',
+          borderRadius: 4,
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+        variant="quilted"
+        cols={1}
+        rowHeight={'auto'}
+      >
+        {itemData.map((item, index) => (
+          <ImageListItem
+            key={item.img}
+            cols={1}
+            rows={1}
+            style={{
+              display: index === currentImageIndex ? 'block' : 'none',
+              aspectRatio: '4/3', // Đặt tỷ lệ ảnh ở đây
+              overflow: 'hidden',
+              position: 'relative',
+            }}
+          >
+            <img
+              src={item.img}
+              alt={item.title}
+              loading="lazy"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <IconButton
+              onClick={handlePrevImage}
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '10px',
+                transform: 'translateY(-50%)',
+                color: 'white',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
+              }}
+            >
+              <ArrowBackIos />
+            </IconButton>
+            <IconButton
+              onClick={handleNextImage}
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                transform: 'translateY(-50%)',
+                color: 'white',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
+              }}
+            >
+              <ArrowForwardIos />
+            </IconButton>
+          </ImageListItem>
+        ))}
+      </ImageList>
+    </Box>
   );
 }
+
 
 QuiltedImageList.defaultProps = {
   itemData: [

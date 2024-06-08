@@ -2,23 +2,12 @@
 import Messages from './messages';
 import Input from './input';
 import { ChatContext } from '../../context/chatContext';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { useContext } from 'react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase';
 import RecommendList from './recommendList';
-import { useNavigate } from 'react-router-dom';
 
 const Chat = () => {
   const { data }: any = useContext(ChatContext);
-  const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    await signOut(auth)
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('targetUser');
-    navigate('/login');
-  }
 
   return (
     <Box sx={{ flex: 2 }}>
@@ -56,19 +45,6 @@ const Chat = () => {
         ) : (
           <Box></Box>
         )}
-        <Button
-          sx={{
-            backgroundColor: '#40A578',
-            color: '#fff',
-            fontSize: '12px',
-            '&: hover': {
-              backgroundColor: '#40A578'
-            }
-          }}
-          onClick={() => handleSignOut()}
-        >
-          Đăng xuất
-        </Button>
       </Box>
       <Messages />
       <RecommendList />

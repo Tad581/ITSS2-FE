@@ -67,15 +67,15 @@ export default function Detail() {
           paddingX: "60px!important",
         }}
       >
-        {/* title, subtitle */}
+        {/* Title and Subtitle */}
         <RoomHeader
-          title={roomData ? roomData.name : ""} //"Charm M1.2, Flamingo Đà lạt"
+          title={roomData ? roomData.name : ""}
           rating={rating}
           reviewCount={reviewCount}
-          location={roomData ? roomData.address : ""} //"Thanh Xuân, Hà Nội"
+          location={roomData ? roomData.address : ""}
         />
 
-        {/* image */}
+        {/* Image Gallery */}
         <Box>
           <QuiltedImageList
             itemData={
@@ -89,7 +89,7 @@ export default function Detail() {
           />
         </Box>
 
-        {/* description */}
+        {/* Description and Details */}
         <Box
           sx={{
             display: "flex",
@@ -102,7 +102,6 @@ export default function Detail() {
           }}
         >
           <Box sx={{ flexGrow: 1, maxWidth: "60%" }}>
-            {/*  */}
             <RoomInfoGrid
               electricPrice={
                 roomData
@@ -129,8 +128,8 @@ export default function Detail() {
 
             <Divider />
 
+            {/* Ratings */}
             <Box sx={{ marginY: 4 }}>
-              {/* Rating */}
               <Typography variant="h4" component="h4">
                 Nhận xét mới nhất:
               </Typography>
@@ -144,6 +143,7 @@ export default function Detail() {
 
             <Divider />
 
+            {/* Room Details */}
             <Box sx={{ marginY: 4 }}>
               <Typography variant="h4" component="h4">
                 Chi tiết chỗ ở:
@@ -160,6 +160,7 @@ export default function Detail() {
 
             <Divider />
 
+            {/* Amenities */}
             <Box sx={{ marginY: 4 }}>
               <Typography variant="h4" component="h4">
                 Tiện nghi:
@@ -208,6 +209,7 @@ export default function Detail() {
 
             <Divider />
 
+            {/* Address and Map */}
             <Box sx={{ marginTop: 4 }}>
               <Typography variant="h4" component="h4">
                 Địa chỉ:
@@ -215,17 +217,17 @@ export default function Detail() {
               <Typography variant="subtitle1" component="span">
                 {roomData?.address}
               </Typography>
-              {/* map */}
-              <Box sx={{ height: 400, width: "100%" }}>
+              <Box sx={{ height: 400, width: "100%", marginTop: 2 }}>
                 <MapContainer address={roomData?.address} />
               </Box>
             </Box>
           </Box>
 
-          {/* Avatar */}
-          {roomData?.user && <RoomOwnerContact owner={roomData?.user}/>}
+          {/* Owner Contact */}
+          {roomData?.user && <RoomOwnerContact owner={roomData?.user} />}
         </Box>
 
+        {/* Other Rooms from the Same Owner */}
         <Box
           sx={{
             display: "flex",
@@ -236,14 +238,12 @@ export default function Detail() {
             width: "100%",
           }}
         >
-          {/* Other room */}
           <Typography variant="h4" component="h4">
             Phòng khác của chủ nhà:
           </Typography>
           <OtherRoomList roomList={ownerRoom} />
         </Box>
-        {/*  */}
       </Container>
     </Box>
-  );
+      );
 }

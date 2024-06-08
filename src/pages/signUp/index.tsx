@@ -90,19 +90,17 @@ const Register = () => {
 
             //create empty user chats on firestore
             await setDoc(doc(db, "userChats", res.user.uid), {});
-            console.log('run')
-            await UserAPI.createaUser({
-              userName: email,
-              passWord: password,
-              role: 1,
-              avatarUrl: downloadURL,
-              phoneNumber,
-              gender,
-              dateOfBirth,
-              fullName: displayName,
-              firebaseId: res.user.uid,
-            });
-            console.log('run2')
+            // await UserAPI.createaUser({
+            //   userName: email,
+            //   passWord: password,
+            //   role: 1,
+            //   avatarUrl: downloadURL,
+            //   phoneNumber,
+            //   gender,
+            //   dateOfBirth,
+            //   fullName: displayName,
+            //   firebaseId: res.user.uid,
+            // });
             navigate("/");
           } catch (err) {
             setErr(true);

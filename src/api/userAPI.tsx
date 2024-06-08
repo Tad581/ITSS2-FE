@@ -12,7 +12,6 @@ export const UserAPI = {
       gender: params.gender,
       dateOfBirth: params.dateOfBirth.toISOString(),
     };
-    console.log("data", data);
     const response = await api.request({
       url: "/users/",
       method: "POST",
@@ -21,7 +20,6 @@ export const UserAPI = {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log("res", response);
     return response.data;
   },
   getUser: async function (firebaseId: string) {
@@ -50,6 +48,6 @@ export const UserAPI = {
         size: params?.pageSize,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   },
 };

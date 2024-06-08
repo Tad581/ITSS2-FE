@@ -16,10 +16,11 @@ import {
 } from "firebase/firestore";
 import { AuthContext } from "../../context/authContext";
 import { ChatContext } from "../../context/chatContext";
+import { useNavigate } from "react-router-dom";
 
 const recommendMessage = [
-  "Anh chị có onl k ạ?",
-  "Thời hạn thuê tối đa là bao lâu",
+  "Cho tôi dăng ký xem phòng.",
+  "Tôi có một vài câu hỏi.",
 ];
 
 interface IOwner {
@@ -34,9 +35,10 @@ export default function RoomOwnerContact({
   owner,
 }: Readonly<{ owner: IOwner }>) {
   const { username, phoneNumber } = owner;
-  const [ownerReal, setOwnerReal] = useState<any>();
+  const [ownerReal, setOwnerReal] = useState<any>(null);
   const { currentUser }: any = useContext(AuthContext);
   const { dispatch }: any = useContext(ChatContext);
+  const navigate = useNavigate();
 
   const handleGoChat = async () => {
     if (ownerReal && currentUser) {
@@ -50,35 +52,48 @@ export default function RoomOwnerContact({
         const res = await getDoc(doc(db, "chats", combinedId));
 
         if (!res.exists()) {
-          //create a chat in chats collection
+          // Tạo một cuộc trò chuyện mới trong bộ sưu tập chats
           await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
-          //create user chats
-          await updateDoc(doc(db, "userChats", currentUser.uid), {
-            [combinedId + ".userInfo"]: {
+          // Kiểm tra và tạo tài liệu userChats nếu chưa tồn tại
+          const currentUserChatsRef = doc(db, "userChats", currentUser.uid);
+          const currentUserChatsDoc = await getDoc(currentUserChatsRef);
+          if (!currentUserChatsDoc.exists()) {
+            await setDoc(currentUserChatsRef, {});
+          }
+
+          const ownerRealChatsRef = doc(db, "userChats", ownerReal.uid);
+          const ownerRealChatsDoc = await getDoc(ownerRealChatsRef);
+          if (!ownerRealChatsDoc.exists()) {
+            await setDoc(ownerRealChatsRef, {});
+          }
+
+          // Cập nhật userChats
+          await updateDoc(currentUserChatsRef, {
+            [`${combinedId}.userInfo`]: {
               uid: ownerReal.uid,
               displayName: ownerReal.displayName,
               photoURL: ownerReal.photoURL,
             },
-            [combinedId + ".date"]: serverTimestamp(),
+            [`${combinedId}.date`]: serverTimestamp(),
           });
 
-          await updateDoc(doc(db, "userChats", ownerReal.uid), {
-            [combinedId + ".userInfo"]: {
+          await updateDoc(ownerRealChatsRef, {
+            [`${combinedId}.userInfo`]: {
               uid: currentUser.uid,
               displayName: currentUser.displayName,
               photoURL: currentUser.photoURL,
             },
-            [combinedId + ".date"]: serverTimestamp(),
+            [`${combinedId}.date`]: serverTimestamp(),
           });
         }
 
-        window.location.replace("/chat");
+        navigate("/chat");
       } catch (err) {
-        console.log(err);
+        console.error("Error creating chat: ", err);
       }
     } else {
-      window.location.replace("/login");
+      navigate("/login");
     }
   };
 
@@ -88,14 +103,15 @@ export default function RoomOwnerContact({
 
       try {
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          setOwnerReal(doc.data());
-        });
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            setOwnerReal(doc.data());
+          });
+        } else {
+          console.warn("Owner not found");
+        }
       } catch (err) {
-        console.log(
-          "🚀 ~ file: roomOwnerContact.tsx:52 ~ handleSearch ~ err:",
-          err
-        );
+        console.error("Error fetching owner: ", err);
       }
     };
     if (username) getOwner();
@@ -127,7 +143,7 @@ export default function RoomOwnerContact({
           />
           <Box marginLeft={2}>
             <Typography variant="h6" color="black">
-              {ownerReal?.displayName}
+              {ownerReal?.displayName || username}
             </Typography>
             <Typography variant="h6" color="gray">
               {phoneNumber}
@@ -169,12 +185,3 @@ export default function RoomOwnerContact({
     </Box>
   );
 }
-
-RoomOwnerContact.defaultProps = {
-  owner: {
-    id: 0,
-    name: "Duy Trọng",
-    avatar: "/static/images/avatar/1.jpg",
-    role: "Chủ nhà",
-  },
-};

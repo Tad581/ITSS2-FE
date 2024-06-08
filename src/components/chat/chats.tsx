@@ -15,7 +15,15 @@ const Chats = () => {
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
-        setChats(doc.data());
+        const data = doc.data();
+        if (data) {
+          const filteredChats = Object.entries(data).filter(
+            ([, chat]: any) => chat.userInfo && chat.userInfo.uid !== currentUser.uid
+          );
+          setChats(filteredChats);
+        } else {
+          setChats([]); // Đảm bảo state được cập nhật với danh sách trống nếu không có dữ liệu
+        }
       });
 
       return () => {
@@ -23,7 +31,9 @@ const Chats = () => {
       };
     };
 
-    currentUser.uid && getChats();
+    if (currentUser?.uid) {
+      getChats();
+    }
   }, [currentUser.uid]);
 
   const handleSelect = (u: any) => {
@@ -33,51 +43,55 @@ const Chats = () => {
 
   return (
     <Box>
-      {chats && Object.entries(chats)?.map((chat: any) => (
-        <Box
-          sx={{
-            padding: '10px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            color: '#000',
-            cursor: 'pointer',
-            borderBottom: '1px solid lightgray',
-            height: '50px',
-            '&:hover': {
-              backgroundColor: 'pink',
-            },
-          }}
-          key={chat[0]}
-          onClick={() => handleSelect(chat[1].userInfo)}
-        >
+      {chats.length > 0 ? (
+        chats.map(([chatId, chat]: any) => (
           <Box
-            component='img'
-            src={chat[1].userInfo.photoURL}
-            alt=''
             sx={{
-              width: '50px',
+              padding: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              color: '#000',
+              cursor: 'pointer',
+              borderBottom: '1px solid lightgray',
               height: '50px',
-              borderRadius: '50%',
-              objectFit: 'cover',
+              '&:hover': {
+                backgroundColor: 'pink',
+              },
             }}
-          />
-          <Box>
+            key={chatId}
+            onClick={() => handleSelect(chat.userInfo)}
+          >
             <Box
-              component='span'
+              component='img'
+              src={chat.userInfo?.photoURL}
+              alt=''
               sx={{
-                fontSize: '18px',
-                fontWeight: 700,
+                width: '50px',
+                height: '50px',
+                borderRadius: '50%',
+                objectFit: 'cover',
               }}
-            >
-              {chat[1].userInfo.displayName}
-            </Box>
-            <Box component='p' sx={{ fontSize: '14px', color: 'gray' }}>
-              {chat[1].lastMessage?.text}
+            />
+            <Box>
+              <Box
+                component='span'
+                sx={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                }}
+              >
+                {chat.userInfo?.displayName}
+              </Box>
+              <Box component='p' sx={{ fontSize: '14px', color: 'gray' }}>
+                {chat.lastMessage?.text}
+              </Box>
             </Box>
           </Box>
-        </Box>
-      ))}
+        ))
+      ) : (
+        <Box sx={{ padding: '10px', color: 'gray' }}>Không có cuộc trò chuyện nào.</Box>
+      )}
     </Box>
   );
 };

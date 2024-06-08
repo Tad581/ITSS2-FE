@@ -1,11 +1,19 @@
 import { useContext, useState } from "react";
-import { Box, TextField, Button, Avatar, Grid } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Avatar,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../layout/header";
 import { AuthContext } from "../../context/authContext";
+import dayjs from "dayjs";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -29,10 +37,6 @@ const Profile = () => {
       dateOfBirth: Yup.date().required("Ngày sinh không được để trống"),
       gender: Yup.string().required("Giới tính không được để trống"),
       phoneNumber: Yup.string().required("Số điện thoại không được để trống"),
-      //   currentPassword: Yup.string().when('newPassword', {
-      //     is: (val: string) => val && val.length > 0,
-      //     then: Yup.string().required('Current Password is required'),
-      //   }),
       newPassword: Yup.string().min(8, "Cần tối thiểu 8 kí tự"),
       confirmPassword: Yup.string().oneOf(
         [Yup.ref("newPassword"), undefined],
@@ -47,7 +51,6 @@ const Profile = () => {
         toast.error("Sai mật khẩu");
         return;
       }
-      console.log("Submitted values:", values);
       toast.success("Cập nhật thông tin thành công");
       setIsEditing(false);
     },
@@ -63,25 +66,42 @@ const Profile = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
+        padding: 3,
       }}
     >
       <Header />
       <Box
         sx={{
           marginTop: 3,
-          border: "1px solid white",
+          border: "1px solid #ddd",
           borderRadius: "10px",
-          maxWidth: "75%",
+          maxWidth: "800px",
           backgroundColor: "#fff",
-          padding: 5,
+          padding: 4,
+          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
         }}
       >
         <ToastContainer />
-        <Avatar
-          src={formik.values.avatarUrl}
-          alt="avatarUrl"
-          sx={{ width: 150, height: 150, mx: "auto", mb: 2 }}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <Avatar
+            src={formik.values.avatarUrl}
+            alt="avatarUrl"
+            sx={{ width: 150, height: 150, mb: 2 }}
+          />
+          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
+            Thông tin cá nhân
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            Cập nhật thông tin cá nhân của bạn.
+          </Typography>
+        </Box>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -91,6 +111,7 @@ const Profile = () => {
                 name="userName"
                 value={formik.values.userName}
                 disabled
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
@@ -105,8 +126,11 @@ const Profile = () => {
                   formik.touched.fullName && Boolean(formik.errors.fullName)
                 }
                 helperText={
-                  (formik.touched.fullName && formik.errors.fullName) as string
+                  typeof formik.errors.fullName === "string"
+                    ? formik.errors.fullName
+                    : undefined
                 }
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,7 +139,7 @@ const Profile = () => {
                 label="Ngày sinh"
                 name="dateOfBirth"
                 type="date"
-                value={formik.values.dateOfBirth}
+                value={dayjs(formik.values.dateOfBirth).format("YYYY-MM-DD")}
                 onChange={formik.handleChange}
                 disabled={!isEditing}
                 InputLabelProps={{ shrink: true }}
@@ -124,9 +148,11 @@ const Profile = () => {
                   Boolean(formik.errors.dateOfBirth)
                 }
                 helperText={
-                  (formik.touched.dateOfBirth &&
-                    formik.errors.dateOfBirth) as string
+                  typeof formik.errors.dateOfBirth === "string"
+                    ? formik.errors.dateOfBirth
+                    : undefined
                 }
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
@@ -134,13 +160,22 @@ const Profile = () => {
                 fullWidth
                 label="Giới tính"
                 name="gender"
-                value={formik.values.gender}
+                value={
+                  formik.values.gender === "MALE"
+                    ? "Nam"
+                    : formik.values.gender === "FEMALE"
+                    ? "Nữ"
+                    : "Khác"
+                }
                 onChange={formik.handleChange}
                 disabled={!isEditing}
                 error={formik.touched.gender && Boolean(formik.errors.gender)}
                 helperText={
-                  (formik.touched.gender && formik.errors.gender) as string
+                  typeof formik.errors.gender === "string"
+                    ? formik.errors.gender
+                    : undefined
                 }
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
@@ -156,9 +191,11 @@ const Profile = () => {
                   Boolean(formik.errors.phoneNumber)
                 }
                 helperText={
-                  (formik.touched.phoneNumber &&
-                    formik.errors.phoneNumber) as string
+                  typeof formik.errors.phoneNumber === "string"
+                    ? formik.errors.phoneNumber
+                    : undefined
                 }
+                variant="outlined"
               />
             </Grid>
             {isEditing && (
@@ -176,9 +213,11 @@ const Profile = () => {
                       Boolean(formik.errors.currentPassword)
                     }
                     helperText={
-                      formik.touched.currentPassword &&
-                      formik.errors.currentPassword
+                      typeof formik.errors.currentPassword === "string"
+                        ? formik.errors.currentPassword
+                        : undefined
                     }
+                    variant="outlined"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -194,8 +233,11 @@ const Profile = () => {
                       Boolean(formik.errors.newPassword)
                     }
                     helperText={
-                      formik.touched.newPassword && formik.errors.newPassword
+                      typeof formik.errors.newPassword === "string"
+                        ? formik.errors.newPassword
+                        : undefined
                     }
+                    variant="outlined"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -211,9 +253,11 @@ const Profile = () => {
                       Boolean(formik.errors.confirmPassword)
                     }
                     helperText={
-                      formik.touched.confirmPassword &&
-                      formik.errors.confirmPassword
+                      typeof formik.errors.confirmPassword === "string"
+                        ? formik.errors.confirmPassword
+                        : undefined
                     }
+                    variant="outlined"
                   />
                 </Grid>
               </>
@@ -224,6 +268,7 @@ const Profile = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => setIsEditing(!isEditing)}
+                sx={{ mt: 2 }}
               >
                 {isEditing ? "Thoát" : "Thay đổi thông tin"}
               </Button>
@@ -235,6 +280,7 @@ const Profile = () => {
                   variant="contained"
                   color="secondary"
                   type="submit"
+                  sx={{ mt: 2 }}
                 >
                   Lưu thay đổi
                 </Button>

@@ -20,6 +20,8 @@ import * as Yup from "yup";
 import { IReviewParam } from "../../../interfaces/room";
 import { ReviewAPI } from "../../../api/reviewAPI";
 import { defaultUserId } from "../../../constant";
+import {useContext} from 'react';
+import { AuthContext } from '../../../context/authContext';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -69,8 +71,9 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 }
 
 export default function MakeReview(props: IProps) {
+  const {currentUser}:any = useContext(AuthContext);
   const initialValues: IReviewParam = {
-    UserId: defaultUserId,
+    UserId: currentUser?.localId,
     Star: 0,
     content: "",
     RoomId: props.id,

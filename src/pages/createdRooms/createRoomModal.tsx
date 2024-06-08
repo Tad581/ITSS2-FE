@@ -22,6 +22,8 @@ import { RoomAPI } from "../../api/roomAPI";
 import RoomAttribute from "../../components/detail/roomAttribute";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 
 type ComboBoxProps = {
   options: any[];
@@ -82,7 +84,7 @@ const validationSchema = Yup.object({
     .required("Giá nước không được bỏ trống")
     .positive("Giá nước phải là số dương"),
   Description: Yup.string().required("Mô tả không được bỏ trống"),
-  Images: Yup.array().min(1, "Vui lòng tải lên ít nhất một hình ảnh"),
+  // Images: Yup.array().min(1, "Vui lòng tải lên ít nhất một hình ảnh"),
 });
 
 const roomTypeOptions = [
@@ -133,8 +135,9 @@ const style = {
 };
 
 export default function CreateRoomModal(props: CreateRoomModalProps) {
+  const {currentUser}:any = useContext(AuthContext);
   const initialValues: IRoomCreateInput = {
-    ownerId: defaultUserId,
+    ownerId: currentUser?.localId,
     Name: "",
     Address: "",
     Type: "Homestay",
