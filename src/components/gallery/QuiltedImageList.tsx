@@ -1,6 +1,6 @@
-import { ImageList, ImageListItem, Box, IconButton } from '@mui/material';
+import { Box, IconButton, Stack } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 type QuiltedImageListItem = {
   img: string;
@@ -30,29 +30,20 @@ export default function QuiltedImageList({ itemData }: QuiltedImageListProps) {
 
   return (
     <Box sx={{ textAlign: 'center', position: 'relative', maxWidth: '600px', margin: 'auto' }}>
-      <ImageList
-        sx={{
-          width: '100%',
-          height: 'auto',
-          borderRadius: 4,
-          overflow: 'hidden',
-          position: 'relative',
-        }}
-        variant="quilted"
-        cols={1}
-        rowHeight={'auto'}
-      >
+      {/* Main Image List */}
+      <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', marginTop: 2 }}>
         {itemData.map((item, index) => (
-          <ImageListItem
+          <Box
             key={item.img}
-            cols={1}
-            rows={1}
-            style={{
-              display: index === currentImageIndex ? 'block' : 'none',
-              aspectRatio: '4/3', // Đặt tỷ lệ ảnh ở đây
+            sx={{
+              width: 50,
+              height: 50,
               overflow: 'hidden',
-              position: 'relative',
+              borderRadius: 1,
+              cursor: 'pointer',
+              border: index === currentImageIndex ? '2px solid #40A578' : '2px solid transparent',
             }}
+            onClick={() => setCurrentImageIndex(index)}
           >
             <img
               src={item.img}
@@ -60,37 +51,47 @@ export default function QuiltedImageList({ itemData }: QuiltedImageListProps) {
               loading="lazy"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-            <IconButton
-              onClick={handlePrevImage}
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '10px',
-                transform: 'translateY(-50%)',
-                color: 'white',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
-              }}
-            >
-              <ArrowBackIos />
-            </IconButton>
-            <IconButton
-              onClick={handleNextImage}
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                right: '10px',
-                transform: 'translateY(-50%)',
-                color: 'white',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
-              }}
-            >
-              <ArrowForwardIos />
-            </IconButton>
-          </ImageListItem>
+          </Box>
         ))}
-      </ImageList>
+      </Stack>
+
+      {/* Main Image Display */}
+      <Box sx={{ position: 'relative', marginTop: 2 }}>
+        <img
+          src={itemData[currentImageIndex].img}
+          alt={itemData[currentImageIndex].title}
+          style={{ width: '100%', maxHeight: 400, objectFit: 'cover', borderRadius: 4 }}
+        />
+        {/* Previous and Next Buttons */}
+        <IconButton
+          onClick={handlePrevImage}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '10px',
+            transform: 'translateY(-50%)',
+            color: 'white',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
+          }}
+        >
+          <ArrowBackIos />
+        </IconButton>
+        <IconButton
+          onClick={handleNextImage}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            right: '10px',
+            transform: 'translateY(-50%)',
+            color: 'white',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
+          }}
+        >
+          <ArrowForwardIos />
+        </IconButton>
+      </Box>
     </Box>
   );
 }

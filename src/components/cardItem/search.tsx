@@ -68,7 +68,7 @@ export default function CardItem(props: IProps) {
             borderRadius: "4px",
           }}
         >
-          {props.tag === "Empty" ? "Trống" : props.tag === "Full" ? "Đầy" : ""}
+          {props.tag === "Empty" ? "Còn phòng" : props.tag === "Full" ? "Hết phòng" : ""}
         </Box>
       </Link>
       <Box sx={{ width: "100%" }}>

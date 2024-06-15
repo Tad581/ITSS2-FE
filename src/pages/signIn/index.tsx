@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/index";
-import { Box, OutlinedInput, Button } from "@mui/material";
+import { Box, OutlinedInput, Button, Typography, Grid } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import '../../index.css'
+import { UserAPI } from "../../api/userAPI";
 
 const Login = () => {
   const [err, setErr] = useState(false);
@@ -25,121 +26,112 @@ const Login = () => {
     const { email, password } = values;
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        const res = await UserAPI.getUser(userCredential.user.uid)
+        if (res.data.role === 0) {
+          navigate("/admin/rooms");
+        }
+        else
+        navigate("/");
+      }
     } catch (err) {
       setErr(true);
     }
   };
 
   return (
-    <Box
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
       sx={{
-        backgroundColor: "#40A578",
         height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundColor: "#f0f0f0",
       }}
     >
-      <Box
-        sx={{
-          backgroundColor: "white",
-          padding: "20px 60px",
-          borderRadius: "10px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          alignItems: "center",
-        }}
-      >
+      <Grid item xs={10} sm={6} md={4} lg={3}>
         <Box
-          component="span"
           sx={{
-            color: "#5d5b8d",
-            fontSize: "24px",
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "10px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          Đăng nhập
-        </Box>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ setFieldValue }) => (
-            <Form style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-              <Field
-                as={OutlinedInput}
-                name="email"
-                type="email"
-                placeholder="Email"
-                sx={{
-                  border: "none",
-                  width: "250px",
-                  borderBottom: "1px solid #a7bcff",
-                  "&::placeholder": {
-                    color: "rgb(175, 175, 175)",
-                  },
-                }}
-                size="medium"
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="custom-error-message"
-              />
-              
-              <Field
-                as={OutlinedInput}
-                name="password"
-                type="password"
-                placeholder="Mật khẩu"
-                sx={{
-                  border: "none",
-                  width: "250px",
-                  borderBottom: "1px solid #a7bcff",
-                  "&::placeholder": {
-                    color: "rgb(175, 175, 175)",
-                  },
-                }}
-                size="medium"
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="custom-error-message"
-              />
+          <Typography variant="h4" sx={{ color: "#5d5b8d", marginBottom: "20px" }}>
+            Đăng nhập
+          </Typography>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ setFieldValue }) => (
+              <Form style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+                <Field
+                  as={OutlinedInput}
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  sx={{
+                    marginBottom: "15px",
+                    width: "100%",
+                  }}
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="custom-error-message"
+                />
+                
+                <Field
+                  as={OutlinedInput}
+                  name="password"
+                  type="password"
+                  placeholder="Mật khẩu"
+                  sx={{
+                    marginBottom: "15px",
+                    width: "100%",
+                  }}
+                />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="custom-error-message"
+                />
 
-              <Button
-                type="submit"
-                sx={{
-                  backgroundColor: "#40A578",
-                  color: "white",
-                  padding: "10px",
-                  fontWeight: "bold",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Đăng nhập
-              </Button>
-              {err && <Box component="span">Có lỗi</Box>}
-            </Form>
-          )}
-        </Formik>
-        <Box
-          component="p"
-          sx={{
-            color: "#5d5b8d",
-            fontSize: "14px",
-            marginTop: "10px",
-          }}
-        >
-          Bạn chưa có tài khoản? Đăng ký tại <Link to="/signup">đây</Link>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#40A578",
+                    color: "white",
+                    padding: "12px",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "#357e61",
+                    },
+                    marginBottom: "10px",
+                    width: "100%",
+                  }}
+                >
+                  Đăng nhập
+                </Button>
+                {err && <Typography sx={{ color: "red" }}>Đăng nhập thất bại. Vui lòng thử lại.</Typography>}
+              </Form>
+            )}
+          </Formik>
+          <Typography variant="body1" sx={{ color: "#5d5b8d", marginTop: "10px" }}>
+            Bạn chưa có tài khoản? Đăng ký tại <Link to="/signup" style={{ color: "#40A578" }}>đây</Link>
+          </Typography>
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 

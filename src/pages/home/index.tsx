@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 export default function Home() {
   const [keyword, setKeyword] = useState('');
-
   return (
     <Box
       sx={{

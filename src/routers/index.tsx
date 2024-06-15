@@ -6,7 +6,8 @@ import ChatPage from "../pages/chat";
 import Login from "../pages/signIn";
 import Signup from "../pages/signUp";
 import Profile from "../pages/profile";
-import Admin from "../pages/admin";
+import AdminUsers from "../pages/admin/user";
+import AdminRooms from "../pages/admin/room";
 import ProtectedRoute from "./protectedRoute";
 
 const router = createBrowserRouter([
@@ -43,12 +44,20 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin",
+    path: "/admin/users",
     element: (
-      // <ProtectedRoute>
-        <Admin />
-      // </ProtectedRoute>
+      <ProtectedRoute role={0}>
+        <AdminUsers />
+      </ProtectedRoute>
     ),
+  },
+  {
+    path: "/admin/rooms",
+    element: (
+      <ProtectedRoute role={0}>
+        <AdminRooms />
+      </ProtectedRoute>
+    )
   },
   {
     path: "/login",

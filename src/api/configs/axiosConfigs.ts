@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 // initializing the axios instance with custom configs\
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmZTAwMDAwMC0yMDEwLTIwMTAtMjAxMC0wMDAwMDAwMDAwMDEiLCJ1bmlxdWVfbmFtZSI6InNvbmRuIiwiZW1haWwiOiJzb25kbjIwMTBAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwOTg4ODY2Njg4NyIsIngtdXNlck5hbWUiOiJzb25kbiIsIngtZnVsbE5hbWUiOiLEkOG7lyBOYW0gU8ahbiIsIngtdXNlcklkIjoiZmUwMDAwMDAtMjAxMC0yMDEwLTIwMTAtMDAwMDAwMDAwMDAxIiwieC1hcHBJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInMtc3VwZXJ1c2VyIjpbIlRydWUiLCJUcnVlIl0sIngtZ3JvdXB0eXBlIjoiIiwieC11c2VydHlwZSI6IjAiLCJ4LXBob25lbnVtYmVyIjpbIjA5ODg4NjY2ODg3IiwiMDk4ODg2NjY4ODciXSwieC1hdmF0YXIiOiJodHRwOi8vZGV2LmJraG9sZGluZy52bjo5MDQ2L3VzZXItYmxvYi83MzZkNjE3Mi03NDJkLTc0NzItNjE2My02NTAwMDAwMDAwMDAvMjAyMy8wOC8yOS9hZG1pbi5wbmciLCJyb2xlIjpbImFwaS10ZXN0IiwiYXBpLXRlc3QtMSJdLCJ4LXJvbGUiOiJbXCJhcGktdGVzdFwiLFwiYXBpLXRlc3QtMVwiXSIsIngtcmlnaHQiOiJbXCJBNDAzXCIsXCJBNDA1XCIsXCJBMTAxXCIsXCJBNDAyXCIsXCJBMzAyXCIsXCJBMDAyXCIsXCJBMDA1XCIsXCJBMDAxXCIsXCJBMzA0XCIsXCIzMDAxXCIsXCJBMTA0XCIsXCJBMzA3XCIsXCJBNDA2XCIsXCJBNDA0XCIsXCJBNDAxXCIsXCJBMzAxXCIsXCJBMzAzXCIsXCIzMDA3XCIsXCJBMTAyXCIsXCJBMTAzXCIsXCJBMDA0XCIsXCJBMDAzXCIsXCIzMDA1XCJdIiwieC1leHAiOiIxNzE3OTAwNjQyMDgyIiwieC1pYXQiOiIxNzE3ODE0MjQyMDgyIiwibmJmIjoxNzE3ODE0MjQyLCJleHAiOjE3MTc5MDA2NDIsImlhdCI6MTcxNzgxNDI0MiwiaXNzIjoiUy1FUlAiLCJhdWQiOiJTLUVSUCJ9.53uQ7WpSFpEeH-BdFk-ERXSWbu3xTLhfLuWOrdOwF7Y';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmZTAwMDAwMC0yMDEwLTIwMTAtMjAxMC0wMDAwMDAwMDAwMDEiLCJ1bmlxdWVfbmFtZSI6InNvbmRuIiwiZW1haWwiOiJzb25kbjIwMTBAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwOTg4ODY2Njg4NyIsIngtdXNlck5hbWUiOiJzb25kbiIsIngtZnVsbE5hbWUiOiLEkOG7lyBOYW0gU8ahbiIsIngtdXNlcklkIjoiZmUwMDAwMDAtMjAxMC0yMDEwLTIwMTAtMDAwMDAwMDAwMDAxIiwieC1hcHBJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInMtc3VwZXJ1c2VyIjpbIlRydWUiLCJUcnVlIl0sIngtZ3JvdXB0eXBlIjoiIiwieC11c2VydHlwZSI6IjAiLCJ4LXBob25lbnVtYmVyIjpbIjA5ODg4NjY2ODg3IiwiMDk4ODg2NjY4ODciXSwieC1hdmF0YXIiOiJodHRwOi8vZGV2LmJraG9sZGluZy52bjo5MDQ2L3VzZXItYmxvYi83MzZkNjE3Mi03NDJkLTc0NzItNjE2My02NTAwMDAwMDAwMDAvMjAyMy8wOC8yOS9hZG1pbi5wbmciLCJyb2xlIjpbImFwaS10ZXN0IiwiYXBpLXRlc3QtMSJdLCJ4LXJvbGUiOiJbXCJhcGktdGVzdFwiLFwiYXBpLXRlc3QtMVwiXSIsIngtcmlnaHQiOiJbXCJBNDAzXCIsXCJBNDA1XCIsXCJBMTAxXCIsXCJBNDAyXCIsXCJBMzAyXCIsXCJBMDAyXCIsXCJBMDA1XCIsXCJBMDAxXCIsXCJBMzA0XCIsXCIzMDAxXCIsXCJBMTA0XCIsXCJBMzA3XCIsXCJBNDA2XCIsXCJBNDA0XCIsXCJBNDAxXCIsXCJBMzAxXCIsXCJBMzAzXCIsXCIzMDA3XCIsXCJBMTAyXCIsXCJBMTAzXCIsXCJBMDA0XCIsXCJBMDAzXCIsXCIzMDA1XCJdIiwieC1leHAiOiIxNzE4NTA4NTYxNzEyIiwieC1pYXQiOiIxNzE4NDIyMTYxNzEyIiwibmJmIjoxNzE4NDIyMTYxLCJleHAiOjE3MTg1MDg1NjEsImlhdCI6MTcxODQyMjE2MSwiaXNzIjoiUy1FUlAiLCJhdWQiOiJTLUVSUCJ9.DDR9hEboFhoHnmC4CMtfHLGatIWzaV50Yg1zIcIYB50';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL + 'v1',
@@ -30,16 +30,16 @@ const errorHandler = async (error: {
         'Message error: ',
         JSON.stringify(error.response?.data?.message)
       );
-      toast.error(JSON.stringify(error.response?.data?.message[0]), {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      // toast.error(JSON.stringify(error.response?.data?.message[0]), {
+      //   position: 'top-right',
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: 'light',
+      // });
     }
 
     return Promise.reject(error.response?.data?.message || error);

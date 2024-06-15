@@ -143,7 +143,7 @@ export default function RoomOwnerContact({
           />
           <Box marginLeft={2}>
             <Typography variant="h6" color="black">
-              {ownerReal?.displayName || username}
+              {username}
             </Typography>
             <Typography variant="h6" color="gray">
               {phoneNumber}

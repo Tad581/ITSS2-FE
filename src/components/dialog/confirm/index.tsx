@@ -13,7 +13,7 @@ export default function ConfirmDialog(props: IProps) {
     if (roomId) {
       const response = await RoomAPI.deleteRoom({ id: roomId });
       if (response.message === 'Success') {
-        toast.success(response.message, {
+        toast.success('Đã xóa phòng', {
           position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,

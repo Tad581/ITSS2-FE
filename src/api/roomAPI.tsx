@@ -10,12 +10,15 @@ export const RoomAPI = {
     const AreaRange: any = {};
     const PriceRange: any = {};
     const WaterPriceRange: any = {};
-    const ElectronicPriceRange: any = {};
+    const ElectronicPriceRange: any = {}
     if (params?.type && params?.type !== "") {
       filterParams["Type"] = params.type
     } 
     if (params?.name) {
-      filterParams["Name"] = params.name;
+      filterParams["FullTextSearch"] = params.name;
+    }
+    if (params?.address) {
+      filterParams["FullTextSearch"] = params.address;
     }
     if (params?.address) {
       filterParams["Address"] = params.address;
@@ -106,7 +109,7 @@ export const RoomAPI = {
     romOwnerId: string;
     page?: number;
     pageSize?: number;
-    order_direction?: string;
+    sortOptions?: string;
   }) {
     const response = await api.request({
       url: prefix + "owner/" + params.romOwnerId,
@@ -114,7 +117,9 @@ export const RoomAPI = {
       params: {
         page: params?.page,
         pageSize: params?.pageSize,
-        order_direction: params?.order_direction,
+        sort: params?.sortOptions
+          ? params?.sortOptions
+          : EOrderDirection.PLUS_DATE,
       },
     });
     return response.data;

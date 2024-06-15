@@ -2,22 +2,24 @@ import { api } from "./configs/axiosConfigs";
 import { IUserCreateInput, IUser } from "../interfaces/user";
 
 export const UserAPI = {
-  createaUser: async function (params: IUserCreateInput) {
+  createUser: async function (params: IUserCreateInput) {
     const data = {
       userName: params.userName,
       passWord: params.passWord,
       role: params.role,
       avatarUrl: params.avatarUrl,
       phoneNumber: params.phoneNumber,
+      fullName: params.fullName,
       gender: params.gender,
-      dateOfBirth: params.dateOfBirth.toISOString(),
+      dateOfBirth: params.dateOfBirth,
+      firebaseId: params.firebaseId,
     };
     const response = await api.request({
       url: "/users/",
       method: "POST",
       data: data,
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
     return response.data;

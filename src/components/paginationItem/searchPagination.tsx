@@ -38,7 +38,7 @@ export default function ItemPagination(props: IProps) {
   };
 
   useEffect(() => {
-    if (props.keyword && props.keyword !== "") {
+    if (props.keyword !== undefined) {
       setRoomsParams({ ...roomsParams, address: props.keyword });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

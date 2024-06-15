@@ -5,18 +5,12 @@ export interface IUserCreateInput {
     role: number;
     avatarUrl: string;
     phoneNumber: string;
-    gender: EGender;
-    dateOfBirth: Date;
+    gender: string;
+    dateOfBirth: string;
     fullName: string;
     firebaseId: string;
 }
 
 export interface IUser extends IUserCreateInput{
     uid: string;
-}
-
-export enum EGender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER",
 }

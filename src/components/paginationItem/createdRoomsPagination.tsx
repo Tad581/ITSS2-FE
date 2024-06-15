@@ -1,15 +1,24 @@
-import { Box, Divider, Pagination, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Typography,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import CreatedRooms from "../cardItem/createdRooms";
 import { RoomAPI } from "../../api/roomAPI";
-import { IRoom } from "../../interfaces/room";
+import { EOrderDirection, IRoom } from "../../interfaces/room";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../dialog/confirm";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
-const defaultPageSize = 1000;
+const defaultPageSize = 8;
 
 type CreatedRoomsPaginationProps = {
   handleEditClick?: (id: string) => void;
@@ -34,6 +43,7 @@ export default function CreatedRoomsPagination(
     romOwnerId: currentUser.localId,
     page: pagination.currentPage,
     pageSize: defaultPageSize,
+    sortOptions: EOrderDirection.PLUS_DATE,
   });
 
   useEffect(() => {
@@ -97,6 +107,44 @@ export default function CreatedRoomsPagination(
             Phòng đã đăng
           </Typography>
         </Box>
+        <Box
+          sx={{
+            backgroundColor: "#fff",
+            alignSelf: "flex-end",
+          }}
+        >
+          <FormControl sx={{ minWidth: 200, marginRight: 2 }}>
+            <InputLabel id="sort-select-label">Sắp xếp</InputLabel>
+            <Select
+              labelId="sort-select-label"
+              id="sort-select"
+              value={roomsParams.sortOptions}
+              label="Sắp xếp"
+              onChange={(e) =>
+                setRoomsParams({...roomsParams, sortOptions: e.target.value as EOrderDirection})
+              }
+            >
+              <MenuItem value={EOrderDirection.PLUS_PRICE}>
+                Giá phòng tăng dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.MINUS_PRICE}>
+                Giá phòng giảm dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.PLUS_AREA}>
+                Diện tích tăng dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.MINUS_AREA}>
+                Diện tích giảm dần
+              </MenuItem>
+              <MenuItem value={EOrderDirection.PLUS_DATE}>
+                Thời gian xa nhất
+              </MenuItem>
+              <MenuItem value={EOrderDirection.MINUS_DATE}>
+                Thời gian gần nhất
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
         {showData?.length > 0 ? (
           showData.map((item) => (
             <>
@@ -105,6 +153,7 @@ export default function CreatedRoomsPagination(
                 id={item?.roomId}
                 name={item?.name}
                 price={item?.price}
+                tag={item?.roomAttribute!.tag}
                 area={item?.area}
                 imageUrl={item?.roomImages[0]?.imageUrl}
                 handleOpenDialog={() => setIsOpen(true)}
@@ -113,7 +162,7 @@ export default function CreatedRoomsPagination(
                 }
                 handleEditClick={props.handleEditClick}
               />
-                <Divider sx={{ marginY: 3, marginX: 'auto', width: "100%" }}/>
+              <Divider sx={{ marginY: 3, marginX: "auto", width: "100%" }} />
             </>
           ))
         ) : (

@@ -11,7 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IUser } from "../../../interfaces/user";
+import { IUser } from "../../../../interfaces/user";
 import * as dayjs from "dayjs";
 
 interface UserTableProps {

@@ -224,7 +224,7 @@ export default function CreateRoomModal(props: CreateRoomModalProps) {
           response = await RoomAPI.createRoom(formData);
         }
         if (response.message === "Success") {
-          toast.success(response.message, {
+          toast.success('Thành công', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,

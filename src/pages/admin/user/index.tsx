@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Box, Container, Pagination, Typography } from "@mui/material";
 import { default as UserTable } from "./components/userTable";
 import { default as SearchBar } from "./components/searchBar";
-import { UserAPI } from "../../api/userAPI";
-import { IUser } from "../../interfaces/user";
+import { UserAPI } from "../../../api/userAPI";
+import { IUser } from "../../../interfaces/user";
 
-const Admin: React.FC = () => {
+const AdminUsers: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [pagination, setPagination] = useState({
@@ -68,4 +68,4 @@ const Admin: React.FC = () => {
   );
 };
 
-export default Admin;
+export default AdminUsers;

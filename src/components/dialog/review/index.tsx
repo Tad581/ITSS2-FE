@@ -22,7 +22,8 @@ import { ReviewAPI } from "../../../api/reviewAPI";
 import { defaultUserId } from "../../../constant";
 import {useContext} from 'react';
 import { AuthContext } from '../../../context/authContext';
-
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from 'react-toastify';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -128,21 +129,26 @@ export default function MakeReview(props: IProps) {
     for (const file of uploadFiles) {
       formData.append("Images", file);
     }
-
+  
     formData.append("RoomId", formValue.RoomId as unknown as string);
     formData.append("UserId", formValue.UserId as unknown as string);
     formData.append("Star", formValue.Star as unknown as string);
     formData.append("content", formValue.content);
-
+  
     try {
       const response = await ReviewAPI.postOneReview(formData);
-      console.log(response);
+
+      if (response.status === 200) {
+        toast.success('Đánh giá thành công!');
+        props.handleClose();
+      } else {
+        console.log('Đã xảy ra lỗi khi đánh giá:', response.data.message);
+        toast.error('Đã xảy ra lỗi khi đánh giá.');
+      }
     } catch (error) {
-      // Handle the error
-      console.log(error);
+      console.error('Lỗi khi gửi đánh giá:', error);
+      toast.error('Bạn đã đánh giá phòng này.');
     }
-    // window.location.reload();
-    // props.handleClose();
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +166,8 @@ export default function MakeReview(props: IProps) {
   };
 
   return (
+    <Box>
+    <ToastContainer />
     <BootstrapDialog
       onClose={props.handleClose}
       aria-labelledby="customized-dialog-title"
@@ -300,5 +308,6 @@ export default function MakeReview(props: IProps) {
         </Form>
       </Formik>
     </BootstrapDialog>
+    </Box>
   );
 }

@@ -21,9 +21,11 @@ import { AuthContext } from "../context/authContext";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
-
+import CreateRoomModal from "../pages/createdRooms/createRoomModal";
 interface IProps {
   handleKeyword?: (keyword: string) => void;
+  displayButton?: boolean;
+  onButtonClick?: () => void;
 }
 
 export default function Header(props: IProps) {
@@ -31,7 +33,7 @@ export default function Header(props: IProps) {
   const [keyword, setKeyword] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-
+  const [openModal, setOpenModal] = useState(false);
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -70,10 +72,12 @@ export default function Header(props: IProps) {
     if (!currentUser) {
       navigate('/login');
     } else {
-      navigate('/created-rooms');
+      setOpenModal(true);
     }
   };
-
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   return (
     <Box
       sx={{
@@ -113,6 +117,7 @@ export default function Header(props: IProps) {
             sx={{ width: "100%" }}
             variant="outlined"
             size="small"
+            onKeyDown={(e) => e.key === "Enter" && props.handleKeyword && props.handleKeyword(keyword)}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => setKeyword(event.target.value)}
@@ -176,6 +181,7 @@ export default function Header(props: IProps) {
           </Menu>
         </Box>
       </Box>
+      <CreateRoomModal roomId={null} isOpen={openModal} handleClose={handleCloseModal}/>
     </Box>
   );
 }

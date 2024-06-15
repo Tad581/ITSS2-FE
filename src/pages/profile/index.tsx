@@ -14,6 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "../../layout/header";
 import { AuthContext } from "../../context/authContext";
 import dayjs from "dayjs";
+import { updatePassword } from "firebase/auth";
+import { db } from "../../firebase";
+import { updateDoc, doc } from "firebase/firestore";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -43,7 +46,8 @@ const Profile = () => {
         "Mật khẩu không trùng khớp"
       ),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      const {fullName, dateOfBirth, gender, phoneNumber, newPassword } = values
       if (
         values.currentPassword &&
         values.currentPassword !== currentUser.password
@@ -51,8 +55,26 @@ const Profile = () => {
         toast.error("Sai mật khẩu");
         return;
       }
+      const newProfile = {
+        gender,
+        phoneNumber,
+        newPassword,
+        dateOfBirth: dayjs(dateOfBirth).format("DD/MM/YYYY"),
+      };
+
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        displayName: fullName,
+      });
+
+      await updateDoc(doc(db, "userChats", currentUser.uid), {
+        displayName: fullName,
+      });
+
+      await updatePassword(currentUser, newPassword);
+      
       toast.success("Cập nhật thông tin thành công");
       setIsEditing(false);
+      window.location.reload();
     },
   });
 

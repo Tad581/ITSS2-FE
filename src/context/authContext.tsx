@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { UserAPI } from '../api/userAPI';
-
+import { useNavigate } from 'react-router-dom';
 interface ContextType {
   currentUser: any;
 }
