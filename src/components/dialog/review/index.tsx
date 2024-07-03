@@ -138,9 +138,10 @@ export default function MakeReview(props: IProps) {
     try {
       const response = await ReviewAPI.postOneReview(formData);
 
-      if (response.status === 200) {
+      if (response.message === 'Success') {
         toast.success('Đánh giá thành công!');
         props.handleClose();
+        window.location.reload();
       } else {
         console.log('Đã xảy ra lỗi khi đánh giá:', response.data.message);
         toast.error('Đã xảy ra lỗi khi đánh giá.');

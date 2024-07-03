@@ -7,7 +7,7 @@ export interface IRoom {
   area: number;
   // distance_to_school: number;
   price: string;
-  created_at?: string;
+  createdOnDate?: string;
   updated_at?: string;
   user: {
     id: string;
@@ -28,7 +28,7 @@ export interface IRoom {
     electronicPrice: number;
     waterPrice: number;
     description: string;
-    created_at?: string;
+    createdOnDate?: string;
     updated_at?: string;
     tag: string;
   };
@@ -129,4 +129,15 @@ export enum EOrderDirection {
   MINUS_AREA = "-Area",
   PLUS_DATE = "+CreatedOnDate",
   MINUS_DATE = "-CreatedOnDate",
+}
+
+export enum EOrderType2 {
+  TIME = 'time',
+  AREA = 'area',
+  PRICE = 'price',
+}
+
+export enum EOrderDirection2 {
+  ASC = 'asc',
+  DESC = 'desc',
 }

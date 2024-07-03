@@ -4,21 +4,23 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Pagination,
   Select,
   Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import CreatedRooms from "../cardItem/createdRooms";
 import { RoomAPI } from "../../api/roomAPI";
-import { EOrderDirection, IRoom } from "../../interfaces/room";
+import {
+  EOrderDirection,
+  EOrderDirection2,
+  EOrderType2,
+  IRoom,
+} from "../../interfaces/room";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../dialog/confirm";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
-
-const defaultPageSize = 8;
 
 type CreatedRoomsPaginationProps = {
   handleEditClick?: (id: string) => void;
@@ -33,42 +35,30 @@ export default function CreatedRoomsPagination(
 
   const [showData, setShowData] = useState<IRoom[]>([]);
   // For pagination
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    pageSize: defaultPageSize,
-    totalRecords: 0,
-  });
 
-  const [roomsParams, setRoomsParams] = useState({
+  const [roomsParams, setRoomsParams] = useState<{
+    romOwnerId: string;
+    sortOptions: EOrderType2;
+    sortOrder: EOrderDirection2;
+    sortLabel?: EOrderDirection
+  }>({
     romOwnerId: currentUser.localId,
-    page: pagination.currentPage,
-    pageSize: defaultPageSize,
-    sortOptions: EOrderDirection.PLUS_DATE,
+    sortOptions: EOrderType2.TIME,
+    sortOrder: EOrderDirection2.DESC,
+    sortLabel: EOrderDirection.MINUS_DATE,
   });
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await RoomAPI.getOwnerRooms(roomsParams);
+      const params = {...roomsParams}
+      delete params.sortLabel
+      const response = await RoomAPI.getOwnerRooms(params);
       if (response) {
-        setShowData(response.data);
-        setPagination({
-          currentPage: 1,
-          pageSize: defaultPageSize,
-          totalRecords: response.data.length,
-        });
+        setShowData(response);
       }
     };
     fetchData().catch((error) => console.log(error));
   }, [roomsParams, isOpen]);
-
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
-    console.log(event);
-    setPagination({ ...pagination, currentPage: page });
-    setRoomsParams({ ...roomsParams, page: page });
-  };
 
   return (
     <Box
@@ -118,11 +108,53 @@ export default function CreatedRoomsPagination(
             <Select
               labelId="sort-select-label"
               id="sort-select"
-              value={roomsParams.sortOptions}
+              value={roomsParams.sortLabel}
               label="Sắp xếp"
-              onChange={(e) =>
-                setRoomsParams({...roomsParams, sortOptions: e.target.value as EOrderDirection})
-              }
+              onChange={(e) => {
+                if (e.target.value === EOrderDirection.PLUS_PRICE) {
+                  setRoomsParams({
+                    ...roomsParams,
+                    sortOptions: EOrderType2.PRICE,
+                    sortOrder: EOrderDirection2.ASC,
+                    sortLabel: EOrderDirection.PLUS_PRICE,
+                  });
+                } else if (e.target.value === EOrderDirection.MINUS_PRICE) {
+                  setRoomsParams({
+                    ...roomsParams,
+                    sortOptions: EOrderType2.PRICE,
+                    sortOrder: EOrderDirection2.DESC,
+                    sortLabel: EOrderDirection.MINUS_PRICE,
+                  });
+                } else if (e.target.value === EOrderDirection.PLUS_AREA) {
+                  setRoomsParams({
+                    ...roomsParams,
+                    sortOptions: EOrderType2.AREA,
+                    sortOrder: EOrderDirection2.ASC,
+                    sortLabel: EOrderDirection.PLUS_AREA,
+                  });
+                } else if (e.target.value === EOrderDirection.MINUS_AREA) {
+                  setRoomsParams({
+                    ...roomsParams,
+                    sortOptions: EOrderType2.AREA,
+                    sortOrder: EOrderDirection2.DESC,
+                    sortLabel: EOrderDirection.MINUS_AREA,
+                  });
+                } else if (e.target.value === EOrderDirection.PLUS_DATE) {
+                  setRoomsParams({
+                    ...roomsParams,
+                    sortOptions: EOrderType2.TIME,
+                    sortOrder: EOrderDirection2.ASC,
+                    sortLabel: EOrderDirection.PLUS_DATE,
+                  });
+                } else if (e.target.value === EOrderDirection.MINUS_DATE) {
+                  setRoomsParams({
+                    ...roomsParams,
+                    sortOptions: EOrderType2.TIME,
+                    sortOrder: EOrderDirection2.DESC,
+                    sortLabel: EOrderDirection.MINUS_DATE,
+                  });
+                }
+              }}
             >
               <MenuItem value={EOrderDirection.PLUS_PRICE}>
                 Giá phòng tăng dần
@@ -155,6 +187,7 @@ export default function CreatedRoomsPagination(
                 price={item?.price}
                 tag={item?.roomAttribute!.tag}
                 area={item?.area}
+                createdOnDate={item?.createdOnDate}
                 imageUrl={item?.roomImages[0]?.imageUrl}
                 handleOpenDialog={() => setIsOpen(true)}
                 handleSelectedRoomId={(roomId: string) =>
@@ -167,16 +200,6 @@ export default function CreatedRoomsPagination(
           ))
         ) : (
           <Typography mt={10}>Không có dữ liệu</Typography>
-        )}
-        {Math.ceil(pagination.totalRecords / defaultPageSize) <= 1 ? (
-          <Box sx={{ marginBottom: 10 }}></Box>
-        ) : (
-          <Pagination
-            sx={{ marginY: 6 }}
-            count={Math.ceil(pagination.totalRecords / defaultPageSize)}
-            onChange={handlePageChange}
-            page={pagination.currentPage}
-          />
         )}
       </Box>
       <ToastContainer

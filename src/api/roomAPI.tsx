@@ -10,10 +10,10 @@ export const RoomAPI = {
     const AreaRange: any = {};
     const PriceRange: any = {};
     const WaterPriceRange: any = {};
-    const ElectronicPriceRange: any = {}
+    const ElectronicPriceRange: any = {};
     if (params?.type && params?.type !== "") {
-      filterParams["Type"] = params.type
-    } 
+      filterParams["Type"] = params.type;
+    }
     if (params?.name) {
       filterParams["FullTextSearch"] = params.name;
     }
@@ -77,7 +77,10 @@ export const RoomAPI = {
     if (WaterPriceRange.MinWaterPrice || WaterPriceRange.MaxWaterPrice) {
       filterParams["WaterPriceRange"] = WaterPriceRange;
     }
-    if (ElectronicPriceRange.MinElectronicPrice || ElectronicPriceRange.MaxElectronicPrice) {
+    if (
+      ElectronicPriceRange.MinElectronicPrice ||
+      ElectronicPriceRange.MaxElectronicPrice
+    ) {
       filterParams["ElectronicPriceRange"] = ElectronicPriceRange;
     }
 
@@ -107,19 +110,17 @@ export const RoomAPI = {
   },
   getOwnerRooms: async function (params: {
     romOwnerId: string;
-    page?: number;
-    pageSize?: number;
     sortOptions?: string;
+    sortOrder?: string;
   }) {
     const response = await api.request({
       url: prefix + "owner/" + params.romOwnerId,
       method: "GET",
       params: {
-        page: params?.page,
-        pageSize: params?.pageSize,
-        sort: params?.sortOptions
+        sortBy: params?.sortOptions
           ? params?.sortOptions
           : EOrderDirection.PLUS_DATE,
+        sortOrder: params?.sortOrder ? params?.sortOrder : "asc",
       },
     });
     return response.data;

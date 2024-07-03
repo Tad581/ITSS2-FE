@@ -8,3 +8,5 @@ const user = {
 };
 
 export { user };
+
+const data = [{date: 'ngay', sophong: 10}]

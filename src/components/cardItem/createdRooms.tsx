@@ -1,6 +1,7 @@
 import { Box, Typography, Link } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
+import dayjs from "dayjs";
 
 interface IProps {
   id: string;
@@ -9,6 +10,7 @@ interface IProps {
   price: string;
   imageUrl: string;
   tag: string;
+  createdOnDate?: string;
   handleOpenDialog: () => void;
   handleSelectedRoomId: (roomId: string) => void;
   handleEditClick?: (roomId: string) => void;
@@ -88,6 +90,11 @@ export default function CreatedRooms(props: IProps) {
         <Typography sx={{ fontSize: 16, fontWeight: 400 }}>
           {props.price} VNĐ/tháng
         </Typography>
+        {props.createdOnDate && (
+          <Typography sx={{ fontSize: 16, fontWeight: 400 }}>
+            Ngày tạo phòng: {dayjs(props.createdOnDate).format("DD/MM/YYYY")}
+          </Typography>
+        )}
       </Box>
       <Box sx={{ marginRight: 8 }}>
         <EditOutlinedIcon

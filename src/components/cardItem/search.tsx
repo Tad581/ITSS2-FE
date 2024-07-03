@@ -4,6 +4,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Link from "@mui/material/Link";
 import { IReview } from "../../interfaces/room";
 import { useMemo } from "react";
+import dayjs from 'dayjs'
 
 interface IProps {
   id: string;
@@ -14,6 +15,7 @@ interface IProps {
   reviews: IReview[];
   tag: string;
   price: string;
+  createdOnDate?: string;
 }
 
 export default function CardItem(props: IProps) {
@@ -103,6 +105,14 @@ export default function CardItem(props: IProps) {
           }}
         >
           {props.area} m²
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "16px",
+            fontWeight: 400,
+          }}
+        >
+          Ngày tạo: {dayjs(props.createdOnDate).format("DD/MM/YYYY")}
         </Typography>
         <Typography
           sx={{

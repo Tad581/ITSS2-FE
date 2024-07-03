@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Pagination, Typography } from "@mui/material";
+import { Box, Pagination, Typography } from "@mui/material";
 import { default as UserTable } from "./components/userTable";
 import { default as SearchBar } from "./components/searchBar";
 import { UserAPI } from "../../../api/userAPI";
 import { IUser } from "../../../interfaces/user";
+import AdminHeader from "../../../layout/adminHeader";
 
 const AdminUsers: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -46,25 +47,33 @@ const AdminUsers: React.FC = () => {
   }, [pagination.currentPage, pagination.pageSize, searchQuery]);
 
   return (
-    <Container sx={{ marginTop: 5 }}>
-      <Typography variant="h4" gutterBottom textAlign={"center"}>
-        Quản lý thông tin người dùng
-      </Typography>
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <Box sx={{ marginTop: 5 }}>
-        <UserTable users={users} onDelete={handleDelete} />
+    <Box
+      sx={{
+        height: "auto",
+        width: "100%",
+      }}
+    >
+      <AdminHeader />
+      <Box sx={{ marginTop: 5, paddingX: 5 }}>
+        <Typography variant="h4" gutterBottom textAlign={"center"}>
+          Quản lý thông tin người dùng
+        </Typography>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <Box sx={{ marginTop: 5 }}>
+          <UserTable users={users} onDelete={handleDelete} />
+        </Box>
+        {Math.ceil(pagination.totalRecords / pagination.pageSize) <= 1 ? (
+          <Box sx={{ marginBottom: 10 }}></Box>
+        ) : (
+          <Pagination
+            sx={{ marginY: 6 }}
+            count={Math.ceil(pagination.totalRecords / pagination.pageSize)}
+            onChange={handlePageChange}
+            page={pagination.currentPage}
+          />
+        )}
       </Box>
-      {Math.ceil(pagination.totalRecords / pagination.pageSize) <= 1 ? (
-        <Box sx={{ marginBottom: 10 }}></Box>
-      ) : (
-        <Pagination
-          sx={{ marginY: 6 }}
-          count={Math.ceil(pagination.totalRecords / pagination.pageSize)}
-          onChange={handlePageChange}
-          page={pagination.currentPage}
-        />
-      )}
-    </Container>
+    </Box>
   );
 };
 
