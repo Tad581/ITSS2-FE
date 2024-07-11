@@ -83,7 +83,7 @@ function RoomCard(props: IRoom) {
           </Typography>
         </Link>
         <Typography>
-          {Intl.NumberFormat("vi-VN").format(props.price)}/tháng
+          {Intl.NumberFormat("vi-VN").format(parseInt(props.price))}/tháng
         </Typography>
         <Typography
           variant="subtitle1"

@@ -138,6 +138,7 @@ const Input = () => {
         type='text'
         placeholder='Nhập tin nhắn'
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => {e.key === 'Enter' && handleSend()}}
         value={text}
         size='small'
         sx={{

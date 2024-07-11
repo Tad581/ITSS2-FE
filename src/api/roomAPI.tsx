@@ -154,4 +154,15 @@ export const RoomAPI = {
     });
     return response.data;
   },
+  staticRoom: async function (startDate: string, endDate: string) {
+    const response = await api.request({
+      url: prefix + "newRooms",
+      method: "GET",
+      params: {
+        startDate,
+        endDate,
+      },
+    });
+    return response.data;
+  }
 };

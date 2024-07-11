@@ -41,9 +41,8 @@ export default function Detail() {
       const response2 = await RoomAPI.getOwnerRooms({
         romOwnerId: response.data.romOwnerId,
       });
-      if (response2.message === "Success") {
-        setOwnerRoom(response2.data);
-      }
+        console.log(response2)
+        setOwnerRoom(response2);
     };
     fetchData().catch((error) => console.log(error));
   }, [id]);

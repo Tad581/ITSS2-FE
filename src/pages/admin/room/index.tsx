@@ -1,40 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AdminHeader from "../../../layout/adminHeader";
 import RoomChart from "./components/roomChart";
-import DateRangePickerComponent from "./components/dateRangePicker";
-import { DateRange } from "@mui/x-date-pickers-pro";
 import dayjs from "dayjs";
+import DatePicker from "react-datepicker";
+import { RoomAPI } from "../../../api/roomAPI";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AdminRooms: React.FC = () => {
-  const [dateRange, setDateRange] = useState<DateRange<dayjs.Dayjs>>([
-    dayjs().subtract(1, "month"),
-    dayjs(),
-  ]);
+  const [startDate, setStartDate] = useState<any>(new Date());
+  const [endDate, setEndDate] = useState<any>(new Date());
   const [roomData, setRoomData] = useState<
-    { date: string; newRooms: number }[]
+    { date: string; count: number }[]
   >([]);
-
-  const dummyData = [
-    { date: "2023-06-01", newRooms: 5 },
-    { date: "2023-06-02", newRooms: 3 },
-    { date: "2023-06-03", newRooms: 8 },
-    { date: "2023-06-04", newRooms: 2 },
-    { date: "2023-06-05", newRooms: 6 },
-    { date: "2023-06-06", newRooms: 4 },
-    { date: "2023-06-07", newRooms: 7 },
-  ];
 
   useEffect(() => {
     const fetchRoomData = async () => {
-      //   const response = await UserAPI.getRoomData({
-      //     startDate: dateRange[0]?.format('YYYY-MM-DD'),
-      //     endDate: dateRange[1]?.format('YYYY-MM-DD'),
-      //   });
-      //   setRoomData(response);
+      const response = await RoomAPI.staticRoom(
+        dayjs(startDate, "YYYY-MM-DD").toISOString(),
+        dayjs(endDate, 'YYYY-MM-DD').toISOString()
+      );
+      const data = response.map((item: any) => ({
+        date: dayjs(item.date).format("DD/MM/YYYY"),
+        count: item.count,
+      }))
+      setRoomData(data);
     };
     fetchRoomData().catch((error) => console.log(error));
-  }, [dateRange]);
+  }, [startDate, endDate]);
 
   return (
     <Box
@@ -48,12 +41,30 @@ const AdminRooms: React.FC = () => {
         <Typography variant="h4" gutterBottom textAlign={"center"}>
           Quản lý phòng
         </Typography>
-        <DateRangePickerComponent
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-        />
+        <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+          <Box sx={{ marginRight: 5, display: "flex" }}>
+            <Typography variant="h6" gutterBottom mr={3}>
+              Ngày bắt đầu:
+            </Typography>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              dateFormat="yyyy/MM/dd"
+            />
+          </Box>
+          <Box sx={{ marginRight: 5, display: "flex" }}>
+            <Typography variant="h6" gutterBottom mr={3}>
+              Ngày kết thúc:
+            </Typography>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="yyyy/MM/dd"
+            />
+          </Box>
+        </Box>
         <Box sx={{ marginTop: 5 }}>
-          <RoomChart data={dummyData} />
+          <RoomChart data={roomData} />
         </Box>
       </Box>
     </Box>
